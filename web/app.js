@@ -699,7 +699,7 @@
       else if (view === 'card') { setNav('issue'); renderTabs(ctx, parts[1]); html = cardView(ctx, parts[1], parts[2]); }
       else if (view === 'issues') { setNav('issues'); tabsEl.hidden = true; html = issuesView(ctx); }
       else if (view === 'how') { setNav('how'); tabsEl.hidden = true; html = howView(ctx); }
-      else { setNav('issue'); renderTabs(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; }, 1500); } }
+      else { setNav('issue'); renderTabs(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; new Image().src = 'img/chromesby.webp'; }, 1500); } }
       show(html);
       document.title = ctx.issue.title + ' weekly, issue ' + ctx.issue.number;
     }).catch(fail);
@@ -819,34 +819,61 @@
     'Do it for the love of the game.',
     'If one kid smiles, the spreadsheet was worth it.'
   ];
-  var guide = null, guideTimer = null, lastLine = -1, bag = [];
+  // Once in a long while Chromesby shows up instead. He loves chrome and wants to change the world.
+  var CHROMESBY_ODDS = 1 / 15;
+  var CHROME = [
+    'I\u2019m Chromesby. I love chrome. I\u2019m going to change the world.',
+    'Chrome isn\u2019t a finish. It\u2019s a future.',
+    'Imagine a world where everything is chrome. I do. Every night.',
+    'One day every card will be chrome. I\u2019ll see to it personally.',
+    'They said the world couldn\u2019t be chromed. They were dull.',
+    'Matte is a choice. Chrome is a calling.',
+    'I looked into the chrome. The chrome looked back. We agreed.',
+    'Chrome doesn\u2019t judge. Chrome reflects.',
+    'First we chrome the cards. Then the binders. Then the oceans.',
+    'I was not born. I was polished.',
+    'Change the world? I already have the finish for it.',
+    'Chrome today. Chrome tomorrow. Chrome forever.',
+    'Have you considered chrome?',
+    'A chrome world is a kinder world. Shinier, too.',
+    'My dream is simple. Every child, chrome.',
+    'You can\u2019t spell change without... well. You can. But add chrome.'
+  ];
+  var guide = null, guideTimer = null;
   // Every line gets its turn before any repeats.
-  function nextLine() {
-    if (!bag.length) {
-      bag = WISDOM.map(function (_, i) { return i; });
-      for (var i = bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = bag[i]; bag[i] = bag[j]; bag[j] = t; }
-      if (bag[bag.length - 1] === lastLine) bag.unshift(bag.pop());
-    }
-    lastLine = bag.pop();
-    return WISDOM[lastLine];
+  function dealer(lines) {
+    var bag = [], last = -1;
+    return function () {
+      if (!bag.length) {
+        bag = lines.map(function (_, i) { return i; });
+        for (var i = bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = bag[i]; bag[i] = bag[j]; bag[j] = t; }
+        if (bag[bag.length - 1] === last) bag.unshift(bag.pop());
+      }
+      last = bag.pop();
+      return lines[last];
+    };
   }
+  var nextLine = dealer(WISDOM), nextChrome = dealer(CHROME);
   function buildGuide() {
     guide = document.createElement('div');
     guide.className = 'guide';
-    guide.innerHTML = '<p class="guide-say" role="status" aria-live="polite"></p><img src="img/guide.webp" alt="" width="220" height="246">';
+    guide.innerHTML = '<p class="guide-say" role="status" aria-live="polite"><b></b><span></span></p><img alt="">';
     guide.addEventListener('click', hideGuide);
     document.body.appendChild(guide);
-    void guide.offsetWidth;
   }
   function hideGuide() { clearTimeout(guideTimer); if (guide) guide.classList.remove('on'); }
   function speak() {
     if (!guide) buildGuide();
-    guide.querySelector('.guide-say').textContent = nextLine();
+    var chrome = Math.random() < CHROMESBY_ODDS;
     guide.classList.remove('on');
+    guide.classList.toggle('chromesby', chrome);
+    guide.querySelector('img').src = chrome ? 'img/chromesby.webp' : 'img/guide.webp';
+    guide.querySelector('b').textContent = chrome ? 'Chromesby' : '';
+    guide.querySelector('span').textContent = chrome ? nextChrome() : nextLine();
     void guide.offsetWidth;
     guide.classList.add('on');
     clearTimeout(guideTimer);
-    guideTimer = setTimeout(hideGuide, 4200);
+    guideTimer = setTimeout(hideGuide, chrome ? 5200 : 4200);
   }
   document.addEventListener('click', function (e) {
     if (e.target.closest && e.target.closest('#strategy')) speak();

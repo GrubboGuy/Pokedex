@@ -341,3 +341,8 @@ details.points td:last-child { text-align: right; font-weight: 600; }
 .guide.on img { transform: translateY(0) rotate(-7deg); transition: transform .42s cubic-bezier(.2,1.5,.4,1); }
 .guide.on .guide-say { opacity: 1; transform: none; transition: opacity .2s .26s, transform .28s .26s cubic-bezier(.2,1.4,.4,1); }
 @media (prefers-reduced-motion: reduce) { .guide img, .guide.on img, .guide-say, .guide.on .guide-say { transition: opacity .2s; } .guide img { transform: rotate(-7deg); opacity: 0; } .guide.on img { opacity: 1; } }
+.guide-say b { display: none; }
+.guide.chromesby img { width: 214px; right: -18px; bottom: -34px; transform-origin: 50% 100%; }
+.guide.chromesby.on img { transform: translateY(0) rotate(-3deg); }
+.guide.chromesby .guide-say { right: 168px; bottom: 122px; max-width: min(196px, calc(100% - 178px)); color: #14161B; font-style: normal; font-family: var(--sans); font-weight: 600; font-size: 14.5px; line-height: 1.3; background: linear-gradient(160deg, #FDFDFE 0%, #C9CED8 28%, #F4F6F9 46%, #A9B0BD 72%, #E6E9EE 100%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7), 0 0 0 1px #8D94A3, 0 8px 22px -8px rgba(15,17,21,.55); }
+.guide.chromesby .guide-say b { display: block; font-stretch: 72%; font-weight: 900; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 3px; }
