@@ -19,16 +19,16 @@ def _valid_release(published):
 
 
 def era_for(name, release):
+    """Era from the set name's prefix when it has one (promo sets are dated oddly), else from its release date."""
+    for prefix, era_id in config.ERA_PREFIXES:
+        if re.match(rf"^{re.escape(prefix)}(\d|:|\s|-)", name or ""):
+            return era_id
+    era = None
     if release:
-        era = None
         for era_id, _label, start in config.ERAS:
             if release >= start:
                 era = era_id
-        return era
-    for prefix, era_id in config.ERA_PREFIXES:
-        if re.match(rf"^{re.escape(prefix)}(\d|:|\s)", name or ""):
-            return era_id
-    return None
+    return era
 
 
 def _kind(name, ext):
@@ -154,7 +154,7 @@ def compute_rows(catalog, snapshots, today):
                 "number": item["number"], "rarity": item["rarity"],
                 "image": item["image"], "url": item["url"],
                 "set": group.get("name"), "setAbbr": group.get("abbr"), "gid": item["gid"],
-                "era": group.get("era"),
+                "era": era_for(group.get("name"), release),
                 "setAgeDays": _days(today, release) if release else None,
                 "price": market, "low": low,
                 "p7": p7, "p30": p30, "p90": p90,
@@ -323,7 +323,68 @@ def _holding():
     return test, rank, score, reason
 
 
+def _big_movers():
+    """Large short-term moves, up or down, on cards worth $100 or more."""
+    def test(r):
+        return (
+            r["kind"] == "single" and max(r["price"], r["p7"]) >= 100
+            and 0.08 <= abs(r["ch7"]) and -0.6 <= r["ch7"] <= config.MAX_SANE_WEEKLY_MOVE
+            and _trades(r) and (_listed_near(r, 0.7, 1.25) if r["ch7"] > 0 else _listed_near(r, 0.6, 1.2))
+        )
+
+    def score(r):
+        return _clamp_score(50 + 49 * math.tanh(3.2 * abs(r["ch7"])))
+
+    def reason(r):
+        month = f" Over 30 days it is {_pct(r['ch30'])}." if r["ch30"] is not None else ""
+        if r["ch7"] > 0:
+            return (f"Up {_pct(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month} "
+                    f"The lowest listing is {_money(r['low'])}.")
+        return (f"Down {_pct(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month} "
+                f"The lowest listing is {_money(r['low'])}. A fall this size can be one soft sale, a reprint or a real "
+                f"shift, so check recent sold listings.")
+
+    return test, lambda r: abs(r["ch7"]), score, reason
+
+
+def _rebound():
+    """Established cards on a dip that runs against their own trend.
+
+    Nothing here is a forecast. The list looks for the conditions that usually come before a
+    recovery: the card held or gained value for months, trades often, and only just fell.
+    """
+    def before(r):  # change over the tracked period up to the start of the dip
+        return r["p7"] / r["p90"] - 1 if r["p90"] else None
+
+    def test(r):
+        prior = before(r)
+        return (
+            r["kind"] == "single" and r["p7"] >= 30 and r["points"] >= 12 and _trades(r, 0.34)
+            and (r["setAgeDays"] is None or r["setAgeDays"] >= 365)
+            and -0.35 <= r["ch7"] <= -0.05
+            and prior is not None and prior >= -0.03
+            and r["price"] <= r["median90"]
+            and _listed_near(r, 0.7, 1.35)
+        )
+
+    def score(r):
+        return _clamp_score(46 + 30 * math.tanh(5 * abs(r["ch7"])) + 14 * math.tanh(3 * max(0, before(r)))
+                            + 8 * r["activity"])
+
+    def reason(r):
+        prior = before(r)
+        trend = (f"gaining {_pct(prior)} over the months before" if prior >= 0.03
+                 else f"holding around {_money(r['median90'])} for months")
+        return (f"Down {_pct(r['ch7'])} {_in_span()} to {_money(r['price'])}, after {trend}. It trades often and "
+                f"the fall runs against its own trend, which is the pattern that tends to recover. "
+                f"A sign, not a promise: check for a reprint first.")
+
+    return test, score, score, reason
+
+
 LISTS = [
+    ("big-movers", "Big ups and downs", "Big ups/downs", "The largest moves on cards worth $100 and up", "red", "Swing", _big_movers(),
+     "Singles worth $100 or more, before or after the move, whose market price moved at least 8% either way in {span} days. Up to four risers and four fallers, biggest move first."),
     ("hot-vintage", "Vintage era singles this week", "Vintage era", "1999 to 2007: Wizards of the Coast and EX sets", "red", "Heat", _hot(("wotc", "ex"), 15),
      "Singles from sets released before May 2007, $15 and up, that rose at least 5% in {span} days while the 30-day trend is also up."),
     ("hot-middle", "DP to XY era singles this week", "DP to XY era", "2007 to 2016: Diamond & Pearl through XY sets", "blue", "Heat", _hot(("dp", "bwxy"), 10),
@@ -336,6 +397,8 @@ LISTS = [
      "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by 30-day rise."),
     ("hidden-gems", "Hidden gems for cheap", "Hidden gems", "Under $20 and climbing steadily", "green", "Heat", _gems(),
      "Singles from $2 to $20 that rose 8% to 80% over 30 days, with the rise spread out and not one late jump."),
+    ("get-em-now", "Get 'em now", "Get 'em now", "Proven cards on a dip that looks temporary", "green", "Rebound", _rebound(),
+     "Singles that were $30 and up, trade often and held or gained value over the prior months, now down 5% to 35% in {span} days and under their own 90-day median. From sets at least a year old, so the normal slide after release is not counted. These are the conditions that tend to come before a recovery, not a forecast."),
     ("on-sale", "On sale this week", "On sale", "Trading well under their own 90-day median", "yellow", "Deal", _on_sale(),
      "Cards and sealed products $20 and up, at least 13% under their own 90-day median price, from sets at least a year old so the normal slide after release is not counted."),
     ("holding", "Holding strong", "Holding strong", "Big cards that barely moved", "green", "Steady", _holding(),
@@ -394,6 +457,20 @@ SEALED_FALLBACK = (
 )
 
 
+def _balanced(rows, each):
+    """Risers and fallers in equal numbers where both exist, biggest move first.
+
+    Goes a little deeper than needed on each side so the per-set limit can skip a row.
+    """
+    ups = [r for r in rows if r["ch7"] > 0]
+    downs = [r for r in rows if r["ch7"] < 0]
+    take_up = max(each, 2 * each - len(downs))
+    take_down = max(each, 2 * each - len(ups))
+    head = sorted(ups[:take_up] + downs[:take_down], key=lambda r: abs(r["ch7"]), reverse=True)
+    rest = ups[take_up:] + downs[take_down:]
+    return head + sorted(rest, key=lambda r: abs(r["ch7"]), reverse=True)
+
+
 def make_categories(rows, span=7):
     global SPAN
     SPAN = span
@@ -406,6 +483,8 @@ def make_categories(rows, span=7):
         if list_id == "modern-sealed" and len(eligible) < 3:
             list_id, title, short, blurb, color, label, (test, rank, score, reason), rule = SEALED_FALLBACK
             eligible = sorted((r for r in all_rows if test(r)), key=rank, reverse=True)
+        if list_id == "big-movers":
+            eligible = _balanced(eligible, config.PICKS_PER_LIST // 2)
         counts[list_id] = len(eligible)
         picks, seen_products, per_set = [], set(), {}
         for r in eligible:

@@ -14,7 +14,7 @@
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var TIERS = { UNOPENED: 'Sealed', NEAR_MINT: 'Near Mint', LIGHTLY_PLAYED: 'Lightly Played', MODERATELY_PLAYED: 'Moderately Played', HEAVILY_PLAYED: 'Heavily Played', DAMAGED: 'Damaged' };
   // Color families: each list has one, and each era maps onto the family of its era list.
-  var TONE = { 'hot-vintage': 'vintage', 'hot-middle': 'mid', 'hot-sm-swsh': 'sunsword', 'hot-modern': 'modern', 'modern-sealed': 'sealed', 'hidden-gems': 'gems', 'on-sale': 'sale', 'holding': 'steady' };
+  var TONE = { 'big-movers': 'movers', 'get-em-now': 'rebound', 'hot-vintage': 'vintage', 'hot-middle': 'mid', 'hot-sm-swsh': 'sunsword', 'hot-modern': 'modern', 'modern-sealed': 'sealed', 'hidden-gems': 'gems', 'on-sale': 'sale', 'holding': 'steady' };
   var ERAS = {
     wotc: ['Wizards era', 'vintage'], ex: ['EX era', 'vintage'],
     dp: ['Diamond & Pearl era', 'mid'], bwxy: ['BW and XY era', 'mid'],
@@ -62,9 +62,12 @@
   function tone(cat) { return 't-' + (TONE[cat.id] || 'steady'); }
   function eraChip(era) { var e = ERAS[era]; return e ? '<span class="era t-' + e[1] + '">' + e[0] + '</span>' : ''; }
   function eraTone(era) { return ERAS[era] ? 't-' + ERAS[era][1] : ''; }
-  function eraFromDate(d) {
-    var era = null;
-    if (d) ERA_STARTS.forEach(function (s) { if (d >= s[1]) era = s[0]; });
+  var ERA_PREFIXES = [['ME', 'mega'], ['SV', 'sv'], ['SWSH', 'swsh'], ['SM', 'sm'], ['XY', 'bwxy'], ['BW', 'bwxy'], ['HGSS', 'dp'], ['DP', 'dp']];
+  // Same rule as the data job: the set name's prefix when it has one, else the release date.
+  function eraOf(setName, d) {
+    var era = null, m = /^([A-Z]+)(\d|:|\s|-)/.exec(setName || '');
+    if (m) ERA_PREFIXES.forEach(function (p) { if (!era && p[0] === m[1]) era = p[1]; });
+    if (!era && d) ERA_STARTS.forEach(function (s) { if (d >= s[1]) era = s[0]; });
     return era;
   }
 
@@ -94,6 +97,8 @@
   }
   function verdict(p) {
     if (p.scoreLabel === 'Deal') return p.score >= 80 ? 'Deep discount' : (p.score >= 70 ? 'Solid discount' : 'Mild discount');
+    if (p.scoreLabel === 'Swing') return p.ch7 > 0 ? 'Big jump' : 'Sharp drop';
+    if (p.scoreLabel === 'Rebound') return p.score >= 72 ? 'Strong setup' : (p.score >= 64 ? 'Good setup' : 'Early sign');
     if (p.scoreLabel === 'Steady') return p.score >= 85 ? 'Rock steady' : 'Steady';
     return p.score >= 80 ? 'Red hot' : (p.score >= 65 ? 'Hot' : 'Warming up');
   }
@@ -421,7 +426,7 @@
       count.textContent = hits.length === 0 ? 'No matches. Try the card name plus the set, like "charizard evolutions".' :
         (hits.length > 60 ? 'Showing the 60 highest-priced of ' + Number(hits.length).toLocaleString('en-US') + ' matches.' : hits.length + (hits.length === 1 ? ' match.' : ' matches.'));
       list.innerHTML = hits.slice(0, 60).map(function (i) {
-        var it = data.items[i], s = data.sets[it[2]], pr = it[6][0], era = eraFromDate(s[3]);
+        var it = data.items[i], s = data.sets[it[2]], pr = it[6][0], era = eraOf(s[1], s[3]);
         var meta = [s[1], it[3] ? '#' + it[3] : '', pr[0] !== 'Normal' ? pr[0] : '', it[6].length > 1 ? '+' + (it[6].length - 1) + ' more' : ''].filter(Boolean).join(', ');
         return '<li class="' + eraTone(era) + '"><a href="#/p/' + s[0] + '/' + it[0] + '/' + encodeURIComponent(pr[0]) + '"><img src="' + productImage(it[0]) + '" alt="" loading="lazy">' +
           '<span><b>' + esc(it[1]) + '</b><small>' + esc(meta) + '</small>' + eraChip(era) + '</span>' +
@@ -441,7 +446,7 @@
       var data = res[0], hist = res[1];
       var it = data.items.filter(function (x) { return String(x[0]) === String(pid); })[0];
       if (!it) return notFound();
-      var s = data.sets[it[2]], era = eraFromDate(s[3]);
+      var s = data.sets[it[2]], era = eraOf(s[1], s[3]);
       var pr = it[6].filter(function (x) { return x[0] === printing; })[0] || it[6][0];
       var series = [];
       if (hist) {
@@ -501,7 +506,7 @@
       '<li>For rising picks, the lowest current listing must sit between 30% under and 25% over the market price, so the move is backed by what sellers are asking and you can buy near the quoted price.</li>' +
       '<li>A short-term move above 300% is treated as a data error and dropped.</li>' +
       '<li>At most three picks per set in a list, no card appears in two lists, and presale products are left out.</li></ul></section>' +
-      '<section class="block dark article"><h2>Scores and confidence</h2><p>The Heat score (1 to 99) blends the short-term and 30-day moves. Deal scores measure a discount, either to the 90-day median or, for sealed products without a history yet, to the market price. Steady scores measure how tight the price band is. Confidence is High when the card trades often, has a full price history and its listings match the market price.</p></section>' +
+      '<section class="block dark article"><h2>Scores and confidence</h2><p>The Heat score (1 to 99) blends the short-term and 30-day moves. Deal scores measure a discount, either to the 90-day median or, for sealed products without a history yet, to the market price. Steady scores measure how tight the price band is. Swing scores measure the size of a move in either direction. Rebound scores blend how far a card dipped, how well it held up before the dip and how often it trades; they describe a setup, not a forecast. Confidence is High when the card trades often, has a full price history and its listings match the market price.</p></section>' +
       '<section class="block article"><h2>What this free version cannot see</h2><ul>' +
       '<li>Individual eBay sales. eBay sold figures are the latest sold price, medians and counts for the cards in the issue, not a list of each sale. The "eBay sold listings" button on every card opens the live list on eBay.</li>' +
       '<li>Whole-catalog sales counts. Picks are screened on price movement; sale counts are shown for the picks themselves.</li>' +
