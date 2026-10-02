@@ -7,7 +7,6 @@
   var issueNoEl = document.getElementById('issue-no');
   var cache = {};
   var indexPromise = null, searchPromise = null, setCache = {};
-  var lastQuery = '';
   var swipe = { prev: null, next: null };
   var slideFrom = null;
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -132,10 +131,19 @@
   function getSearch() {
     if (!searchPromise) {
       searchPromise = getJSON('data/search.json').then(function (data) {
+        var rar = {}, prt = {};
+        data.setEra = data.sets.map(function (s) { return eraOf(s[1], s[3]); });
+        data.setCount = data.sets.map(function () { return 0; });
         data.hay = data.items.map(function (it) {
           var s = data.sets[it[2]];
-          return (it[1] + ' ' + s[1] + ' ' + (s[2] || '') + ' ' + (it[3] || '')).toLowerCase();
+          data.setCount[it[2]]++;
+          if (it[5] && it[5] !== 'None' && it[5] !== 'Unconfirmed') rar[it[5]] = (rar[it[5]] || 0) + 1;
+          it[6].forEach(function (p) { prt[p[0]] = (prt[p[0]] || 0) + 1; });
+          return plain(it[1] + ' ' + s[1] + ' ' + (s[2] || '') + ' ' + (it[3] || ''));
         });
+        var byCount = function (o) { return Object.keys(o).sort(function (a, b) { return o[b] - o[a]; }); };
+        data.rarities = byCount(rar);
+        data.printings = byCount(prt);
         return data;
       });
       searchPromise.catch(function () { searchPromise = null; });
@@ -396,49 +404,167 @@
   }
 
   // ---------- search ----------
+  var S = { q: '', sort: 'best', type: '', era: '', set: '', rarity: '', printing: '', min: '', max: '', open: false, limit: 60 };
+  var SORTS = [['best', 'Best match'], ['price-desc', 'Price, high to low'], ['price-asc', 'Price, low to high'], ['up30', 'Biggest 30-day rise'], ['down30', 'Biggest 30-day fall'], ['name', 'Name, A to Z'], ['new', 'Newest set first'], ['num', 'Card number']];
+  function plain(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036F]/g, '').replace(/[\u2018\u2019]/g, "'"); }
+  // Splits what was typed into terms. "quoted words" must match exactly as whole words;
+  // a leading minus leaves matches out; anything else matches anywhere in the name, set or number.
+  function parseQuery(raw) {
+    var q = plain(raw).replace(/[\u201C\u201D\u201E\u2033]/g, '"');
+    var re = /(-?)"([^"]*)(?:"|$)|(\S+)/g, m, terms = [];
+    while ((m = re.exec(q))) {
+      if (m[2] != null) {
+        var phrase = m[2].trim().replace(/\s+/g, ' ');
+        if (phrase) terms.push({ text: phrase, not: m[1] === '-', re: new RegExp('(^|[^a-z0-9])' + phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?![a-z0-9])') });
+      } else {
+        var not = m[3].length > 1 && m[3].charAt(0) === '-';
+        terms.push({ text: not ? m[3].slice(1) : m[3], not: not, re: null });
+      }
+    }
+    return terms;
+  }
+  function options(list, current) {
+    return list.map(function (o) { return '<option value="' + esc(o[0]) + '"' + (String(o[0]) === String(current) ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('');
+  }
   function searchView() {
-    return '<div class="search-box"><input id="q" type="search" inputmode="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Search a card, set or number" aria-label="Search cards and sealed products" value="' + esc(lastQuery) + '">' +
-      '<div class="count" id="q-count" aria-live="polite"></div></div><ul class="results" id="q-results"></ul>';
+    return '<div class="search-box"><input id="q" type="search" inputmode="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Search a card, set or number" aria-label="Search cards and sealed products" value="' + esc(S.q) + '">' +
+      '<div class="search-tools"><button type="button" id="f-toggle" aria-expanded="' + (S.open ? 'true' : 'false') + '" aria-controls="filters">Filters<span id="f-n"></span></button>' +
+      '<label class="sort"><span>Sort</span><select id="f-sort">' + options(SORTS, S.sort) + '</select></label></div>' +
+      '<div class="count" id="q-count" aria-live="polite"></div></div>' +
+      '<section class="block filters" id="filters"' + (S.open ? '' : ' hidden') + '><div class="f-grid">' +
+      '<label><span>Type</span><select id="f-type">' + options([['', 'Cards and sealed'], ['single', 'Single cards'], ['sealed', 'Sealed products']], S.type) + '</select></label>' +
+      '<label><span>Era</span><select id="f-era"></select></label>' +
+      '<label class="wide"><span>Set</span><select id="f-set"></select></label>' +
+      '<label><span>Rarity</span><select id="f-rarity"></select></label>' +
+      '<label><span>Printing</span><select id="f-printing"></select></label>' +
+      '<label><span>Lowest price</span><input id="f-min" type="number" inputmode="decimal" min="0" step="any" placeholder="$ any" value="' + esc(S.min) + '"></label>' +
+      '<label><span>Highest price</span><input id="f-max" type="number" inputmode="decimal" min="0" step="any" placeholder="$ any" value="' + esc(S.max) + '"></label></div>' +
+      '<p class="note">Put words in quotes for an exact match: <b>"mew ex"</b> finds Mew ex but not Mewtwo ex. Put a minus in front of a word to leave it out: <b>charizard -vmax</b>.</p>' +
+      '<button type="button" id="f-clear">Clear filters</button></section>' +
+      '<ul class="results" id="q-results"></ul><div class="more" id="q-more" hidden><button type="button">Show more</button></div>';
   }
   function wireSearch() {
-    var input = document.getElementById('q'), list = document.getElementById('q-results'), count = document.getElementById('q-count');
+    var $ = function (id) { return document.getElementById(id); };
+    var input = $('q'), list = $('q-results'), count = $('q-count'), more = $('q-more');
     if (!input) return;
-    var timer = null;
-    function run(data) {
-      var q = input.value.trim().toLowerCase();
-      lastQuery = input.value;
-      if (q.length < 2) {
-        list.innerHTML = '';
-        count.textContent = Number(data.items.length).toLocaleString('en-US') + ' products, prices as of ' + niceDate(data.date) + '. Type at least two letters.';
+    var timer = null, data = null;
+    var fields = { sort: $('f-sort'), type: $('f-type'), era: $('f-era'), set: $('f-set'), rarity: $('f-rarity'), printing: $('f-printing'), min: $('f-min'), max: $('f-max') };
+    var filterKeys = ['type', 'era', 'set', 'rarity', 'printing', 'min', 'max'];
+    function activeFilters() { return filterKeys.filter(function (k) { return S[k] !== ''; }).length; }
+
+    function fillSets() {
+      var groups = {};
+      data.sets.forEach(function (s, i) {
+        if (!data.setCount[i]) return;
+        var era = data.setEra[i] || 'other';
+        if (S.era && era !== S.era) return;
+        (groups[era] = groups[era] || []).push([s[0], s[1]]);
+      });
+      var html = '<option value="">All sets</option>';
+      ERA_STARTS.slice().reverse().map(function (e) { return e[0]; }).concat(['other']).forEach(function (era) {
+        if (groups[era]) html += '<optgroup label="' + esc(ERAS[era] ? ERAS[era][0] : 'Other') + '">' + options(groups[era], S.set) + '</optgroup>';
+      });
+      fields.set.innerHTML = html;
+      if (S.set && fields.set.value !== String(S.set)) S.set = '';
+    }
+    function fillAll() {
+      fields.era.innerHTML = options([['', 'All eras']].concat(ERA_STARTS.slice().reverse().map(function (e) { return [e[0], ERAS[e[0]][0]]; })), S.era);
+      fields.rarity.innerHTML = options([['', 'Any rarity']].concat(data.rarities.map(function (r) { return [r, r]; })), S.rarity);
+      fields.printing.innerHTML = options([['', 'Any printing']].concat(data.printings.map(function (r) { return [r, r]; })), S.printing);
+      fillSets();
+    }
+
+    function run() {
+      var terms = parseQuery(S.q), wanted = terms.filter(function (t) { return !t.not; });
+      var n = activeFilters();
+      $('f-n').textContent = n ? ' (' + n + ')' : '';
+      $('f-clear').hidden = !n;
+      var typed = wanted.some(function (t) { return t.text.length >= 2; });
+      if (!typed && !n) {
+        list.innerHTML = ''; more.hidden = true;
+        count.textContent = Number(data.items.length).toLocaleString('en-US') + ' products, prices as of ' + niceDate(data.date) + '. Type a name, or open Filters to browse a set.';
         return;
       }
-      var tokens = q.split(/\s+/), hits = [];
+      var min = S.min === '' ? null : +S.min, max = S.max === '' ? null : +S.max;
+      var hits = [];
       for (var i = 0; i < data.items.length; i++) {
+        var it = data.items[i];
+        if (S.type && (S.type === 'sealed') !== !!it[4]) continue;
+        if (S.set && String(data.sets[it[2]][0]) !== String(S.set)) continue;
+        if (S.era && data.setEra[it[2]] !== S.era) continue;
+        if (S.rarity && it[5] !== S.rarity) continue;
+        var pr = it[6][0];
+        if (S.printing) {
+          pr = null;
+          for (var k = 0; k < it[6].length; k++) if (it[6][k][0] === S.printing) { pr = it[6][k]; break; }
+          if (!pr) continue;
+        }
+        if (min != null && pr[1] < min) continue;
+        if (max != null && pr[1] > max) continue;
         var h = data.hay[i], ok = true;
-        for (var t = 0; t < tokens.length; t++) { if (h.indexOf(tokens[t]) < 0) { ok = false; break; } }
-        if (ok) hits.push(i);
+        for (var t = 0; t < terms.length; t++) {
+          var found = terms[t].re ? terms[t].re.test(h) : h.indexOf(terms[t].text) >= 0;
+          if (found === terms[t].not) { ok = false; break; }
+        }
+        if (ok) hits.push([i, pr]);
       }
-      hits.sort(function (a, b) {
-        var A = data.items[a], B = data.items[b];
-        var sa = A[1].toLowerCase().indexOf(tokens[0]) === 0 ? 1 : 0, sb = B[1].toLowerCase().indexOf(tokens[0]) === 0 ? 1 : 0;
-        return sb - sa || B[6][0][1] - A[6][0][1];
-      });
-      count.textContent = hits.length === 0 ? 'No matches. Try the card name plus the set, like "charizard evolutions".' :
-        (hits.length > 60 ? 'Showing the 60 highest-priced of ' + Number(hits.length).toLocaleString('en-US') + ' matches.' : hits.length + (hits.length === 1 ? ' match.' : ' matches.'));
-      list.innerHTML = hits.slice(0, 60).map(function (i) {
-        var it = data.items[i], s = data.sets[it[2]], pr = it[6][0], era = eraOf(s[1], s[3]);
-        var meta = [s[1], it[3] ? '#' + it[3] : '', pr[0] !== 'Normal' ? pr[0] : '', it[6].length > 1 ? '+' + (it[6].length - 1) + ' more' : ''].filter(Boolean).join(', ');
+      var first = wanted.length ? wanted[0].text : null;
+      var starts = function (x) { return first && plain(data.items[x[0]][1]).indexOf(first) === 0 ? 1 : 0; };
+      var byPrice = function (a, b) { return b[1][1] - a[1][1]; };
+      var num = function (x) { var m = /\d+/.exec(data.items[x[0]][3] || ''); return m ? +m[0] : 1e9; };
+      var sorters = {
+        'best': function (a, b) { return starts(b) - starts(a) || byPrice(a, b); },
+        'price-desc': byPrice,
+        'price-asc': function (a, b) { return a[1][1] - b[1][1]; },
+        'up30': function (a, b) { return (b[1][4] == null ? -9 : b[1][4]) - (a[1][4] == null ? -9 : a[1][4]) || byPrice(a, b); },
+        'down30': function (a, b) { return (a[1][4] == null ? 9 : a[1][4]) - (b[1][4] == null ? 9 : b[1][4]) || byPrice(a, b); },
+        'name': function (a, b) { return data.items[a[0]][1].localeCompare(data.items[b[0]][1]) || byPrice(a, b); },
+        'new': function (a, b) { return data.items[a[0]][2] - data.items[b[0]][2] || byPrice(a, b); },
+        'num': function (a, b) { return data.items[a[0]][2] - data.items[b[0]][2] || num(a) - num(b) || byPrice(a, b); }
+      };
+      hits.sort(sorters[S.sort] || sorters.best);
+      var shown = Math.min(hits.length, S.limit);
+      count.textContent = hits.length === 0 ? 'No matches. Try fewer words, remove the quotes, or clear a filter.' :
+        (hits.length > shown ? 'Showing ' + shown + ' of ' + Number(hits.length).toLocaleString('en-US') + ' matches.' : hits.length + (hits.length === 1 ? ' match.' : ' matches.'));
+      more.hidden = hits.length <= shown;
+      list.innerHTML = hits.slice(0, shown).map(function (hit) {
+        var it = data.items[hit[0]], s = data.sets[it[2]], pr = hit[1], era = data.setEra[it[2]];
+        var meta = [s[1], it[3] ? '#' + it[3] : '', pr[0] !== 'Normal' ? pr[0] : '', !S.printing && it[6].length > 1 ? '+' + (it[6].length - 1) + ' more' : ''].filter(Boolean).join(', ');
         return '<li class="' + eraTone(era) + '"><a href="#/p/' + s[0] + '/' + it[0] + '/' + encodeURIComponent(pr[0]) + '"><img src="' + productImage(it[0]) + '" alt="" loading="lazy">' +
-          '<span><b>' + esc(it[1]) + '</b><small>' + esc(meta) + '</small>' + eraChip(era) + '</span>' +
+          '<span><b>' + esc(it[1]) + '</b><small>' + esc(meta) + '</small><span class="tags">' + eraChip(era) + (it[5] && !it[4] ? '<span class="rar">' + esc(it[5]) + '</span>' : '') + '</span></span>' +
           '<span class="r"><span class="price">' + money(pr[1]) + '</span>' + (pr[4] != null ? move(pr[4]) : '') + '</span></a></li>';
       }).join('');
     }
+    function changed(resetLimit) { if (resetLimit !== false) S.limit = 60; if (data) run(); }
+
     count.textContent = 'Loading the product list.';
-    getSearch().then(function (data) {
-      run(data);
-      input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(function () { run(data); }, 120); });
+    getSearch().then(function (d) {
+      data = d;
+      fillAll();
+      run();
     }).catch(function () { count.textContent = 'The product list could not be loaded. Check your connection and reload.'; });
-    if (!lastQuery && window.matchMedia('(hover: hover)').matches) input.focus();
+
+    input.addEventListener('input', function () { S.q = input.value; clearTimeout(timer); timer = setTimeout(changed, 120); });
+    Object.keys(fields).forEach(function (k) {
+      fields[k].addEventListener(k === 'min' || k === 'max' ? 'input' : 'change', function () {
+        S[k] = fields[k].value;
+        if (k === 'era' && data) fillSets();
+        changed();
+      });
+    });
+    $('f-toggle').addEventListener('click', function () {
+      S.open = !S.open;
+      $('filters').hidden = !S.open;
+      this.setAttribute('aria-expanded', S.open ? 'true' : 'false');
+    });
+    $('f-clear').addEventListener('click', function () {
+      filterKeys.forEach(function (k) { S[k] = ''; if (fields[k].tagName === 'INPUT') fields[k].value = ''; });
+      if (data) fillAll();
+      fields.type.value = '';
+      changed();
+    });
+    more.querySelector('button').addEventListener('click', function () { S.limit += 60; changed(false); });
+    if (!S.q && !activeFilters() && window.matchMedia('(hover: hover)').matches) input.focus();
   }
 
   function productView(gid, pid, printing) {
@@ -446,7 +572,7 @@
       var data = res[0], hist = res[1];
       var it = data.items.filter(function (x) { return String(x[0]) === String(pid); })[0];
       if (!it) return notFound();
-      var s = data.sets[it[2]], era = eraOf(s[1], s[3]);
+      var s = data.sets[it[2]], era = data.setEra[it[2]];
       var pr = it[6].filter(function (x) { return x[0] === printing; })[0] || it[6][0];
       var series = [];
       if (hist) {
