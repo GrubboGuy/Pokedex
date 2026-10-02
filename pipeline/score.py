@@ -351,6 +351,7 @@ def _public(row, score, label, reason, rank):
         out[k] = round(out[k], 2)
     for k in ("ch7", "ch30", "ch90"):
         out[k] = None if out[k] is None else round(out[k], 4)
+    out["activity"] = round(row["activity"], 2)
     out.update({"rank": rank, "score": score, "scoreLabel": label,
                 "confidence": _confidence(row), "reason": reason})
     return out

@@ -47,9 +47,13 @@ jobs:
       - name: Run the data job
         env:
           PPT_API_KEY: ${{ secrets.PPT_API_KEY }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           set -o pipefail
-          python -m pipeline.run --data-dir _data --cut "${{ inputs.cut || 'auto' }}" 2>&1 | tee _data/last-run.log
+          CUT="${{ inputs.cut || 'auto' }}"
+          # A push whose commit message contains [cut issue] rebuilds the current issue.
+          if [ "${{ github.event_name }}" = "push" ] && printf '%s' "$COMMIT_MESSAGE" | grep -q '\[cut issue\]'; then CUT=force; fi
+          python -m pipeline.run --data-dir _data --cut "$CUT" 2>&1 | tee _data/last-run.log
 
       - name: Save data
         if: always()

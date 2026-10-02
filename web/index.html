@@ -11,9 +11,8 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Pokédex">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Barlow:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/archivo.woff" as="font" type="font/woff" crossorigin>
+  <link rel="preload" href="fonts/archivo-italic.woff" as="font" type="font/woff" crossorigin>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,9 +21,6 @@
       <span class="lens" aria-hidden="true"></span>
       <span class="leds" aria-hidden="true"><i class="led led-r"></i><i class="led led-y"></i><i class="led led-g"></i></span>
       <a class="dex-name" href="#/">Pokédex</a>
-      <svg class="dex-notch" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
-        <polyline points="0,18 46,18 58,4 100,4" fill="none" stroke="#000" stroke-width="3" vector-effect="non-scaling-stroke"/>
-      </svg>
     </header>
 
     <main id="screen" class="screen" tabindex="-1">

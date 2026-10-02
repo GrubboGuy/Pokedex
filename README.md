@@ -4,10 +4,11 @@ A weekly magazine of Pokémon card market picks, built from real TCGplayer price
 
 ## How it works
 
-1. **Daily job** (`.github/workflows/issue.yml`, 21:30 UTC): copies the TCGplayer market price of every English Pokémon single and sealed product from [TCGCSV](https://tcgcsv.com/), and backfills up to 90 days of history from TCGCSV's daily archive.
+1. **Daily job** (`.github/workflows/issue.yml`, 21:30 UTC): copies the TCGplayer market price of every English Pokémon single and sealed product from [TCGCSV](https://tcgcsv.com/) and saves it as that day's snapshot. History builds up from these snapshots.
+   - TCGCSV withdrew its public price archive in September 2026, so history before 2026-09-16 was seeded once from [Rarebox](https://github.com/novaoc/rarebox-price-history) with `tools/seed_history.py` (singles only). There is no data for 2026-09-16 to 2026-09-30.
 2. **Weekly issue** (Thursday night's run, ready Friday morning US time): compares today's prices with 7, 30 and 90 days ago, runs the list rules in `pipeline/score.py`, and writes `issue-N.json`.
 3. **Graded prices** (optional): if the `PPT_API_KEY` repository secret is set, PSA 10 and PSA 9 prices for the issue's picks are looked up on PokemonPriceTracker's free tier, a few per run.
-4. **Site**: `web/` is a static app with no build step. The workflow copies it and the issue files to GitHub Pages.
+4. **Site**: `web/` is a static app with no build step and self-hosted fonts (Archivo, Newsreader, VT323, all under the SIL Open Font License). The workflow copies it and the issue files to GitHub Pages.
 
 Saved data (price snapshots, issues) lives on the `data` branch, rewritten as a single commit each run.
 
@@ -19,7 +20,7 @@ Saved data (price snapshots, issues) lives on the `data` branch, rewritten as a 
 
 ## Running a new issue by hand
 
-Actions → **Build issue and publish** → Run workflow → `cut: force`.
+Actions → **Build issue and publish** → Run workflow → `cut: force`. A push whose commit message contains `[cut issue]` does the same.
 
 ## Testing locally without network access
 
