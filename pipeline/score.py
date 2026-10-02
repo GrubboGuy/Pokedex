@@ -139,8 +139,8 @@ def compute_rows(catalog, snapshots, today):
                 continue  # no sales-based price, or nothing listed to buy
             key = price_key(item["id"], sub)
             p7 = snapshots[baseline].get(key)
-            if not p7:
-                continue
+            if not p7 and item["kind"] != "sealed":
+                continue  # sealed rows are kept without a trend for the listing-based sealed list
             p30 = _nearest(key, today, 30, 5, dates, snapshots)
             p90 = _nearest(key, today, 90, 10, dates, snapshots)
             series = [[d, snapshots[d][key]] for d in dates if snapshots[d].get(key)]
@@ -158,7 +158,7 @@ def compute_rows(catalog, snapshots, today):
                 "setAgeDays": _days(today, release) if release else None,
                 "price": market, "low": low,
                 "p7": p7, "p30": p30, "p90": p90,
-                "ch7": market / p7 - 1,
+                "ch7": market / p7 - 1 if p7 else None,
                 "ch30": market / p30 - 1 if p30 else None,
                 "ch90": market / p90 - 1 if p90 else None,
                 "median90": statistics.median(values),
@@ -351,18 +351,61 @@ def _public(row, score, label, reason, rank):
         out[k] = round(out[k], 2)
     for k in ("ch7", "ch30", "ch90"):
         out[k] = None if out[k] is None else round(out[k], 4)
+    out["gid"] = row["gid"]
     out["activity"] = round(row["activity"], 2)
     out.update({"rank": rank, "score": score, "scoreLabel": label,
                 "confidence": _confidence(row), "reason": reason})
     return out
 
 
+def _sealed_listings():
+    """Sealed list used until sealed products have a week of price history.
+
+    Ranks by how far the cheapest current listing sits under the market price.
+    """
+    core = ("booster box", "elite trainer box", "booster bundle", "collection", "tin", "build & battle")
+
+    def discount(r):
+        return 1 - r["low"] / r["price"]
+
+    def test(r):
+        name = (r["name"] or "").lower()
+        return (
+            r["kind"] == "sealed" and r["era"] in ("sv", "mega") and r["price"] >= 20
+            and (r["setAgeDays"] is None or r["setAgeDays"] >= 30)
+            and any(w in name for w in core) and 0.03 <= discount(r) <= 0.25
+        )
+
+    def score(r):
+        return _clamp_score(50 + 49 * math.tanh(6 * discount(r)))
+
+    def reason(r):
+        return (f"The cheapest sealed copy listed is {_money(r['low'])}, {discount(r) * 100:.0f}% under the "
+                f"{_money(r['price'])} market price. Sealed price history starts this week, so there is no trend yet.")
+
+    return test, discount, score, reason
+
+
+SEALED_FALLBACK = (
+    "modern-sealed", "Top modern sealed this week", "Modern sealed",
+    "Boxes, bundles and tins listed under their market price", "blue", "Deal", _sealed_listings(),
+    "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by how far "
+    "the cheapest listing sits under the market price (3% to 25%). Trend ranking starts once a week of sealed prices exists.",
+)
+
+
 def make_categories(rows, span=7):
     global SPAN
     SPAN = span
+    all_rows = rows
+    rows = [r for r in all_rows if r["ch7"] is not None]
     categories, counts, used = [], {}, set()
-    for list_id, title, short, blurb, color, label, (test, rank, score, reason), rule in LISTS:
+    for spec in LISTS:
+        list_id, title, short, blurb, color, label, (test, rank, score, reason), rule = spec
         eligible = sorted((r for r in rows if test(r)), key=rank, reverse=True)
+        if list_id == "modern-sealed" and len(eligible) < 3:
+            list_id, title, short, blurb, color, label, (test, rank, score, reason), rule = SEALED_FALLBACK
+            eligible = sorted((r for r in all_rows if test(r)), key=rank, reverse=True)
         counts[list_id] = len(eligible)
         picks, seen_products, per_set = [], set(), {}
         for r in eligible:

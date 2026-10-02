@@ -1,6 +1,6 @@
 /* Offline support: the app shell is cached, issue data is fetched fresh when online. */
-var SHELL = 'shell-v2';
-var FILES = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'fonts/archivo.woff', 'fonts/archivo-italic.woff', 'fonts/newsreader.woff', 'fonts/newsreader-italic.woff', 'fonts/vt323.woff'];
+var SHELL = 'shell-v3';
+var FILES = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'fonts/archivo.woff', 'fonts/newsreader.woff', 'fonts/newsreader-italic.woff'];
 
 self.addEventListener('install', function (event) {
   event.waitUntil(caches.open(SHELL).then(function (c) { return c.addAll(FILES); }).then(function () { return self.skipWaiting(); }));

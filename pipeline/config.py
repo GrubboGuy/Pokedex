@@ -62,6 +62,12 @@ SOURCES = [
         "note": "A public per-card copy of TCGCSV's daily archive, used once to seed history after TCGCSV withdrew that archive. Singles only. Where TCGplayer had no market price on a day, it holds the mid listing price.",
     },
     {
+        "id": "poketrace",
+        "name": "eBay sold prices and prices by condition, via PokeTrace",
+        "url": "https://poketrace.com/",
+        "note": "eBay sold averages for raw cards, and TCGplayer prices by condition, each with a sale count. Looked up for this issue's picks only. eBay sale counts are approximate.",
+    },
+    {
         "id": "ppt",
         "name": "eBay graded sales, via PokemonPriceTracker",
         "url": "https://www.pokemonpricetracker.com/",

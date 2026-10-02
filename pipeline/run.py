@@ -5,10 +5,11 @@
 
 import argparse
 import datetime as dt
+import json
 import os
 import sys
 
-from . import config, graded, score, tcgcsv
+from . import config, graded, poketrace, score, site, tcgcsv
 from .store import Store
 
 
@@ -67,6 +68,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", default="_data")
     parser.add_argument("--cut", default="auto", choices=["auto", "force", "never"])
+    parser.add_argument("--site-dir", default=None, help="where to write search.json and sets/ for the website")
     args = parser.parse_args(argv)
 
     store = Store(args.data_dir)
@@ -82,10 +84,12 @@ def main(argv=None):
     print(f"History: {len(dates)} snapshots from {dates[0]} to {dates[-1]}")
     index = store.issue_index()
 
+    snapshots = {d: store.load_snapshot(d) for d in dates if d <= today}
+    rows, span = score.compute_rows(catalog, snapshots, today)
+    trended = sum(1 for r in rows if r["ch7"] is not None)
+    print(f"Scored {trended} product printings with a price today and {span} days ago")
+
     if should_cut(index, today, args.cut):
-        snapshots = {d: store.load_snapshot(d) for d in dates if d <= today}
-        rows, span = score.compute_rows(catalog, snapshots, today)
-        print(f"Scored {len(rows)} product printings with a price today and {span} days ago")
         categories, counts = score.make_categories(rows, span or 7)
         print("Eligible per list: " + ", ".join(f"{k}={v}" for k, v in counts.items()))
         if not categories:
@@ -104,7 +108,7 @@ def main(argv=None):
             "sources": config.SOURCES,
             "stats": {
                 "productsScanned": len(catalog["items"]),
-                "printingsScored": len(rows),
+                "printingsScored": trended,
                 "snapshots": len(snapshots),
                 "historyFrom": dates[0],
                 "eligible": counts,
@@ -122,7 +126,16 @@ def main(argv=None):
     store.save_graded_cache(cache)
     print(f"Graded lookups this run: {made}")
 
+    _made, sample = poketrace.top_up(issue, today)
+    if sample:
+        store_sample = os.path.join(args.data_dir, "poketrace-sample.json")
+        with open(store_sample, "w", encoding="utf-8") as fh:
+            json.dump(sample, fh, indent=1)
+
     store.save_issue(issue)
+    if args.site_dir:
+        n_items, n_sets = site.export(args.site_dir, catalog, snapshots, today, rows)
+        print(f"Site data: {n_items} products in the search index, {n_sets} set history files")
     store.prune_history(today)
     return 0
 
