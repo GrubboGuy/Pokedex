@@ -33,11 +33,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install archive tools
-        run: |
-          which 7z || (sudo apt-get update -y && sudo apt-get install -y p7zip-full) || true
-          pip install --quiet py7zr || true
-
       - name: Restore saved data
         run: |
           mkdir -p _data

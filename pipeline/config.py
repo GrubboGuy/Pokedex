@@ -56,6 +56,12 @@ SOURCES = [
         "note": "Daily copy of TCGplayer's own price data. Market price is TCGplayer's figure based on recent sales; low is the lowest current listing.",
     },
     {
+        "id": "rarebox",
+        "name": "Price history before Sept 16, 2026, via Rarebox",
+        "url": "https://github.com/novaoc/rarebox-price-history",
+        "note": "A public per-card copy of TCGCSV's daily archive, used once to seed history after TCGCSV withdrew that archive. Singles only. Where TCGplayer had no market price on a day, it holds the mid listing price.",
+    },
+    {
         "id": "ppt",
         "name": "eBay graded sales, via PokemonPriceTracker",
         "url": "https://www.pokemonpricetracker.com/",

@@ -75,7 +75,8 @@ def main(argv=None):
 
     catalog = refresh_catalog(store, today)
     store.save_snapshot(today, score.snapshot_from_catalog(catalog))
-    backfill(store, today)
+    if os.environ.get("TCGCSV_ARCHIVE") == "1":
+        backfill(store, today)  # TCGCSV withdrew its archive in Sept 2026; off unless it returns
 
     dates = store.snapshot_dates()
     print(f"History: {len(dates)} snapshots from {dates[0]} to {dates[-1]}")
@@ -83,9 +84,9 @@ def main(argv=None):
 
     if should_cut(index, today, args.cut):
         snapshots = {d: store.load_snapshot(d) for d in dates if d <= today}
-        rows = score.compute_rows(catalog, snapshots, today)
-        print(f"Scored {len(rows)} product printings with a price today and a week ago")
-        categories, counts = score.make_categories(rows)
+        rows, span = score.compute_rows(catalog, snapshots, today)
+        print(f"Scored {len(rows)} product printings with a price today and {span} days ago")
+        categories, counts = score.make_categories(rows, span or 7)
         print("Eligible per list: " + ", ".join(f"{k}={v}" for k, v in counts.items()))
         if not categories:
             print("No list had enough picks (history too thin?). Not cutting an issue.")
@@ -99,6 +100,7 @@ def main(argv=None):
             "title": config.TITLE,
             "tagline": config.TAGLINE,
             "generatedAt": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+            "shortSpanDays": span,
             "sources": config.SOURCES,
             "stats": {
                 "productsScanned": len(catalog["items"]),

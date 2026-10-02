@@ -29,6 +29,7 @@
     var p = iso.split('-');
     return MONTHS[+p[1] - 1] + ' ' + (+p[2]) + (withYear === false ? '' : ', ' + p[0]);
   }
+  function span(issue) { return issue.shortSpanDays || 7; }
   function pad(n, len) { n = String(n); while (n.length < len) n = '0' + n; return n; }
   function bigImage(url) { return url ? url.replace('_200w.', '_in_1000x1000.') : ''; }
   var PLACEHOLDER = 'data:image/svg+xml,' + encodeURIComponent(
@@ -99,7 +100,7 @@
     var lines = issue.categories.filter(function (c) { return c !== coverCat; }).slice(0, 3).map(function (c) {
       var p = c.picks[0];
       return '<a class="cover-line" href="' + b + '/list/' + c.id + '"><span class="cl-kicker">' + esc(c.short || c.title) + '</span>' +
-        '<span class="cl-name">' + esc(p.name) + '</span><span class="cl-move">' + arrow(p.ch7) + pct(p.ch7) + ' in 7 days</span></a>';
+        '<span class="cl-name">' + esc(p.name) + '</span><span class="cl-move">' + arrow(p.ch7) + pct(p.ch7) + ' in ' + span(issue) + ' days</span></a>';
     }).join('');
 
     var tiles = issue.categories.map(function (c) {
@@ -117,7 +118,7 @@
       '<p class="tagline">' + esc(issue.tagline) + '</p>' +
       '<div class="cover-body"><div class="cover-lines">' +
         '<a class="cover-line" href="' + b + '/card/' + coverCat.id + '/' + coverPick.rank + '"><span class="cl-kicker">Cover card</span>' +
-        '<span class="cl-name">' + esc(coverPick.name) + '</span><span class="cl-move">' + arrow(coverPick.ch7) + pct(coverPick.ch7) + ' in 7 days, now ' + money(coverPick.price) + '</span></a>' +
+        '<span class="cl-name">' + esc(coverPick.name) + '</span><span class="cl-move">' + arrow(coverPick.ch7) + pct(coverPick.ch7) + ' in ' + span(issue) + ' days, now ' + money(coverPick.price) + '</span></a>' +
         lines + '</div>' +
         '<a class="cover-art" href="' + b + '/card/' + coverCat.id + '/' + coverPick.rank + '" aria-label="Open ' + esc(coverPick.name) + '">' +
         img(coverPick, 'card-img', true) + burst(coverPick) + '</a></div>' +
@@ -129,7 +130,7 @@
       '<div class="lcd"><div class="lcd-big">SCAN COMPLETE</div>' +
         Number(s.productsScanned).toLocaleString('en-US') + ' products checked<br>' +
         Number(s.printingsScored).toLocaleString('en-US') + ' printings scored<br>' +
-        s.snapshots + ' days of prices since ' + niceDate(s.historyFrom) + '</div>' +
+        s.snapshots + ' price snapshots since ' + niceDate(s.historyFrom, false) + '</div>' +
       '<p class="fine">Prices are TCGplayer market prices via TCGCSV. This is market information, not financial advice, and past moves do not predict future prices. ' +
         '<a href="#/how">How the picks are made</a>. Not affiliated with or endorsed by Nintendo, The Pokémon Company, TCGplayer or eBay.</p>';
   }
@@ -148,7 +149,7 @@
       '<h1>' + esc(listTitle(cat)) + '</h1><p>' + esc(cat.blurb) + '</p></header>' +
       '<div class="rule-box"><b>How this list is picked</b><br>' + esc(cat.rule) + ' ' + cat.eligible + ' passed this week; these are the top ' + cat.picks.length + '.</div>' +
       '<div class="picks">' + picks + '</div>' +
-      '<p class="fine">Change shown is the 7-day move in TCGplayer market price, as of ' + niceDate(issue.date) + '.</p>';
+      '<p class="fine">Change shown is the ' + span(issue) + '-day move in TCGplayer market price, as of ' + niceDate(issue.date) + '.</p>';
   }
 
   function chart(series) {
@@ -221,7 +222,7 @@
     var rows = p.series.slice().reverse().map(function (s) { return '<tr><td>' + niceDate(s[0]) + '</td><td>' + money(s[1]) + '</td></tr>'; }).join('');
     var ebay = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent([p.name, p.number ? p.number.split('/')[0] : '', p.setAbbr || ''].join(' ').trim()) + '&LH_Sold=1&LH_Complete=1';
     var prev = cat.picks[p.rank - 2], next = cat.picks[p.rank];
-    var confText = { High: 'a full price history and listings that match the market price', Medium: 'a partial history or listings a little off the market price', Low: 'a thin history or listings far from the market price' }[p.confidence];
+    var confText = { High: 'a price that moves often, a full history and listings that match the market price', Medium: 'a partial history or listings a little off the market price', Low: 'a thin history or listings far from the market price' }[p.confidence];
 
     return '<div class="lcd entry-lcd"><div class="row"><span>No. ' + pad(entryNo, 3) + '</span><span>PICK ' + p.rank + ' OF ' + cat.picks.length + '</span></div>' +
       '<div>' + esc((cat.short || cat.title).toUpperCase()) + '</div>' +
@@ -230,7 +231,7 @@
       '<div class="entry-price"><div class="label">TCGplayer market price</div><div class="big">' + money(p.price) + '</div>' +
       '<div class="low">Lowest listing ' + money(p.low) + '</div>' +
       '<div class="burst-row">' + burst(p) + '<span class="chip ' + p.confidence.toLowerCase() + '">' + esc(p.confidence) + ' confidence</span></div></div></div>' +
-      '<div class="stats"><div><small>7 days</small>' + move(p.ch7) + '</div><div><small>30 days</small>' + move(p.ch30) + '</div><div><small>90 days</small>' + move(p.ch90) + '</div></div>' +
+      '<div class="stats"><div><small>' + span(issue) + ' days</small>' + move(p.ch7) + '</div><div><small>30 days</small>' + move(p.ch30) + '</div><div><small>90 days</small>' + move(p.ch90) + '</div></div>' +
       graded +
       '<div class="why"><h2>Why it made the issue</h2><p>' + esc(p.reason) + '</p></div>' +
       '<div class="chart-wrap"><h2>Market price, last ' + p.series.length + ' readings</h2>' + chart(p.series) +
@@ -258,18 +259,20 @@
     var sources = issue.sources.map(function (s) { return '<li><a href="' + esc(s.url) + '" rel="noopener">' + esc(s.name) + '</a>. ' + esc(s.note) + '</li>'; }).join('');
     return '<h1 class="section-head">How it works</h1><div class="page">' +
       '<p>Every day a job copies the TCGplayer market price of every English Pokémon single and sealed product, about ' + Number(issue.stats.productsScanned).toLocaleString('en-US') +
-      ' products. Once a week it compares today with 7, 30 and 90 days ago and runs the rules below. Nothing is hand-picked.</p>' +
+      ' products. Once a week it compares today with a week, 30 days and 90 days ago and runs the rules below. Nothing is hand-picked.</p>' +
+      (span(issue) !== 7 ? '<p>This issue measures its short-term move over ' + span(issue) + ' days instead of 7, because the free price archive has a gap in late September 2026. From the next issue on it is a true 7-day move.</p>' : '') +
       '<h2>Where the numbers come from</h2><ul>' + sources + '</ul>' +
       '<h2>The rules for each list</h2><ul>' + rules + '</ul>' +
       '<h2>Checks on every pick</h2><ul>' +
       '<li>It must have a sales-based market price today and a week ago, and at least one copy listed for sale now.</li>' +
-      '<li>For rising picks, the lowest current listing must be within 30% of the market price, so the move is backed by what sellers are asking.</li>' +
+      '<li>It must actually trade. The free feed has no sales counts, so the job checks how often the market price changed across the readings on file. A price that never moves usually means no sales, and those cards are left out.</li>' +
+      '<li>For rising picks, the lowest current listing must sit between 30% under and 25% over the market price, so the move is backed by what sellers are asking and you can buy near the quoted price.</li>' +
       '<li>A weekly move above 300% is treated as a data error and dropped.</li>' +
-      '<li>At most three picks per set in a list, and presale products are left out.</li></ul>' +
-      '<h2>Scores and confidence</h2><p>The Heat score (1 to 99) blends the 7-day and 30-day moves. Deal scores measure the discount to the 90-day median, and Steady scores measure how tight the price band is. Confidence is High when there is a full price history and listings match the market price, and Low when either is thin.</p>' +
+      '<li>At most three picks per set in a list, no card appears in two lists, and presale products are left out.</li></ul>' +
+      '<h2>Scores and confidence</h2><p>The Heat score (1 to 99) blends the short-term and 30-day moves. Deal scores measure the discount to the 90-day median, and Steady scores measure how tight the price band is. Confidence is High when the card trades often, has a full price history and its listings match the market price, and Low when either the history or the listings are thin.</p>' +
       '<h2>What this free version cannot see</h2><ul>' +
       '<li>How many copies sold. TCGplayer\'s market price is built from sales, but the free feed has no sales counts, so a thinly traded card can move on a few sales.</li>' +
-      '<li>Prices by condition. The free feed has one market price per printing.</li>' +
+      '<li>Prices by condition. The free feed has one market price per printing, and the lowest listing can be a played or damaged copy. This matters most for vintage cards.</li>' +
       '<li>Graded prices for the whole catalog. PSA prices are looked up only for the cards in the issue.</li>' +
       '<li>Reddit and X chatter. Not connected yet.</li></ul>' +
       '<h2>The fine print</h2><p>This is market information, not financial advice. A price that rose last week can fall next week. Not affiliated with or endorsed by Nintendo, The Pokémon Company, TCGplayer or eBay. Card images are shown only to identify the cards being priced.</p></div>';
