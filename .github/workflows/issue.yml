@@ -10,9 +10,9 @@ on:
   workflow_dispatch:
     inputs:
       cut:
-        description: "Picks: auto (refresh if prices are newer), force (re-pick now), never"
+        description: "Picks: auto (refresh if prices are newer), force (re-pick now), new (start the next numbered issue), never"
         type: choice
-        options: [auto, force, never]
+        options: [auto, force, new, never]
         default: auto
   push:
     branches: [main]
@@ -62,6 +62,8 @@ jobs:
           if [ "${{ github.event_name }}" = "push" ]; then
             CUT=never
             if printf '%s' "$COMMIT_MESSAGE" | grep -q '\[cut issue\]'; then CUT=force; fi
+            # [new issue] starts the next numbered issue, if prices are newer than the last one.
+            if printf '%s' "$COMMIT_MESSAGE" | grep -q '\[new issue\]'; then CUT=new; fi
           fi
           mkdir -p _site/data
           python -m pipeline.run --data-dir _data --site-dir _site/data --cut "$CUT" 2>&1 | tee _data/last-run.log

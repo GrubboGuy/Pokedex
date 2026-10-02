@@ -1,6 +1,6 @@
 """Daily job: refresh prices, backfill history, and cut the weekly issue.
 
-    python -m pipeline.run --data-dir _data [--cut auto|force|never]
+    python -m pipeline.run --data-dir _data [--cut auto|force|new|never]
 """
 
 import argparse
@@ -65,6 +65,13 @@ def plan_cut(index, edition, today, mode):
     today_d = dt.date.fromisoformat(today)
     days = (today_d - dt.date.fromisoformat(index[0]["date"])).days
     new_number = (today_d.weekday() == 3 and days >= 3) or days >= 8
+    if mode == "new":
+        # Start the next numbered issue now, but only on prices newer than the last one was cut on.
+        if days <= 0:
+            print(f"Prices have not changed since issue {index[0]['number']} was cut ({index[0]['date']}); "
+                  f"a new issue now would be a copy, so none was started.")
+            return False, False
+        return True, True
     if mode == "force":
         return True, new_number
     stale = edition is None or edition["date"] < today
@@ -78,7 +85,7 @@ def _keys(issue):
 def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", default="_data")
-    parser.add_argument("--cut", default="auto", choices=["auto", "force", "never"])
+    parser.add_argument("--cut", default="auto", choices=["auto", "force", "new", "never"])
     parser.add_argument("--site-dir", default=None, help="where to write search.json and sets/ for the website")
     args = parser.parse_args(argv)
 
