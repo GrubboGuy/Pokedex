@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pokédex</title>
+  <meta name="description" content="A weekly magazine of Pokémon card market picks, built from TCGplayer price data.">
+  <meta name="theme-color" content="#D61F2C">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pokédex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=Barlow:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="dex">
+    <header class="dex-top" aria-label="Pokédex">
+      <span class="lens" aria-hidden="true"></span>
+      <span class="leds" aria-hidden="true"><i class="led led-r"></i><i class="led led-y"></i><i class="led led-g"></i></span>
+      <a class="dex-name" href="#/">Pokédex</a>
+      <svg class="dex-notch" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true">
+        <polyline points="0,18 46,18 58,4 100,4" fill="none" stroke="#000" stroke-width="3" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </header>
+
+    <main id="screen" class="screen" tabindex="-1">
+      <p class="loading">Loading this week's issue.</p>
+    </main>
+
+    <nav class="dex-pad" aria-label="Sections">
+      <span class="dpad" aria-hidden="true"></span>
+      <a href="#/" data-nav="cover">Cover</a>
+      <a href="#/issues" data-nav="issues">Back issues</a>
+      <a href="#/how" data-nav="how">How it works</a>
+    </nav>
+  </div>
+  <script src="app.js" defer></script>
+</body>
+</html>

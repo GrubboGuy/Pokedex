@@ -1,0 +1,90 @@
+name: Build issue and publish
+
+on:
+  schedule:
+    - cron: "30 21 * * *" # daily, after TCGCSV's refresh at about 20:00 UTC
+  workflow_dispatch:
+    inputs:
+      cut:
+        description: "Issue: auto (weekly), force (new issue now), never"
+        type: choice
+        options: [auto, force, never]
+        default: auto
+  push:
+    branches: [main]
+    paths: ["web/**", "pipeline/**", ".github/workflows/**"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: issue
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install archive tools
+        run: |
+          which 7z || (sudo apt-get update -y && sudo apt-get install -y p7zip-full) || true
+          pip install --quiet py7zr || true
+
+      - name: Restore saved data
+        run: |
+          mkdir -p _data
+          if git ls-remote --exit-code --heads origin data >/dev/null 2>&1; then
+            git clone --quiet --depth 1 --branch data "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" _data_clone
+            rm -rf _data_clone/.git
+            cp -a _data_clone/. _data/
+            rm -rf _data_clone
+          fi
+          ls _data || true
+
+      - name: Run the data job
+        env:
+          PPT_API_KEY: ${{ secrets.PPT_API_KEY }}
+        run: |
+          set -o pipefail
+          python -m pipeline.run --data-dir _data --cut "${{ inputs.cut || 'auto' }}" 2>&1 | tee _data/last-run.log
+
+      - name: Save data
+        if: always()
+        run: |
+          echo "run ${{ github.run_id }} on ${{ github.sha }} finished $(date -u +%FT%TZ), job status: ${{ job.status }}" >> _data/last-run.log
+          cd _data
+          git init --quiet -b data
+          git config user.name "issue-bot"
+          git config user.email "issue-bot@users.noreply.github.com"
+          git add -A
+          git commit --quiet -m "Data as of $(date -u +%F)"
+          git push --quiet --force "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" data
+          rm -rf .git
+
+      - name: Assemble the site
+        run: |
+          mkdir -p _site/data
+          cp -a web/. _site/
+          cp _data/issues/*.json _site/data/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,129 @@
+"""Daily job: refresh prices, backfill history, and cut the weekly issue.
+
+    python -m pipeline.run --data-dir _data [--cut auto|force|never]
+"""
+
+import argparse
+import datetime as dt
+import os
+import sys
+
+from . import config, graded, score, tcgcsv
+from .store import Store
+
+
+def refresh_catalog(store, today):
+    cached = store.load_catalog(today)
+    if cached:
+        print(f"Using cached catalog for {today} ({len(cached['items'])} products)")
+        return cached
+    groups = tcgcsv.groups()
+    print(f"Fetching {len(groups)} Pokemon sets from TCGCSV")
+    catalog = score.build_catalog(today, groups, tcgcsv.products, tcgcsv.prices)
+    if len(catalog["items"]) < int(os.environ.get("MIN_PRODUCTS", "1000")):
+        raise SystemExit(f"Only {len(catalog['items'])} products came back; refusing to continue")
+    store.save_catalog(catalog)
+    return catalog
+
+
+def backfill(store, today):
+    """Download archive days we want but do not have yet."""
+    today_d = dt.date.fromisoformat(today)
+    have = [dt.date.fromisoformat(d) for d in store.snapshot_dates()]
+    downloads = 0
+    for offset in config.HISTORY_OFFSETS:
+        target = today_d - dt.timedelta(days=offset)
+        tolerance = 0 if offset <= 7 else (1 if offset <= 14 else 3)
+        if any(abs((d - target).days) <= tolerance for d in have):
+            continue
+        if downloads >= config.MAX_ARCHIVE_DOWNLOADS_PER_RUN:
+            break
+        for candidate in (target, target - dt.timedelta(days=1)):
+            snap = tcgcsv.archive_prices(candidate.isoformat())
+            downloads += 1
+            if snap and len(snap) > 1000:
+                store.save_snapshot(candidate.isoformat(), snap)
+                have.append(candidate)
+                print(f"  backfilled {candidate} ({len(snap)} prices)")
+                break
+            print(f"  no archive for {candidate}")
+    return downloads
+
+
+def should_cut(index, today, mode):
+    if mode == "force":
+        return True
+    if mode == "never":
+        return False
+    if not index:
+        return True
+    latest = dt.date.fromisoformat(index[0]["date"])
+    today_d = dt.date.fromisoformat(today)
+    # New issue on the Thursday-night run (ready Friday morning US time), or if a week was missed.
+    return (today_d.weekday() == 3 and (today_d - latest).days >= 3) or (today_d - latest).days >= 8
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data-dir", default="_data")
+    parser.add_argument("--cut", default="auto", choices=["auto", "force", "never"])
+    args = parser.parse_args(argv)
+
+    store = Store(args.data_dir)
+    today = tcgcsv.last_updated()
+    print(f"TCGCSV data date: {today}")
+
+    catalog = refresh_catalog(store, today)
+    store.save_snapshot(today, score.snapshot_from_catalog(catalog))
+    backfill(store, today)
+
+    dates = store.snapshot_dates()
+    print(f"History: {len(dates)} snapshots from {dates[0]} to {dates[-1]}")
+    index = store.issue_index()
+
+    if should_cut(index, today, args.cut):
+        snapshots = {d: store.load_snapshot(d) for d in dates if d <= today}
+        rows = score.compute_rows(catalog, snapshots, today)
+        print(f"Scored {len(rows)} product printings with a price today and a week ago")
+        categories, counts = score.make_categories(rows)
+        print("Eligible per list: " + ", ".join(f"{k}={v}" for k, v in counts.items()))
+        if not categories:
+            print("No list had enough picks (history too thin?). Not cutting an issue.")
+            store.prune_history(today)
+            return 0 if index else 2
+        same_day = index and index[0]["date"] == today
+        number = index[0]["number"] if same_day else (index[0]["number"] + 1 if index else 1)
+        issue = {
+            "number": number,
+            "date": today,
+            "title": config.TITLE,
+            "tagline": config.TAGLINE,
+            "generatedAt": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+            "sources": config.SOURCES,
+            "stats": {
+                "productsScanned": len(catalog["items"]),
+                "printingsScored": len(rows),
+                "snapshots": len(snapshots),
+                "historyFrom": dates[0],
+                "eligible": counts,
+            },
+            "categories": categories,
+        }
+        issue["cover"] = score.choose_cover(categories)
+        print(f"Cut issue {number}: " + ", ".join(f"{c['id']}={len(c['picks'])}" for c in categories))
+    else:
+        issue = store.load_issue(index[0]["number"])
+        print(f"No new issue today; latest is issue {issue['number']} ({issue['date']})")
+
+    cache = store.graded_cache()
+    made = graded.top_up(issue, cache, today)
+    store.save_graded_cache(cache)
+    print(f"Graded lookups this run: {made}")
+
+    store.save_issue(issue)
+    store.prune_history(today)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
