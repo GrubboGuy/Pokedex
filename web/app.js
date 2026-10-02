@@ -9,8 +9,19 @@
   var indexPromise = null, searchPromise = null, setCache = {};
   var lastQuery = '';
   var swipe = { prev: null, next: null };
+  var slideFrom = null;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var TIERS = { UNOPENED: 'Sealed', NEAR_MINT: 'Near Mint', LIGHTLY_PLAYED: 'Lightly Played', MODERATELY_PLAYED: 'Moderately Played', HEAVILY_PLAYED: 'Heavily Played', DAMAGED: 'Damaged' };
+  // Color families: each list has one, and each era maps onto the family of its era list.
+  var TONE = { 'hot-vintage': 'vintage', 'hot-middle': 'mid', 'hot-sm-swsh': 'sunsword', 'hot-modern': 'modern', 'modern-sealed': 'sealed', 'hidden-gems': 'gems', 'on-sale': 'sale', 'holding': 'steady' };
+  var ERAS = {
+    wotc: ['Wizards era', 'vintage'], ex: ['EX era', 'vintage'],
+    dp: ['Diamond & Pearl era', 'mid'], bwxy: ['BW and XY era', 'mid'],
+    sm: ['Sun & Moon era', 'sunsword'], swsh: ['Sword & Shield era', 'sunsword'],
+    sv: ['Scarlet & Violet era', 'modern'], mega: ['Mega Evolution era', 'modern']
+  };
+  var ERA_STARTS = [['wotc', '1999-01-01'], ['ex', '2003-07-01'], ['dp', '2007-05-01'], ['bwxy', '2011-04-01'], ['sm', '2017-02-01'], ['swsh', '2020-02-01'], ['sv', '2023-03-01'], ['mega', '2025-09-01']];
 
   // ---------- helpers ----------
   function esc(s) {
@@ -48,6 +59,14 @@
   // "Terapagos ex - 173/142" -> "Terapagos ex" for headlines; the number is shown beside the set.
   function shortName(name) { return String(name || '').replace(/\s+-\s+[A-Za-z0-9]+\/[A-Za-z0-9]+$/, ''); }
   function tierName(t) { return TIERS[t] || String(t).replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, function (c) { return c.toUpperCase(); }); }
+  function tone(cat) { return 't-' + (TONE[cat.id] || 'steady'); }
+  function eraChip(era) { var e = ERAS[era]; return e ? '<span class="era t-' + e[1] + '">' + e[0] + '</span>' : ''; }
+  function eraTone(era) { return ERAS[era] ? 't-' + ERAS[era][1] : ''; }
+  function eraFromDate(d) {
+    var era = null;
+    if (d) ERA_STARTS.forEach(function (s) { if (d >= s[1]) era = s[0]; });
+    return era;
+  }
 
   var PLACEHOLDER = 'data:image/svg+xml,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 350"><rect width="250" height="350" rx="12" fill="#F5F6F8"/>' +
@@ -127,13 +146,13 @@
   // ---------- chrome ----------
   function renderTabs(ctx, activeId) {
     var b = base(ctx);
-    var tabs = [['', 'Front page']].concat(ctx.issue.categories.map(function (c) { return [c.id, c.short || c.title]; }));
+    var tabs = [['', 'Front page', 'front']].concat(ctx.issue.categories.map(function (c) { return [c.id, c.short || c.title, TONE[c.id] || 'steady']; }));
     tabsEl.innerHTML = tabs.map(function (t) {
-      return '<a href="' + b + (t[0] ? '/list/' + t[0] : '/') + '"' + (t[0] === activeId ? ' aria-current="true"' : '') + '>' + esc(t[1]) + '</a>';
+      return '<a class="t-' + t[2] + '" href="' + b + (t[0] ? '/list/' + t[0] : '/') + '"' + (t[0] === activeId ? ' aria-current="true"' : '') + '><i class="dot"></i>' + esc(t[1]) + '</a>';
     }).join('');
     tabsEl.hidden = false;
     var on = tabsEl.querySelector('[aria-current]');
-    if (on) tabsEl.scrollLeft = Math.max(0, on.offsetLeft - (tabsEl.clientWidth - on.offsetWidth) / 2);
+    if (on) tabsEl.scrollTo({ left: Math.max(0, on.offsetLeft - (tabsEl.clientWidth - on.offsetWidth) / 2), behavior: reduceMotion ? 'auto' : 'smooth' });
   }
   function sectionPager(ctx, activeId) {
     var b = base(ctx), cats = ctx.issue.categories;
@@ -164,24 +183,25 @@
 
     var sections = issue.categories.map(function (c) {
       var p = c.picks[0];
-      return '<li class="tone-' + c.color + '"><a href="' + b + '/list/' + c.id + '">' +
-        '<span><h3><i class="dot"></i>' + esc(listTitle(c)) + '</h3><p class="blurb">' + esc(c.blurb) + '</p>' +
+      var art = c.picks.slice(0, 3).map(function (x) { return img(x, 'thumb'); }).join('');
+      return '<li class="' + tone(c) + '"><a href="' + b + '/list/' + c.id + '">' +
+        '<span><h3>' + esc(listTitle(c)) + '</h3><p class="blurb">' + esc(c.blurb) + '</p>' +
         '<p class="lead-line"><b>' + esc(shortName(p.name)) + '</b><span class="price">' + money(p.price) + '</span>' + headlineMove(p) + '</p></span>' +
-        img(p, 'thumb') + '</a></li>';
+        '<span class="sec-art">' + art + '</span></a></li>';
     }).join('');
 
     var s = issue.stats;
     return '<header class="front-head"><div class="dateline eyebrow"><span>Issue ' + pad(issue.number, 2) + '</span><span>Week of ' + niceDate(issue.date) + '</span></div>' +
       '<h1>This week&#39;s picks</h1>' +
       '<p class="deck">' + total + ' cards and sealed products worth a look, chosen by rule from ' + Number(s.productsScanned).toLocaleString('en-US') + ' tracked products.</p></header>' +
-      '<a class="hero tone-' + coverCat.color + '" href="' + coverHref + '">' + img(coverPick, 'card-img', true) +
+      '<a class="hero ' + tone(coverCat) + '" href="' + coverHref + '">' + img(coverPick, 'card-img', true) +
         '<span><span class="eyebrow"><i class="dot"></i>Top pick, ' + esc(coverCat.short || coverCat.title) + '</span>' +
         '<h2>' + esc(shortName(coverPick.name)) + '</h2><p class="where">' + esc(where(coverPick)) + '</p>' +
-        '<span class="figures"><span class="price">' + money(coverPick.price) + '</span>' + headlineMove(coverPick) + '</span>' + score(coverPick) + '</span></a>' +
-      '<p class="hero-why deck">' + esc(coverPick.reason) + '</p>' +
-      '<section class="block"><h2>Sections <span>' + issue.categories.length + ' lists</span></h2></section>' +
+        '<span class="figures"><span class="price">' + money(coverPick.price) + '</span>' + headlineMove(coverPick) + '</span>' + score(coverPick) + '</span>' +
+        '<span class="hero-why deck">' + esc(coverPick.reason) + '</span></a>' +
+      '<h2 class="strip">Sections <span>' + issue.categories.length + ' lists, ' + total + ' picks</span></h2>' +
       '<ol class="sections">' + sections + '</ol>' +
-      '<div class="stats"><div><b>' + Number(s.productsScanned).toLocaleString('en-US') + '</b><span>products checked</span></div>' +
+      '<div class="block dark stats"><div><b>' + Number(s.productsScanned).toLocaleString('en-US') + '</b><span>products checked</span></div>' +
         '<div><b>' + s.snapshots + '</b><span>days of prices since ' + niceDate(s.historyFrom, false) + '</span></div>' +
         '<div><b>' + days + ' days</b><span>short-term move in this issue</span></div></div>' +
       '<p class="note fine">Prices are TCGplayer market prices via TCGCSV, pulled ' + niceDate(issue.date) + '. Market information, not financial advice; past moves do not predict future prices. ' +
@@ -199,19 +219,21 @@
       return '<a class="pick" href="' + b + '/card/' + cat.id + '/' + p.rank + '">' +
         '<div class="pick-art"><span class="rank">' + p.rank + '</span>' + img(p) + '</div>' +
         '<div class="pick-info"><h3>' + esc(shortName(p.name)) + '</h3><p class="where">' + esc(where(p)) + '</p>' +
+        (p.era ? '<div class="tags">' + eraChip(p.era) + '</div>' : '') +
         '<div class="figures"><span class="price">' + money(p.price) + '</span>' + headlineMove(p) + '</div>' + score(p) + '</div></a>';
     }).join('');
     var trendNote = lead.ch7 != null ? 'Change shown is the ' + days + '-day move in TCGplayer market price, as of ' + niceDate(issue.date) + '.'
       : 'Prices are TCGplayer market prices and lowest listings as of ' + niceDate(issue.date) + '.';
-    return '<div class="tone-' + cat.color + '"><header class="sec-head"><span class="eyebrow"><i class="dot"></i>Section ' + (idx + 1) + ' of ' + issue.categories.length + '</span>' +
+    return '<div class="' + tone(cat) + '"><header class="sec-head band"><span class="eyebrow"><i class="dot"></i>Section ' + (idx + 1) + ' of ' + issue.categories.length + '</span>' +
       '<h1>' + esc(listTitle(cat)) + '</h1><p class="deck">' + esc(cat.blurb) + '</p></header>' +
       '<a class="lead" href="' + b + '/card/' + cat.id + '/' + lead.rank + '">' +
         '<div class="lead-art"><span class="rank">1</span>' + img(lead, 'card-img', true) + '</div>' +
         '<div><h2>' + esc(shortName(lead.name)) + '</h2><p class="where">' + esc(where(lead)) + '</p>' +
-        '<div class="figures"><span class="price">' + money(lead.price) + '</span>' + headlineMove(lead) + '</div>' + score(lead) + '</div></a>' +
-      '<p class="lead-why deck">' + esc(lead.reason) + '</p>' +
+        (lead.era ? '<div class="tags">' + eraChip(lead.era) + '</div>' : '') +
+        '<div class="figures"><span class="price">' + money(lead.price) + '</span>' + headlineMove(lead) + '</div>' + score(lead) + '</div>' +
+        '<p class="lead-why deck">' + esc(lead.reason) + '</p></a>' +
       '<div class="picks">' + rest + '</div>' +
-      '<div class="aside"><b>How this list is picked</b><p>' + esc(cat.rule) + ' ' + cat.eligible + ' passed this week; these are the top ' + cat.picks.length + '.</p></div>' +
+      '<div class="block tint aside"><b>How this list is picked</b><p>' + esc(cat.rule) + ' ' + cat.eligible + ' passed this week; these are the top ' + cat.picks.length + '.</p></div>' +
       '<p class="note fine">' + trendNote + '</p>' + sectionPager(ctx, cat.id) + '</div>';
   }
 
@@ -234,9 +256,9 @@
     var last = series[series.length - 1];
     return '<div class="chart" data-series="' + esc(JSON.stringify(series)) + '">' +
       '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Price from ' + niceDate(series[0][0]) + ' to ' + niceDate(last[0]) + '">' + grid +
-      '<polygon points="' + L + ',' + (H - B) + ' ' + pts.join(' ') + ' ' + X(last[0]).toFixed(1) + ',' + (H - B) + '" fill="#1F3FBF" opacity=".07"/>' +
-      '<polyline points="' + pts.join(' ') + '" fill="none" stroke="#1F3FBF" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
-      '<circle cx="' + X(last[0]).toFixed(1) + '" cy="' + Y(last[1]).toFixed(1) + '" r="4" fill="#1F3FBF" stroke="#fff" stroke-width="2"/>' +
+      '<polygon points="' + L + ',' + (H - B) + ' ' + pts.join(' ') + ' ' + X(last[0]).toFixed(1) + ',' + (H - B) + '" fill="currentColor" opacity=".09"/>' +
+      '<polyline points="' + pts.join(' ') + '" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>' +
+      '<circle cx="' + X(last[0]).toFixed(1) + '" cy="' + Y(last[1]).toFixed(1) + '" r="4" fill="currentColor" stroke="#fff" stroke-width="2"/>' +
       '<line class="cross" x1="0" x2="0" y1="' + T + '" y2="' + (H - B) + '" stroke="#0F1115" stroke-width="1" visibility="hidden"/>' +
       '<circle class="dot-h" r="4.5" fill="#fff" stroke="#0F1115" stroke-width="2" visibility="hidden"/>' +
       '<text x="' + L + '" y="' + (H - 6) + '" font-size="11" fill="#5B6070">' + niceDate(series[0][0], false) + '</text>' +
@@ -301,17 +323,17 @@
         '<div><small>30-day median</small><b>' + (m30 != null ? money(m30, true) : 'n/a') + '</b><span>' + (m7 != null ? '7 days: ' + money(m7, true) : '') + '</span></div>' +
         '<div><small>Sales counted</small><b>' + (t.saleCount != null ? (t.approxSaleCount ? 'about ' : '') + Number(t.saleCount).toLocaleString('en-US') : 'n/a') + '</b><span>' + (versus != null && p.price ? pct(versus / p.price - 1) + ' vs TCGplayer' : '') + '</span></div></div>';
       if (ek.length > 1) {
-        out += '<table class="cond" style="margin-top:12px"><tr><th>Other conditions on eBay</th><th>Latest sold</th><th>Sales</th></tr>' + ek.slice(1).map(function (k) {
+        out += '<table class="cond" style="margin-top:14px"><tr><th>Other conditions on eBay</th><th>Latest sold</th><th>Sales</th></tr>' + ek.slice(1).map(function (k) {
           return '<tr><td>' + esc(tierName(k)) + '</td><td>' + money(ebay[k].avg) + '</td><td class="muted">' + (ebay[k].saleCount != null ? ebay[k].saleCount : '') + '</td></tr>';
         }).join('') + '</table>';
       }
       out += '</section>';
     } else {
-      out += '<section class="block"><h2>eBay sold</h2><p class="note">No eBay sales on record for this item in the feed. The button at the bottom opens the live sold listings on eBay.</p></section>';
+      out += '<section class="block sunk"><h2>eBay sold</h2><p class="note">No eBay sales on record for this item in the feed. The button at the bottom opens the live sold listings on eBay.</p></section>';
     }
     var tk = keys(tcg);
     if (tk.length) {
-      out += '<section class="block"><h2>TCGplayer sales' + (p.kind === 'sealed' ? '' : ' by condition') + ' <span>latest day and 30-day average</span></h2><table class="cond"><tr><th>' + (p.kind === 'sealed' ? 'Product' : 'Condition') + '</th><th>Latest</th><th>30-day avg</th><th>Sales</th></tr>' + tk.map(function (k) {
+      out += '<section class="block sunk"><h2>TCGplayer sales' + (p.kind === 'sealed' ? '' : ' by condition') + ' <span>latest day, 30-day average</span></h2><table class="cond"><tr><th>' + (p.kind === 'sealed' ? 'Product' : 'Condition') + '</th><th>Latest</th><th>30-day avg</th><th>Sales</th></tr>' + tk.map(function (k) {
         return '<tr><td>' + esc(tierName(k)) + '</td><td>' + money(tcg[k].avg) + '</td><td class="muted">' + (tcg[k].avg30d != null ? money(tcg[k].avg30d) : '') + '</td><td class="muted">' + (tcg[k].saleCount != null ? Number(tcg[k].saleCount).toLocaleString('en-US') : '') + '</td></tr>';
       }).join('') + '</table></section>';
     }
@@ -335,7 +357,7 @@
         var d = p.graded[g[0]];
         return '<div><small>' + g[1] + '</small><b>' + money(d.price, true) + '</b><span>' + (d.confidence ? esc(d.confidence) + ' confidence' : '') + '</span></div>';
       });
-      if (slabs.length) graded = '<section class="block"><h2>Graded, eBay sold <span>PSA</span></h2><div class="figs' + (slabs.length === 2 ? ' two' : '') + '">' + slabs.join('') + '</div></section>';
+      if (slabs.length) graded = '<section class="block tint"><h2>Graded, eBay sold <span>PSA</span></h2><div class="figs' + (slabs.length === 2 ? ' two' : '') + '">' + slabs.join('') + '</div></section>';
     }
     var prev = cat.picks[p.rank - 2], next = cat.picks[p.rank];
     var listHref = b + '/list/' + cat.id;
@@ -345,18 +367,19 @@
     var confText = { High: 'it trades often, has a full price history and its listings match the market price', Medium: 'its history is partial or its listings sit a little off the market price', Low: 'its history is thin or its listings sit far from the market price' }[p.confidence];
     var price = money(p.price);
 
-    return '<div class="tone-' + cat.color + '"><a class="back" href="' + listHref + '">' + esc(cat.short || cat.title) + '</a>' +
-      '<header class="entry-head"><span class="eyebrow">Pick ' + p.rank + ' of ' + cat.picks.length + '</span><h1>' + esc(shortName(p.name)) + '</h1>' +
-      '<p class="where">' + esc(where(p)) + (p.rarity ? '. ' + esc(p.rarity) : '') + '</p></header>' +
+    return '<div class="' + tone(cat) + '"><header class="entry-head band"><a class="back" href="' + listHref + '">' + esc(cat.short || cat.title) + '</a>' +
+      '<span class="eyebrow"><i class="dot"></i>Pick ' + p.rank + ' of ' + cat.picks.length + '</span><h1>' + esc(shortName(p.name)) + '</h1>' +
+      '<p class="where">' + esc(where(p)) + (p.rarity ? '. ' + esc(p.rarity) : '') + '</p>' +
+      (p.era ? '<div class="tags">' + eraChip(p.era) + '</div>' : '') + '</header>' +
       '<div class="entry-main">' + img(p, 'card-img', true) +
       '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
       '<p class="sub">Lowest listing ' + money(p.low) + '</p>' +
       '<span class="conf ' + p.confidence.toLowerCase() + '">' + esc(p.confidence) + ' confidence</span></div></div>' +
       '<section class="verdict"><div class="num"><b>' + p.score + '</b><small>' + esc(p.scoreLabel) + ' score</small><em>' + verdict(p) + '</em></div>' +
       '<dl>' + breakdown(p, days) + '</dl></section>' +
-      '<section class="block"><h2>Why it made the issue</h2><p class="why">' + esc(p.reason) + '</p></section>' +
+      '<section class="block tint"><h2>Why it made the issue</h2><p class="why">' + esc(p.reason) + '</p></section>' +
       soldBlocks(p) + graded + chartBlock(p.series) +
-      '<p class="note block">Raw price: TCGplayer market price for the ' + esc(p.printing) + ' printing, via <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, pulled ' + niceDate(issue.date) + '. ' +
+      '<p class="note fine">Raw price: TCGplayer market price for the ' + esc(p.printing) + ' printing, via <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, pulled ' + niceDate(issue.date) + '. ' +
       (p.sold ? 'eBay sold and by-condition figures: <a href="https://poketrace.com/" rel="noopener">PokeTrace</a>, pulled ' + niceDate(p.sold.date) + '; eBay sale counts are approximate. ' : '') +
       (p.graded ? 'Graded prices: completed eBay sales via <a href="https://www.pokemonpricetracker.com/" rel="noopener">PokemonPriceTracker</a>, pulled ' + niceDate(p.graded.date) + '; they may mix printings, so check the slab matches this one. ' : '') +
       esc(p.confidence) + ' confidence means ' + confText + '. Not financial advice.</p>' +
@@ -398,10 +421,10 @@
       count.textContent = hits.length === 0 ? 'No matches. Try the card name plus the set, like "charizard evolutions".' :
         (hits.length > 60 ? 'Showing the 60 highest-priced of ' + Number(hits.length).toLocaleString('en-US') + ' matches.' : hits.length + (hits.length === 1 ? ' match.' : ' matches.'));
       list.innerHTML = hits.slice(0, 60).map(function (i) {
-        var it = data.items[i], s = data.sets[it[2]], pr = it[6][0];
+        var it = data.items[i], s = data.sets[it[2]], pr = it[6][0], era = eraFromDate(s[3]);
         var meta = [s[1], it[3] ? '#' + it[3] : '', pr[0] !== 'Normal' ? pr[0] : '', it[6].length > 1 ? '+' + (it[6].length - 1) + ' more' : ''].filter(Boolean).join(', ');
-        return '<li><a href="#/p/' + s[0] + '/' + it[0] + '/' + encodeURIComponent(pr[0]) + '"><img src="' + productImage(it[0]) + '" alt="" loading="lazy">' +
-          '<span><b>' + esc(it[1]) + '</b><small>' + esc(meta) + '</small></span>' +
+        return '<li class="' + eraTone(era) + '"><a href="#/p/' + s[0] + '/' + it[0] + '/' + encodeURIComponent(pr[0]) + '"><img src="' + productImage(it[0]) + '" alt="" loading="lazy">' +
+          '<span><b>' + esc(it[1]) + '</b><small>' + esc(meta) + '</small>' + eraChip(era) + '</span>' +
           '<span class="r"><span class="price">' + money(pr[1]) + '</span>' + (pr[4] != null ? move(pr[4]) : '') + '</span></a></li>';
       }).join('');
     }
@@ -418,7 +441,7 @@
       var data = res[0], hist = res[1];
       var it = data.items.filter(function (x) { return String(x[0]) === String(pid); })[0];
       if (!it) return notFound();
-      var s = data.sets[it[2]];
+      var s = data.sets[it[2]], era = eraFromDate(s[3]);
       var pr = it[6].filter(function (x) { return x[0] === printing; })[0] || it[6][0];
       var series = [];
       if (hist) {
@@ -439,16 +462,17 @@
       if (pr[4] != null) rows.push('<div><small>30 days</small><b>' + move(pr[4]) + '</b></div>');
       if (q != null) rows.push('<div><small>Since ' + niceDate(first[0], false) + '</small><b>' + move(q) + '</b></div>');
       swipe.prev = swipe.next = null;
-      return '<a class="back" href="#/search">Search</a>' +
-        '<header class="entry-head"><span class="eyebrow">' + (it[4] ? 'Sealed product' : 'Single card') + '</span><h1>' + esc(shortName(it[1])) + '</h1>' +
-        '<p class="where">' + esc([s[1], it[3] ? '#' + it[3] : '', it[5] || ''].filter(Boolean).join(', ')) + '</p></header>' +
+      return '<div class="' + (eraTone(era) || 't-steady') + '"><header class="entry-head band"><a class="back" href="#/search">Search</a>' +
+        '<span class="eyebrow"><i class="dot"></i>' + (it[4] ? 'Sealed product' : 'Single card') + '</span><h1>' + esc(shortName(it[1])) + '</h1>' +
+        '<p class="where">' + esc([s[1], it[3] ? '#' + it[3] : '', it[5] || ''].filter(Boolean).join(', ')) + '</p>' +
+        (era ? '<div class="tags">' + eraChip(era) + '</div>' : '') + '</header>' +
         '<div class="entry-main">' + img(pick, 'card-img', true) +
         '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
         '<p class="sub">' + (pr[2] != null ? 'Lowest listing ' + money(pr[2]) : 'Nothing listed right now') + '</p>' + chips + '</div></div>' +
-        (rows.length ? '<section class="block"><div class="figs' + (rows.length === 2 ? ' two' : '') + '">' + rows.join('') + '</div></section>' : '') +
+        (rows.length ? '<section class="block tint"><h2>Price moves</h2><div class="figs' + (rows.length === 2 ? ' two' : '') + '">' + rows.join('') + '</div></section>' : '') +
         chartBlock(series) +
-        '<p class="note block">TCGplayer market price for the ' + esc(pr[0]) + ' printing, via <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(data.date) + '. eBay sold and graded prices are looked up only for cards in the weekly issue.</p>' +
-        buyLinks(it[1], it[3], s[2], 'https://www.tcgplayer.com/product/' + it[0]);
+        '<p class="note fine">TCGplayer market price for the ' + esc(pr[0]) + ' printing, via <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(data.date) + '. eBay sold and graded prices are looked up only for cards in the weekly issue.</p>' +
+        buyLinks(it[1], it[3], s[2], 'https://www.tcgplayer.com/product/' + it[0]) + '</div>';
     });
   }
 
@@ -457,33 +481,33 @@
       return '<a class="issue-row" href="#/issue/' + e.number + '/"><img src="' + esc(e.coverImage || PLACEHOLDER) + '" alt="" loading="lazy">' +
         '<span><b>Issue ' + pad(e.number, 2) + '</b><span>Week of ' + niceDate(e.date) + '. ' + e.picks + ' picks. Top pick: ' + esc(shortName(e.coverName || '')) + '</span></span></a>';
     }).join('');
-    return '<header class="page-head"><h1>Back issues</h1></header><div class="page">' + rows +
-      '<p style="margin-top:16px">A new issue is cut every Thursday night, ready for Friday morning. Once four weeks of issues exist, each back issue will show how its picks did.</p></div>';
+    return '<header class="page-head"><h1>Back issues</h1></header><section class="block">' + rows + '</section>' +
+      '<section class="block sunk article"><p>A new issue is cut every Thursday night, ready for Friday morning. Once four weeks of issues exist, each back issue will show how its picks did.</p></section>';
   }
 
   function howView(ctx) {
     var issue = ctx.issue, days = span(issue);
-    var rules = issue.categories.map(function (c) { return '<li><b>' + esc(c.title) + '.</b> ' + esc(c.rule) + '</li>'; }).join('');
+    var rules = issue.categories.map(function (c) { return '<li class="' + tone(c) + '"><i class="dot"></i><b>' + esc(c.title) + '.</b> ' + esc(c.rule) + '</li>'; }).join('');
     var sources = issue.sources.map(function (s) { return '<li><a href="' + esc(s.url) + '" rel="noopener">' + esc(s.name) + '</a>. ' + esc(s.note) + '</li>'; }).join('');
-    return '<header class="page-head"><h1>How it works</h1></header><div class="page">' +
-      '<p class="lede">Every day a job copies the TCGplayer market price of every English Pokémon single and sealed product, about ' + Number(issue.stats.productsScanned).toLocaleString('en-US') +
-      ' products. Once a week it compares today with a week, 30 days and 90 days ago and runs the rules below. Nothing is hand-picked.</p>' +
-      (days !== 7 ? '<p>This issue measures its short-term move over ' + days + ' days instead of 7, because the free price archive has a gap in late September 2026. From the next issue on it is a true 7-day move.</p>' : '') +
-      '<h2>Where the numbers come from</h2><ul>' + sources + '</ul>' +
-      '<h2>The rule for each list</h2><ul>' + rules + '</ul>' +
-      '<h2>Checks on every pick</h2><ul>' +
+    return '<header class="page-head"><h1>How it works</h1>' +
+      '<p class="deck">Every day a job copies the TCGplayer market price of every English Pokémon single and sealed product, about ' + Number(issue.stats.productsScanned).toLocaleString('en-US') +
+      ' products. Once a week it compares today with a week, 30 days and 90 days ago and runs the rules below. Nothing is hand-picked.</p></header>' +
+      (days !== 7 ? '<section class="block tint t-sale article"><p>This issue measures its short-term move over ' + days + ' days instead of 7, because the free price archive has a gap in late September 2026. From the next issue on it is a true 7-day move.</p></section>' : '') +
+      '<section class="block article"><h2>Where the numbers come from</h2><ul>' + sources + '</ul></section>' +
+      '<section class="block article"><h2>The rule for each list</h2><ul style="list-style:none;padding-left:0">' + rules + '</ul></section>' +
+      '<section class="block sunk article"><h2>Checks on every pick</h2><ul>' +
       '<li>It must have a sales-based market price today and at least one copy listed for sale now.</li>' +
       '<li>It must actually trade. The job checks how often the market price changed across the readings on file. A price that never moves usually means no sales, and those cards are left out.</li>' +
       '<li>For rising picks, the lowest current listing must sit between 30% under and 25% over the market price, so the move is backed by what sellers are asking and you can buy near the quoted price.</li>' +
       '<li>A short-term move above 300% is treated as a data error and dropped.</li>' +
-      '<li>At most three picks per set in a list, no card appears in two lists, and presale products are left out.</li></ul>' +
-      '<h2>Scores and confidence</h2><p>The Heat score (1 to 99) blends the short-term and 30-day moves. Deal scores measure a discount, either to the 90-day median or, for sealed products without a history yet, to the market price. Steady scores measure how tight the price band is. Confidence is High when the card trades often, has a full price history and its listings match the market price.</p>' +
-      '<h2>What this free version cannot see</h2><ul>' +
-      '<li>Individual eBay sales. eBay sold figures are averages and counts for the cards in the issue, not a list of each sale. The "eBay sold listings" button on every card opens the live list on eBay.</li>' +
+      '<li>At most three picks per set in a list, no card appears in two lists, and presale products are left out.</li></ul></section>' +
+      '<section class="block dark article"><h2>Scores and confidence</h2><p>The Heat score (1 to 99) blends the short-term and 30-day moves. Deal scores measure a discount, either to the 90-day median or, for sealed products without a history yet, to the market price. Steady scores measure how tight the price band is. Confidence is High when the card trades often, has a full price history and its listings match the market price.</p></section>' +
+      '<section class="block article"><h2>What this free version cannot see</h2><ul>' +
+      '<li>Individual eBay sales. eBay sold figures are the latest sold price, medians and counts for the cards in the issue, not a list of each sale. The "eBay sold listings" button on every card opens the live list on eBay.</li>' +
       '<li>Whole-catalog sales counts. Picks are screened on price movement; sale counts are shown for the picks themselves.</li>' +
       '<li>Sealed trends before October 2026. The history seed covers singles only, so the sealed list ranks by listing discount until a week of sealed prices exists.</li>' +
-      '<li>Reddit and X chatter. Not connected yet.</li></ul>' +
-      '<h2>The fine print</h2><p>This is market information, not financial advice. A price that rose last week can fall next week. Not affiliated with or endorsed by Nintendo, The Pokémon Company, TCGplayer or eBay. Card images are shown only to identify the cards being priced.</p></div>';
+      '<li>Reddit and X chatter. Not connected yet.</li></ul></section>' +
+      '<section class="block sunk article"><h2>The fine print</h2><p>This is market information, not financial advice. A price that rose last week can fall next week. Not affiliated with or endorsed by Nintendo, The Pokémon Company, TCGplayer or eBay. Card images are shown only to identify the cards being priced.</p></section>';
   }
 
   function notFound() { return '<p class="empty">That page is not in this issue. <a href="#/">Go to the front page</a>.</p>'; }
@@ -495,9 +519,23 @@
     });
   }
   function show(html) {
+    var from = slideFrom;
+    slideFrom = null;
+    screen.style.transition = 'none';
+    screen.style.transform = '';
+    screen.style.opacity = '';
     screen.innerHTML = html;
     wireChart(screen);
     window.scrollTo(0, 0);
+    if (from && !reduceMotion) {
+      // New page glides in from the side the finger was heading to.
+      screen.style.transform = 'translateX(' + (from === 'right' ? 36 : -36) + 'px)';
+      screen.style.opacity = '0';
+      void screen.offsetWidth;
+      screen.style.transition = 'transform .22s cubic-bezier(.2,.8,.2,1), opacity .18s ease-out';
+      screen.style.transform = '';
+      screen.style.opacity = '';
+    }
   }
   function fail(err) {
     show(err && err.message === 'empty'
@@ -535,25 +573,62 @@
     }).catch(fail);
   }
 
-  // Swipe left for the next section or pick, right for the previous one.
-  var touch = null;
+  // ---------- swipe ----------
+  // The page follows the finger. Past a short distance, or on a quick flick, it slides away
+  // and the next section or pick glides in; otherwise it settles back.
+  var drag = null, noClickUntil = 0;
+  // A sideways drag must never also count as a tap on the card under the finger.
+  document.addEventListener('click', function (e) {
+    if (Date.now() < noClickUntil) { e.preventDefault(); e.stopPropagation(); }
+  }, true);
+  function settle() {
+    screen.style.transition = 'transform .18s cubic-bezier(.2,.8,.2,1), opacity .18s';
+    screen.style.transform = '';
+    screen.style.opacity = '';
+  }
   screen.addEventListener('touchstart', function (e) {
-    if (e.touches.length !== 1 || e.target.closest('.chart, input, .tabs')) { touch = null; return; }
-    touch = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
+    if (e.touches.length !== 1 || e.target.closest('.chart, input, .tabs, details[open] table')) { drag = null; return; }
+    drag = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now(), dx: 0, lock: null };
   }, { passive: true });
-  screen.addEventListener('touchend', function (e) {
-    if (!touch) return;
-    var dx = e.changedTouches[0].clientX - touch.x, dy = e.changedTouches[0].clientY - touch.y, dt = Date.now() - touch.t;
-    touch = null;
-    if (Math.abs(dx) < 70 || Math.abs(dx) < 2.2 * Math.abs(dy) || dt > 700) return;
+  screen.addEventListener('touchmove', function (e) {
+    if (!drag) return;
+    var dx = e.touches[0].clientX - drag.x, dy = e.touches[0].clientY - drag.y;
+    if (drag.lock === null) {
+      if (Math.abs(dx) < 7 && Math.abs(dy) < 7) return;
+      drag.lock = Math.abs(dx) > Math.abs(dy) * 1.2 ? 'x' : 'y';
+      if (drag.lock === 'x') screen.style.transition = 'none';
+    }
+    if (drag.lock !== 'x') return;
+    drag.dx = dx;
     var target = dx < 0 ? swipe.next : swipe.prev;
-    if (target) location.hash = target;
+    // With nowhere to go, the page resists instead of following.
+    screen.style.transform = 'translateX(' + (target ? dx : dx * 0.22) + 'px)';
+    screen.style.opacity = target ? String(1 - Math.min(0.45, Math.abs(dx) / 520)) : '';
   }, { passive: true });
+  function release() {
+    if (!drag) return;
+    var d = drag;
+    drag = null;
+    if (d.lock !== 'x') return;
+    if (Math.abs(d.dx) > 10) noClickUntil = Date.now() + 350;
+    var dx = d.dx, speed = Math.abs(dx) / Math.max(1, Date.now() - d.t);
+    var target = dx < 0 ? swipe.next : swipe.prev;
+    var commit = target && (Math.abs(dx) > 44 || (speed > 0.3 && Math.abs(dx) > 14));
+    if (!commit) { settle(); return; }
+    if (reduceMotion) { location.hash = target; return; }
+    slideFrom = dx < 0 ? 'right' : 'left';
+    screen.style.transition = 'transform .12s ease-in, opacity .12s ease-in';
+    screen.style.transform = 'translateX(' + (dx < 0 ? -60 : 60) + '%)';
+    screen.style.opacity = '0';
+    setTimeout(function () { location.hash = target; }, 110);
+  }
+  screen.addEventListener('touchend', release, { passive: true });
+  screen.addEventListener('touchcancel', function () { if (drag && drag.lock === 'x') settle(); drag = null; }, { passive: true });
   // Arrow keys do the same on a keyboard.
   document.addEventListener('keydown', function (e) {
     if (e.target.tagName === 'INPUT' || e.metaKey || e.ctrlKey || e.altKey) return;
     var target = e.key === 'ArrowRight' ? swipe.next : (e.key === 'ArrowLeft' ? swipe.prev : null);
-    if (target) location.hash = target;
+    if (target) { slideFrom = e.key === 'ArrowRight' ? 'right' : 'left'; location.hash = target; }
   });
 
   window.addEventListener('hashchange', route);
