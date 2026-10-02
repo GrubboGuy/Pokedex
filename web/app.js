@@ -10,7 +10,7 @@
   var lastQuery = '';
   var swipe = { prev: null, next: null };
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  var TIERS = { NEAR_MINT: 'Near Mint', LIGHTLY_PLAYED: 'Lightly Played', MODERATELY_PLAYED: 'Moderately Played', HEAVILY_PLAYED: 'Heavily Played', DAMAGED: 'Damaged' };
+  var TIERS = { UNOPENED: 'Sealed', NEAR_MINT: 'Near Mint', LIGHTLY_PLAYED: 'Lightly Played', MODERATELY_PLAYED: 'Moderately Played', HEAVILY_PLAYED: 'Heavily Played', DAMAGED: 'Damaged' };
 
   // ---------- helpers ----------
   function esc(s) {
@@ -287,27 +287,32 @@
   function soldBlocks(p) {
     if (!p.sold) return '';
     var out = '', ebay = p.sold.ebay || {}, tcg = p.sold.tcgplayer || {};
-    var order = ['NEAR_MINT', 'LIGHTLY_PLAYED', 'MODERATELY_PLAYED', 'HEAVILY_PLAYED', 'DAMAGED'];
-    var keys = function (o) { return Object.keys(o).sort(function (a, b) { return (order.indexOf(a) + 99) % 99 - (order.indexOf(b) + 99) % 99; }); };
+    var order = ['UNOPENED', 'NEAR_MINT', 'LIGHTLY_PLAYED', 'MODERATELY_PLAYED', 'HEAVILY_PLAYED', 'DAMAGED'];
+    var rankOf = function (k) { var i = order.indexOf(k); return i < 0 ? 99 : i; };
+    var keys = function (o) { return Object.keys(o).filter(function (k) { return rankOf(k) < 99; }).sort(function (a, b) { return rankOf(a) - rankOf(b); }); };
+    var on = function (t) { return t.last ? niceDate(t.last) : ''; };
     var ek = keys(ebay);
     if (ek.length) {
       var t = ebay[ek[0]];
-      var med = t.median7d != null ? t.median7d : t.avg7d, med30 = t.median30d != null ? t.median30d : t.avg30d;
-      out += '<section class="block"><h2>eBay sold <span>' + esc(tierName(ek[0])) + ', raw</span></h2><div class="figs">' +
-        '<div><small>Average sold</small><b>' + money(t.avg, true) + '</b><span>' + (t.low != null && t.high != null ? money(t.low, true) + ' to ' + money(t.high, true) : '') + '</span></div>' +
-        '<div><small>Last 7 days</small><b>' + (med != null ? money(med, true) : 'n/a') + '</b><span>30 days: ' + (med30 != null ? money(med30, true) : 'n/a') + '</span></div>' +
-        '<div><small>Sales counted</small><b>' + (t.saleCount != null ? (t.approxSaleCount ? 'about ' : '') + t.saleCount : 'n/a') + '</b><span>' + (t.avg != null && p.price ? pct(t.avg / p.price - 1) + ' vs TCGplayer' : '') + '</span></div></div>';
+      var m30 = t.median30d != null ? t.median30d : t.avg30d, m7 = t.median7d != null ? t.median7d : t.avg7d;
+      var versus = m30 != null ? m30 : t.avg;
+      out += '<section class="block"><h2>eBay sold <span>' + esc(tierName(ek[0])) + (p.kind === 'sealed' ? '' : ', raw') + '</span></h2><div class="figs">' +
+        '<div><small>Latest sold</small><b>' + money(t.avg, true) + '</b><span>' + (on(t) || 'date not given') + '</span></div>' +
+        '<div><small>30-day median</small><b>' + (m30 != null ? money(m30, true) : 'n/a') + '</b><span>' + (m7 != null ? '7 days: ' + money(m7, true) : '') + '</span></div>' +
+        '<div><small>Sales counted</small><b>' + (t.saleCount != null ? (t.approxSaleCount ? 'about ' : '') + Number(t.saleCount).toLocaleString('en-US') : 'n/a') + '</b><span>' + (versus != null && p.price ? pct(versus / p.price - 1) + ' vs TCGplayer' : '') + '</span></div></div>';
       if (ek.length > 1) {
-        out += '<table class="cond" style="margin-top:12px"><tr><th>Other conditions on eBay</th><th>Avg sold</th><th>Sales</th></tr>' + ek.slice(1).map(function (k) {
+        out += '<table class="cond" style="margin-top:12px"><tr><th>Other conditions on eBay</th><th>Latest sold</th><th>Sales</th></tr>' + ek.slice(1).map(function (k) {
           return '<tr><td>' + esc(tierName(k)) + '</td><td>' + money(ebay[k].avg) + '</td><td class="muted">' + (ebay[k].saleCount != null ? ebay[k].saleCount : '') + '</td></tr>';
         }).join('') + '</table>';
       }
       out += '</section>';
+    } else {
+      out += '<section class="block"><h2>eBay sold</h2><p class="note">No eBay sales on record for this item in the feed. The button at the bottom opens the live sold listings on eBay.</p></section>';
     }
     var tk = keys(tcg);
     if (tk.length) {
-      out += '<section class="block"><h2>TCGplayer by condition <span>recent sales</span></h2><table class="cond"><tr><th>Condition</th><th>Avg sold</th><th>30-day avg</th><th>Sales</th></tr>' + tk.map(function (k) {
-        return '<tr><td>' + esc(tierName(k)) + '</td><td>' + money(tcg[k].avg) + '</td><td class="muted">' + (tcg[k].avg30d != null ? money(tcg[k].avg30d) : '') + '</td><td class="muted">' + (tcg[k].saleCount != null ? tcg[k].saleCount : '') + '</td></tr>';
+      out += '<section class="block"><h2>TCGplayer sales' + (p.kind === 'sealed' ? '' : ' by condition') + ' <span>latest day and 30-day average</span></h2><table class="cond"><tr><th>' + (p.kind === 'sealed' ? 'Product' : 'Condition') + '</th><th>Latest</th><th>30-day avg</th><th>Sales</th></tr>' + tk.map(function (k) {
+        return '<tr><td>' + esc(tierName(k)) + '</td><td>' + money(tcg[k].avg) + '</td><td class="muted">' + (tcg[k].avg30d != null ? money(tcg[k].avg30d) : '') + '</td><td class="muted">' + (tcg[k].saleCount != null ? Number(tcg[k].saleCount).toLocaleString('en-US') : '') + '</td></tr>';
       }).join('') + '</table></section>';
     }
     return out;

@@ -45,6 +45,8 @@ def _tiers(block):
     for tier, values in (block or {}).items():
         if isinstance(values, dict):
             kept = {k: values[k] for k in KEEP if values.get(k) is not None}
+            if values.get("lastUpdated"):
+                kept["last"] = str(values["lastUpdated"])[:10]  # day of the most recent sale on record
             if kept.get("avg") is not None:
                 out[tier] = kept
     return out
