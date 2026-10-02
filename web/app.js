@@ -781,9 +781,55 @@
     'Give a binder, change a life.',
     'Every card has a story. Listen to it.',
     'Invest in people. They never get reprinted.',
-    'Open your heart like it\u2019s a booster box.'
+    'Open your heart like it\u2019s a booster box.',
+    'I\u2019m just grateful to be on this journey with all of you.',
+    'Humbled. Truly humbled.',
+    'The hobby gave me everything. I\u2019m only here to give back.',
+    'Profit fades. Community is forever.',
+    'Before you check prices, check on a friend.',
+    'I don\u2019t see a market. I see a family.',
+    'Let\u2019s make space for every collector\u2019s truth.',
+    'A gem mint heart can\u2019t be graded.',
+    'Be someone\u2019s chase card today.',
+    'I do this for the culture.',
+    'Sleeve your cards. Sleeve your loved ones.',
+    'Sending love and light to everyone who missed the restock.',
+    'Your worth is not your collection\u2019s worth.',
+    'Honored to hold space for this cardboard.',
+    'We don\u2019t flip cards. We rehome them.',
+    'Gratitude is the only grail.',
+    'Thoughts and prayers for your pull rates.',
+    'Leave every trade better than you found it.',
+    'Tell a child they matter. Then tell them about set rotation.',
+    'Abundance mindset. There\u2019s enough Charizard for all of us.',
+    'I\u2019m not a collector. I\u2019m a steward.',
+    'Lead with empathy. Follow with a fair offer.',
+    'This isn\u2019t about me. It has never been about me.',
+    'Blessed beyond measure. Also up 12%.',
+    'Hold your loved ones like a first edition.',
+    'Shop local. Love global.',
+    'Every pack opened is a wish for a better world.',
+    'I just want to inspire the next generation of collectors.',
+    'Protect the hobby. Protect each other.',
+    'Listening and learning. Always.',
+    'Be the change. Keep the change. Donate the change.',
+    'Passion over profit. Always. Mostly.',
+    'Starting a conversation is the real strategy.',
+    'May your centering be perfect and your heart be full.',
+    'Do it for the love of the game.',
+    'If one kid smiles, the spreadsheet was worth it.'
   ];
-  var guide = null, guideTimer = null, lastLine = -1;
+  var guide = null, guideTimer = null, lastLine = -1, bag = [];
+  // Every line gets its turn before any repeats.
+  function nextLine() {
+    if (!bag.length) {
+      bag = WISDOM.map(function (_, i) { return i; });
+      for (var i = bag.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = bag[i]; bag[i] = bag[j]; bag[j] = t; }
+      if (bag[bag.length - 1] === lastLine) bag.unshift(bag.pop());
+    }
+    lastLine = bag.pop();
+    return WISDOM[lastLine];
+  }
   function buildGuide() {
     guide = document.createElement('div');
     guide.className = 'guide';
@@ -795,10 +841,7 @@
   function hideGuide() { clearTimeout(guideTimer); if (guide) guide.classList.remove('on'); }
   function speak() {
     if (!guide) buildGuide();
-    var i;
-    do { i = Math.floor(Math.random() * WISDOM.length); } while (i === lastLine);
-    lastLine = i;
-    guide.querySelector('.guide-say').textContent = WISDOM[i];
+    guide.querySelector('.guide-say').textContent = nextLine();
     guide.classList.remove('on');
     void guide.offsetWidth;
     guide.classList.add('on');
