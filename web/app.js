@@ -206,7 +206,8 @@
     var s = issue.stats;
     return '<header class="front-head"><div class="dateline eyebrow"><span>Issue ' + pad(issue.number, 2) + '</span><span>Week of ' + niceDate(issue.date) + '</span></div>' +
       '<h1>This week&#39;s picks</h1>' +
-      '<p class="deck">' + total + ' cards and sealed products worth a look, chosen by rule from ' + Number(s.productsScanned).toLocaleString('en-US') + ' tracked products.</p></header>' +
+      '<p class="deck">' + total + ' cards and sealed products worth a look, chosen by rule from ' + Number(s.productsScanned).toLocaleString('en-US') + ' tracked products.</p>' +
+      '<button type="button" class="cta" id="strategy">This week&#39;s strategy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></header>' +
       '<a class="hero ' + tone(coverCat) + '" href="' + coverHref + '">' + img(coverPick, 'card-img', true) +
         '<span><span class="eyebrow"><i class="dot"></i>Top pick, ' + esc(coverCat.short || coverCat.title) + '</span>' +
         '<h2>' + esc(shortName(coverPick.name)) + '</h2><p class="where">' + esc(where(coverPick)) + '</p>' +
@@ -698,7 +699,7 @@
       else if (view === 'card') { setNav('issue'); renderTabs(ctx, parts[1]); html = cardView(ctx, parts[1], parts[2]); }
       else if (view === 'issues') { setNav('issues'); tabsEl.hidden = true; html = issuesView(ctx); }
       else if (view === 'how') { setNav('how'); tabsEl.hidden = true; html = howView(ctx); }
-      else { setNav('issue'); renderTabs(ctx, ''); html = frontView(ctx); }
+      else { setNav('issue'); renderTabs(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; }, 1500); } }
       show(html);
       document.title = ctx.issue.title + ' weekly, issue ' + ctx.issue.number;
     }).catch(fail);
@@ -762,7 +763,53 @@
     if (target) { slideFrom = e.key === 'ArrowRight' ? 'right' : 'left'; location.hash = target; }
   });
 
-  window.addEventListener('hashchange', route);
+  // ---------- the strategy button ----------
+  // Looks like the most useful button on the page. It is not.
+  var WISDOM = [
+    'Don\u2019t forget to give back to the community.',
+    'Remember, it\u2019s all for the kids.',
+    'Touch someone\u2019s heart today.',
+    'The real pull is the friends we made along the way.',
+    'Collect memories, not just cardboard.',
+    'Be the holo you wish to see in the world.',
+    'A booster shared is a booster doubled.',
+    'It\u2019s not about the money. It\u2019s about the journey.',
+    'Kindness is the rarest pull of all.',
+    'Hug your local card shop owner.',
+    'We rise by lifting others. And by grading.',
+    'Somewhere a kid just pulled their first holo. That\u2019s the real market.',
+    'Give a binder, change a life.',
+    'Every card has a story. Listen to it.',
+    'Invest in people. They never get reprinted.',
+    'Open your heart like it\u2019s a booster box.'
+  ];
+  var guide = null, guideTimer = null, lastLine = -1;
+  function buildGuide() {
+    guide = document.createElement('div');
+    guide.className = 'guide';
+    guide.innerHTML = '<p class="guide-say" role="status" aria-live="polite"></p><img src="img/guide.webp" alt="" width="220" height="246">';
+    guide.addEventListener('click', hideGuide);
+    document.body.appendChild(guide);
+    void guide.offsetWidth;
+  }
+  function hideGuide() { clearTimeout(guideTimer); if (guide) guide.classList.remove('on'); }
+  function speak() {
+    if (!guide) buildGuide();
+    var i;
+    do { i = Math.floor(Math.random() * WISDOM.length); } while (i === lastLine);
+    lastLine = i;
+    guide.querySelector('.guide-say').textContent = WISDOM[i];
+    guide.classList.remove('on');
+    void guide.offsetWidth;
+    guide.classList.add('on');
+    clearTimeout(guideTimer);
+    guideTimer = setTimeout(hideGuide, 4200);
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('#strategy')) speak();
+  });
+
+  window.addEventListener('hashchange', function () { hideGuide(); route(); });
   route();
 
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
