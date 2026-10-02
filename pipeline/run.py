@@ -51,17 +51,28 @@ def backfill(store, today):
     return downloads
 
 
-def should_cut(index, today, mode):
-    if mode == "force":
-        return True
-    if mode == "never":
-        return False
+def plan_cut(index, edition, today, mode):
+    """Decides whether to re-pick the lists on this run and whether that starts a new numbered issue.
+
+    The picks are refreshed whenever the price data is newer than the picks on the site.
+    A new numbered issue starts with Thursday's prices (the Friday-morning run), or if a week was missed;
+    the days in between update the current issue's daily edition.
+    """
     if not index:
-        return True
-    latest = dt.date.fromisoformat(index[0]["date"])
+        return True, True
+    if mode == "never":
+        return False, False
     today_d = dt.date.fromisoformat(today)
-    # New issue on the Thursday-night run (ready Friday morning US time), or if a week was missed.
-    return (today_d.weekday() == 3 and (today_d - latest).days >= 3) or (today_d - latest).days >= 8
+    days = (today_d - dt.date.fromisoformat(index[0]["date"])).days
+    new_number = (today_d.weekday() == 3 and days >= 3) or days >= 8
+    if mode == "force":
+        return True, new_number
+    stale = edition is None or edition["date"] < today
+    return stale or new_number, new_number
+
+
+def _keys(issue):
+    return sorted({p["key"] for c in issue["categories"] for p in c["picks"]})
 
 
 def main(argv=None):
@@ -89,18 +100,33 @@ def main(argv=None):
     trended = sum(1 for r in rows if r["ch7"] is not None)
     print(f"Scored {trended} product printings with a price today and {span} days ago")
 
-    if should_cut(index, today, args.cut):
+    # The edition is what the site shows today. The numbered issue is the copy kept in back issues.
+    edition = store.load_today() or (store.load_issue(index[0]["number"]) if index else None)
+    cut, new_number = plan_cut(index, edition, today, args.cut)
+    if cut:
         categories, counts = score.make_categories(rows, span or 7)
         print("Eligible per list: " + ", ".join(f"{k}={v}" for k, v in counts.items()))
         if not categories:
-            print("No list had enough picks (history too thin?). Not cutting an issue.")
+            print("No list had enough picks (history too thin?). Not refreshing the picks.")
             store.prune_history(today)
             return 0 if index else 2
-        same_day = index and index[0]["date"] == today
-        number = index[0]["number"] if same_day else (index[0]["number"] + 1 if index else 1)
-        issue = {
+        number = (index[0]["number"] + 1 if index else 1) if new_number else index[0]["number"]
+        issue_date = today if new_number else index[0]["date"]
+        # Picks that were not in the previous day's edition are marked as new.
+        if edition and edition["date"] < today:
+            previous = _keys(edition)
+        else:
+            previous = (edition or {}).get("previousKeys")
+        if previous is not None:
+            seen = set(previous)
+            for cat in categories:
+                for pick in cat["picks"]:
+                    if pick["key"] not in seen:
+                        pick["isNew"] = True
+        edition = {
             "number": number,
             "date": today,
+            "issueDate": issue_date,
             "title": config.TITLE,
             "tagline": config.TAGLINE,
             "generatedAt": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
@@ -115,24 +141,33 @@ def main(argv=None):
             },
             "categories": categories,
         }
-        issue["cover"] = score.choose_cover(categories)
-        print(f"Cut issue {number}: " + ", ".join(f"{c['id']}={len(c['picks'])}" for c in categories))
+        if previous is not None:
+            edition["previousKeys"] = previous
+        edition["cover"] = score.choose_cover(categories)
+        kind = f"new issue {number}" if new_number else f"daily update of issue {number}"
+        print(f"Picks refreshed ({kind}): " + ", ".join(f"{c['id']}={len(c['picks'])}" for c in categories))
     else:
-        issue = store.load_issue(index[0]["number"])
-        print(f"No new issue today; latest is issue {issue['number']} ({issue['date']})")
+        print(f"Picks not refreshed on this run; showing issue {edition['number']}, prices as of {edition['date']}")
 
     cache = store.graded_cache()
-    made = graded.top_up(issue, cache, today)
-    store.save_graded_cache(cache)
+    made = graded.top_up(edition, cache, today)
     print(f"Graded lookups this run: {made}")
 
-    _made, sample = poketrace.top_up(issue, today)
+    _made, sample = poketrace.top_up(edition, today)
     if sample:
         store_sample = os.path.join(args.data_dir, "poketrace-sample.json")
         with open(store_sample, "w", encoding="utf-8") as fh:
             json.dump(sample, fh, indent=1)
 
-    store.save_issue(issue)
+    store.save_today(edition)
+    if edition["date"] == edition.get("issueDate", edition["date"]):
+        store.save_issue(edition)  # the numbered issue is this same set of picks
+    else:
+        kept = store.load_issue(edition["number"])
+        if kept:  # fill in graded prices that arrived after the numbered issue was cut
+            graded.top_up(kept, cache, today, fetch=False, log=lambda *_: None)
+            store.save_issue(kept)
+    store.save_graded_cache(cache)
     if args.site_dir:
         n_items, n_sets = site.export(args.site_dir, catalog, snapshots, today, rows)
         print(f"Site data: {n_items} products in the search index, {n_sets} set history files")

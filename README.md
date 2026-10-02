@@ -4,9 +4,10 @@ A weekly magazine of Pokémon card market picks, built from real TCGplayer price
 
 ## How it works
 
-1. **Daily job** (`.github/workflows/issue.yml`, 21:30 UTC): copies the TCGplayer market price of every English Pokémon single and sealed product from [TCGCSV](https://tcgcsv.com/) and saves it as that day's snapshot. History builds up from these snapshots.
+1. **Morning run** (`.github/workflows/issue.yml`, 10:20 UTC, so it is done by 7:00 AM US Eastern all year): copies the TCGplayer market price of every English Pokémon single and sealed product from [TCGCSV](https://tcgcsv.com/), saves it as that day's snapshot, compares it with 7, 30 and 90 days ago, re-runs the list rules in `pipeline/score.py` and writes `today.json`, the picks the site shows. Picks that were not in the previous day's lists are marked as new.
+   - An **evening run** (21:30 UTC) saves the day's prices soon after TCGCSV refreshes and tops up the eBay and graded lookups. It does not change the picks. Code pushes do not change them either, unless the commit message contains `[cut issue]`.
    - TCGCSV withdrew its public price archive in September 2026, so history before 2026-09-16 was seeded once from [Rarebox](https://github.com/novaoc/rarebox-price-history) with `tools/seed_history.py` (singles only). There is no data for 2026-09-16 to 2026-09-30.
-2. **Weekly issue** (Thursday night's run, ready Friday morning US time): compares today's prices with 7, 30 and 90 days ago, runs the list rules in `pipeline/score.py`, and writes `issue-N.json`.
+2. **Numbered issue**: the Friday-morning run (Thursday's prices) also starts a new `issue-N.json`. That copy is kept as cut and listed under Back issues; the daily refreshes in between only change `today.json`.
 3. **eBay sold prices** (optional): if the `POKETRACE_API_KEY` repository secret is set, eBay sold averages for raw cards and TCGplayer prices by condition, each with sale counts, are looked up on PokeTrace's free plan for the issue's picks every day.
 4. **Graded prices** (optional): if the `PPT_API_KEY` repository secret is set, PSA 10 and PSA 9 prices for the issue's picks are looked up on PokemonPriceTracker's free tier, a few per run.
 5. **Site**: `web/` is a static app with no build step and self-hosted fonts (Archivo, Newsreader, VT323, all under the SIL Open Font License). The workflow copies it and the issue files to GitHub Pages.

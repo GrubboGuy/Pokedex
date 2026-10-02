@@ -94,6 +94,13 @@ class Store:
         index.sort(key=lambda e: e["number"], reverse=True)
         write_json(os.path.join(self.issues_dir, "index.json"), index)
 
+    # --- today's edition: the picks the site shows, refreshed daily ---
+    def load_today(self):
+        return read_json(os.path.join(self.issues_dir, "today.json"))
+
+    def save_today(self, issue):
+        write_json(os.path.join(self.issues_dir, "today.json"), issue)
+
     def graded_cache(self):
         return read_json(os.path.join(self.root, "graded.json"), default={})
 

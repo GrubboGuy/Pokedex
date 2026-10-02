@@ -56,9 +56,9 @@ def parse(payload):
     return out
 
 
-def top_up(issue, cache, today, log=print):
-    """Attach cached graded prices to picks and fetch a few missing ones. Returns lookups made."""
-    api_key = os.environ.get("PPT_API_KEY", "").strip()
+def top_up(issue, cache, today, log=print, fetch=True):
+    """Attach cached graded prices to picks and, unless fetch is off, look up a few missing ones. Returns lookups made."""
+    api_key = os.environ.get("PPT_API_KEY", "").strip() if fetch else ""
     today_d = dt.date.fromisoformat(today)
     made = 0
     singles = [p for c in issue["categories"] for p in c["picks"] if p["kind"] == "single"]
@@ -81,6 +81,6 @@ def top_up(issue, cache, today, log=print):
                 log(f"  graded lookup failed for {pid}: {err}")
         if cached and cached.get("grades"):
             pick["graded"] = {"date": cached["date"], **cached["grades"]}
-    if not os.environ.get("PPT_API_KEY", "").strip():
+    if fetch and not os.environ.get("PPT_API_KEY", "").strip():
         log("  no PPT_API_KEY set: skipping graded prices")
     return made

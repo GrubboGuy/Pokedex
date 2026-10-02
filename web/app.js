@@ -52,6 +52,19 @@
     return MONTHS[+p[1] - 1] + ' ' + (+p[2]) + (withYear === false ? '' : ', ' + p[0]);
   }
   function span(issue) { return issue.shortSpanDays || 7; }
+  // When the picks were last refreshed, in the reader's own time zone.
+  function updated(issue, withTime) {
+    var d = issue.generatedAt ? new Date(issue.generatedAt) : null;
+    if (!d || isNaN(d)) return niceDate(issue.date, false);
+    var day = MONTHS[d.getMonth()] + ' ' + d.getDate();
+    if (!withTime) return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()] + ', ' + day;
+    var h = d.getHours(), m = d.getMinutes();
+    return day + ', ' + (h % 12 || 12) + ':' + pad(m, 2) + (h < 12 ? ' AM' : ' PM');
+  }
+  function tags(p) {
+    var html = (p.isNew ? '<span class="new">New today</span>' : '') + eraChip(p.era);
+    return html ? '<div class="tags">' + html + '</div>' : '';
+  }
   function pad(n, len) { n = String(n); while (n.length < len) n = '0' + n; return n; }
   function bigImage(url) { return url ? url.replace('_200w.', '_in_1000x1000.') : ''; }
   function productImage(id) { return 'https://tcgplayer-cdn.tcgplayer.com/product/' + id + '_200w.jpg'; }
@@ -123,9 +136,14 @@
   function getIssue(number) {
     return getIndex().then(function (index) {
       if (!index.length) throw new Error('empty');
-      var n = number || index[0].number;
-      if (!cache[n]) cache[n] = getJSON('data/issue-' + n + '.json');
-      return cache[n].then(function (issue) { return { issue: issue, latest: index[0].number, index: index }; });
+      // With no issue number, show today's edition: the picks as refreshed this morning.
+      // A numbered issue is the copy kept from the day it was cut.
+      var n = number || 'today';
+      if (!cache[n]) {
+        cache[n] = number ? getJSON('data/issue-' + number + '.json')
+          : getJSON('data/today.json').catch(function () { return getJSON('data/issue-' + index[0].number + '.json'); });
+      }
+      return cache[n].then(function (issue) { return { issue: issue, kept: !!number, latest: index[0].number, index: index }; });
     });
   }
   function getSearch() {
@@ -154,7 +172,7 @@
     if (!setCache[gid]) setCache[gid] = getJSON('data/sets/' + gid + '.json').catch(function () { delete setCache[gid]; return null; });
     return setCache[gid];
   }
-  function base(ctx) { return ctx.issue.number === ctx.latest ? '#' : '#/issue/' + ctx.issue.number; }
+  function base(ctx) { return ctx.kept ? '#/issue/' + ctx.issue.number : '#'; }
 
   // ---------- chrome ----------
   function renderTabs(ctx, activeId) {
@@ -184,10 +202,11 @@
   // ---------- views ----------
   function frontView(ctx) {
     var issue = ctx.issue, b = base(ctx), days = span(issue);
-    var coverCat = null, coverPick = null, total = 0;
+    var coverCat = null, coverPick = null, total = 0, fresh = 0;
     issue.categories.forEach(function (c) {
       total += c.picks.length;
       c.picks.forEach(function (p) {
+        if (p.isNew) fresh++;
         if (issue.cover && c.id === issue.cover.category && p.key === issue.cover.key) { coverCat = c; coverPick = p; }
       });
     });
@@ -204,7 +223,7 @@
     }).join('');
 
     var s = issue.stats;
-    return '<header class="front-head"><div class="dateline eyebrow"><span>Issue ' + pad(issue.number, 2) + '</span><span>Week of ' + niceDate(issue.date) + '</span></div>' +
+    return '<header class="front-head"><div class="dateline eyebrow"><span>Issue ' + pad(issue.number, 2) + '</span><span>' + (ctx.kept ? 'Week of ' + niceDate(issue.date) : 'Updated ' + updated(issue)) + '</span></div>' +
       '<h1>This week&#39;s picks</h1>' +
       '<p class="deck">' + total + ' cards and sealed products worth a look, chosen by rule from ' + Number(s.productsScanned).toLocaleString('en-US') + ' tracked products.</p>' +
       '<button type="button" class="cta" id="strategy">This week&#39;s strategy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></header>' +
@@ -213,7 +232,7 @@
         '<h2>' + esc(shortName(coverPick.name)) + '</h2><p class="where">' + esc(where(coverPick)) + '</p>' +
         '<span class="figures"><span class="price">' + money(coverPick.price) + '</span>' + headlineMove(coverPick) + '</span>' + score(coverPick) + '</span>' +
         '<span class="hero-why deck">' + esc(coverPick.reason) + '</span></a>' +
-      '<h2 class="strip">Sections <span>' + issue.categories.length + ' lists, ' + total + ' picks</span></h2>' +
+      '<h2 class="strip">Sections <span>' + issue.categories.length + ' lists, ' + total + ' picks' + (fresh && !ctx.kept ? ', ' + fresh + ' new today' : '') + '</span></h2>' +
       '<ol class="sections">' + sections + '</ol>' +
       '<div class="block dark stats"><div><b>' + Number(s.productsScanned).toLocaleString('en-US') + '</b><span>products checked</span></div>' +
         '<div><b>' + s.snapshots + '</b><span>days of prices since ' + niceDate(s.historyFrom, false) + '</span></div>' +
@@ -233,7 +252,7 @@
       return '<a class="pick" href="' + b + '/card/' + cat.id + '/' + p.rank + '">' +
         '<div class="pick-art"><span class="rank">' + p.rank + '</span>' + img(p) + '</div>' +
         '<div class="pick-info"><h3>' + esc(shortName(p.name)) + '</h3><p class="where">' + esc(where(p)) + '</p>' +
-        (p.era ? '<div class="tags">' + eraChip(p.era) + '</div>' : '') +
+        tags(p) +
         '<div class="figures"><span class="price">' + money(p.price) + '</span>' + headlineMove(p) + '</div>' + score(p) + '</div></a>';
     }).join('');
     var trendNote = lead.ch7 != null ? 'Change shown is the ' + days + '-day move in TCGplayer market price, as of ' + niceDate(issue.date) + '.'
@@ -243,7 +262,7 @@
       '<a class="lead" href="' + b + '/card/' + cat.id + '/' + lead.rank + '">' +
         '<div class="lead-art"><span class="rank">1</span>' + img(lead, 'card-img', true) + '</div>' +
         '<div><h2>' + esc(shortName(lead.name)) + '</h2><p class="where">' + esc(where(lead)) + '</p>' +
-        (lead.era ? '<div class="tags">' + eraChip(lead.era) + '</div>' : '') +
+        tags(lead) +
         '<div class="figures"><span class="price">' + money(lead.price) + '</span>' + headlineMove(lead) + '</div>' + score(lead) + '</div>' +
         '<p class="lead-why deck">' + esc(lead.reason) + '</p></a>' +
       '<div class="picks">' + rest + '</div>' +
@@ -384,7 +403,7 @@
     return '<div class="' + tone(cat) + '"><header class="entry-head band"><a class="back" href="' + listHref + '">' + esc(cat.short || cat.title) + '</a>' +
       '<span class="eyebrow"><i class="dot"></i>Pick ' + p.rank + ' of ' + cat.picks.length + '</span><h1>' + esc(shortName(p.name)) + '</h1>' +
       '<p class="where">' + esc(where(p)) + (p.rarity ? '. ' + esc(p.rarity) : '') + '</p>' +
-      (p.era ? '<div class="tags">' + eraChip(p.era) + '</div>' : '') + '</header>' +
+      tags(p) + '</header>' +
       '<div class="entry-main">' + img(p, 'card-img', true) +
       '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
       '<p class="sub">Lowest listing ' + money(p.low) + '</p>' +
@@ -614,7 +633,7 @@
         '<span><b>Issue ' + pad(e.number, 2) + '</b><span>Week of ' + niceDate(e.date) + '. ' + e.picks + ' picks. Top pick: ' + esc(shortName(e.coverName || '')) + '</span></span></a>';
     }).join('');
     return '<header class="page-head"><h1>Back issues</h1></header><section class="block">' + rows + '</section>' +
-      '<section class="block sunk article"><p>A new issue is cut every Thursday night, ready for Friday morning. Once four weeks of issues exist, each back issue will show how its picks did.</p></section>';
+      '<section class="block sunk article"><p>The picks on the front page are refreshed every morning by 7 AM Eastern. Each Friday\u2019s picks are kept here as a numbered issue. Once four weeks of issues exist, each back issue will show how its picks did.</p></section>';
   }
 
   function howView(ctx) {
@@ -623,8 +642,8 @@
     var sources = issue.sources.map(function (s) { return '<li><a href="' + esc(s.url) + '" rel="noopener">' + esc(s.name) + '</a>. ' + esc(s.note) + '</li>'; }).join('');
     return '<header class="page-head"><h1>How it works</h1>' +
       '<p class="deck">Every day a job copies the TCGplayer market price of every English Pokémon single and sealed product, about ' + Number(issue.stats.productsScanned).toLocaleString('en-US') +
-      ' products. Once a week it compares today with a week, 30 days and 90 days ago and runs the rules below. Nothing is hand-picked.</p></header>' +
-      (days !== 7 ? '<section class="block tint t-sale article"><p>This issue measures its short-term move over ' + days + ' days instead of 7, because the free price archive has a gap in late September 2026. From the next issue on it is a true 7-day move.</p></section>' : '') +
+      ' products. Every morning it compares the latest prices with a week, 30 days and 90 days ago and re-runs the rules below, so the picks are fresh by 7 AM Eastern. Nothing is hand-picked.</p></header>' +
+      (days !== 7 ? '<section class="block tint t-sale article"><p>Today\u2019s picks measure their short-term move over ' + days + ' days instead of 7, because the saved price history has a gap in late September 2026. It returns to 7 days once a full week of daily prices is on file.</p></section>' : '') +
       '<section class="block article"><h2>Where the numbers come from</h2><ul>' + sources + '</ul></section>' +
       '<section class="block article"><h2>The rule for each list</h2><ul style="list-style:none;padding-left:0">' + rules + '</ul></section>' +
       '<section class="block sunk article"><h2>Checks on every pick</h2><ul>' +
@@ -693,13 +712,14 @@
       return;
     }
     getIssue(number).then(function (ctx) {
-      issueNoEl.textContent = 'Issue ' + pad(ctx.issue.number, 2) + ', ' + niceDate(ctx.issue.date, false);
+      issueNoEl.textContent = ctx.kept ? 'Issue ' + pad(ctx.issue.number, 2) + ', ' + niceDate(ctx.issue.date, false) : 'Updated ' + updated(ctx.issue, true);
       var html;
       if (view === 'list') { setNav('issue'); renderTabs(ctx, parts[1]); html = listView(ctx, parts[1]); }
       else if (view === 'card') { setNav('issue'); renderTabs(ctx, parts[1]); html = cardView(ctx, parts[1], parts[2]); }
       else if (view === 'issues') { setNav('issues'); tabsEl.hidden = true; html = issuesView(ctx); }
       else if (view === 'how') { setNav('how'); tabsEl.hidden = true; html = howView(ctx); }
       else { setNav('issue'); renderTabs(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; new Image().src = 'img/chromesby.webp'; }, 1500); } }
+      screen.classList.toggle('kept', ctx.kept);
       show(html);
       document.title = ctx.issue.title + ' weekly, issue ' + ctx.issue.number;
     }).catch(fail);
