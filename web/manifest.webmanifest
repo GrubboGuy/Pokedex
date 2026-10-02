@@ -1,7 +1,7 @@
 {
-  "name": "Pokédex weekly",
+  "name": "Pokédex daily",
   "short_name": "Pokédex",
-  "description": "A weekly report of Pokémon card market picks, built from TCGplayer and eBay price data.",
+  "description": "Daily Pokémon card market picks, built from TCGplayer and eBay price data.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

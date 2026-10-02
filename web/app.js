@@ -1,4 +1,4 @@
-/* Pokédex weekly: renders the issue files written by the data job. No build step. */
+/* Pokédex daily: renders the picks written by the data job. No build step. */
 (function () {
   'use strict';
 
@@ -61,8 +61,14 @@
     var h = d.getHours(), m = d.getMinutes();
     return day + ', ' + (h % 12 || 12) + ':' + pad(m, 2) + (h < 12 ? ' AM' : ' PM');
   }
+  // True when the picks on screen were made today, by the reader's own calendar.
+  function madeToday(issue) {
+    var d = issue.generatedAt ? new Date(issue.generatedAt) : null, now = new Date();
+    return !!d && !isNaN(d) && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+  }
+  var today = '';  // ' today' while the picks on screen were made today, otherwise empty; set on each page load
   function tags(p) {
-    var html = (p.isNew ? '<span class="new">New today</span>' : '') + eraChip(p.era);
+    var html = (p.isNew ? '<span class="new">New' + today + '</span>' : '') + eraChip(p.era);
     return html ? '<div class="tags">' + html + '</div>' : '';
   }
   function pad(n, len) { n = String(n); while (n.length < len) n = '0' + n; return n; }
@@ -114,7 +120,12 @@
     if (p.scoreLabel === 'Steady') return p.score >= 85 ? 'Rock steady' : 'Steady';
     return p.score >= 80 ? 'Red hot' : (p.score >= 65 ? 'Hot' : 'Warming up');
   }
-  function listTitle(cat) { return (cat.id.indexOf('hot-') === 0 ? '🔥 ' : '') + cat.title; }
+  // Titles saved in older issues end in "this week"; the time word is added here only when it is true.
+  function plainTitle(cat) { return String(cat.title).replace(/ (this week|today)$/, ''); }
+  function listTitle(cat) {
+    var timed = cat.id.indexOf('hot-') === 0 || cat.id === 'modern-sealed' || cat.id === 'on-sale';
+    return (cat.id.indexOf('hot-') === 0 ? '🔥 ' : '') + plainTitle(cat) + (timed ? today : '');
+  }
   function where(p) {
     var bits = [p.set];
     if (p.number) bits.push('#' + p.number);
@@ -223,16 +234,16 @@
     }).join('');
 
     var s = issue.stats;
-    return '<header class="front-head"><div class="dateline eyebrow"><span>Issue ' + pad(issue.number, 2) + '</span><span>' + (ctx.kept ? 'Week of ' + niceDate(issue.date) : 'Updated ' + updated(issue)) + '</span></div>' +
-      '<h1>This week&#39;s picks</h1>' +
+    return '<header class="front-head"><div class="dateline eyebrow"><span>Issue ' + pad(issue.number, 2) + '</span><span>' + (ctx.kept ? 'Prices as of ' + niceDate(issue.date) : 'Updated ' + updated(issue)) + '</span></div>' +
+      '<h1>' + (ctx.kept ? 'Picks from ' + niceDate(issue.date, false) : (today ? 'Today&#39;s picks' : 'Latest picks')) + '</h1>' +
       '<p class="deck">' + total + ' cards and sealed products worth a look, chosen by rule from ' + Number(s.productsScanned).toLocaleString('en-US') + ' tracked products.</p>' +
-      '<button type="button" class="cta" id="strategy">This week&#39;s strategy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></header>' +
+      '<button type="button" class="cta" id="strategy">Today&#39;s strategy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></header>' +
       '<a class="hero ' + tone(coverCat) + '" href="' + coverHref + '">' + img(coverPick, 'card-img', true) +
         '<span><span class="eyebrow"><i class="dot"></i>Top pick, ' + esc(coverCat.short || coverCat.title) + '</span>' +
         '<h2>' + esc(shortName(coverPick.name)) + '</h2><p class="where">' + esc(where(coverPick)) + '</p>' +
         '<span class="figures"><span class="price">' + money(coverPick.price) + '</span>' + headlineMove(coverPick) + '</span>' + score(coverPick) + '</span>' +
         '<span class="hero-why deck">' + esc(coverPick.reason) + '</span></a>' +
-      '<h2 class="strip">Sections <span>' + issue.categories.length + ' lists, ' + total + ' picks' + (fresh && !ctx.kept ? ', ' + fresh + ' new today' : '') + '</span></h2>' +
+      '<h2 class="strip">Sections <span>' + issue.categories.length + ' lists, ' + total + ' picks' + (fresh && !ctx.kept ? ', ' + fresh + ' new' + today : '') + '</span></h2>' +
       '<ol class="sections">' + sections + '</ol>' +
       '<div class="block dark stats"><div><b>' + Number(s.productsScanned).toLocaleString('en-US') + '</b><span>products checked</span></div>' +
         '<div><b>' + s.snapshots + '</b><span>days of prices since ' + niceDate(s.historyFrom, false) + '</span></div>' +
@@ -266,7 +277,7 @@
         '<div class="figures"><span class="price">' + money(lead.price) + '</span>' + headlineMove(lead) + '</div>' + score(lead) + '</div>' +
         '<p class="lead-why deck">' + esc(lead.reason) + '</p></a>' +
       '<div class="picks">' + rest + '</div>' +
-      '<div class="block tint aside"><b>How this list is picked</b><p>' + esc(cat.rule) + ' ' + cat.eligible + ' passed this week; these are the top ' + cat.picks.length + '.</p></div>' +
+      '<div class="block tint aside"><b>How this list is picked</b><p>' + esc(cat.rule) + ' ' + cat.eligible + ' passed' + today + '; these are the top ' + cat.picks.length + '.</p></div>' +
       '<p class="note fine">' + trendNote + '</p>' + sectionPager(ctx, cat.id) + '</div>';
   }
 
@@ -622,7 +633,7 @@
         '<p class="sub">' + (pr[2] != null ? 'Lowest listing ' + money(pr[2]) : 'Nothing listed right now') + '</p>' + chips + '</div></div>' +
         (rows.length ? '<section class="block tint"><h2>Price moves</h2><div class="figs' + (rows.length === 2 ? ' two' : '') + '">' + rows.join('') + '</div></section>' : '') +
         chartBlock(series) +
-        '<p class="note fine">TCGplayer market price for the ' + esc(pr[0]) + ' printing, via <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(data.date) + '. eBay sold and graded prices are looked up only for cards in the weekly issue.</p>' +
+        '<p class="note fine">TCGplayer market price for the ' + esc(pr[0]) + ' printing, via <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(data.date) + '. eBay sold and graded prices are looked up only for the cards in the picks.</p>' +
         buyLinks(it[1], it[3], s[2], 'https://www.tcgplayer.com/product/' + it[0]) + '</div>';
     });
   }
@@ -630,7 +641,7 @@
   function issuesView(ctx) {
     var rows = ctx.index.map(function (e) {
       return '<a class="issue-row" href="#/issue/' + e.number + '/"><img src="' + esc(e.coverImage || PLACEHOLDER) + '" alt="" loading="lazy">' +
-        '<span><b>Issue ' + pad(e.number, 2) + '</b><span>Week of ' + niceDate(e.date) + '. ' + e.picks + ' picks. Top pick: ' + esc(shortName(e.coverName || '')) + '</span></span></a>';
+        '<span><b>Issue ' + pad(e.number, 2) + '</b><span>Prices as of ' + niceDate(e.date) + '. ' + e.picks + ' picks. Top pick: ' + esc(shortName(e.coverName || '')) + '</span></span></a>';
     }).join('');
     return '<header class="page-head"><h1>Back issues</h1></header><section class="block">' + rows + '</section>' +
       '<section class="block sunk article"><p>The picks on the front page are refreshed every morning by 7 AM Eastern. Each Friday\u2019s picks are kept here as a numbered issue. Once four weeks of issues exist, each back issue will show how its picks did.</p></section>';
@@ -638,12 +649,12 @@
 
   function howView(ctx) {
     var issue = ctx.issue, days = span(issue);
-    var rules = issue.categories.map(function (c) { return '<li class="' + tone(c) + '"><i class="dot"></i><b>' + esc(c.title) + '.</b> ' + esc(c.rule) + '</li>'; }).join('');
+    var rules = issue.categories.map(function (c) { return '<li class="' + tone(c) + '"><i class="dot"></i><b>' + esc(plainTitle(c)) + '.</b> ' + esc(c.rule) + '</li>'; }).join('');
     var sources = issue.sources.map(function (s) { return '<li><a href="' + esc(s.url) + '" rel="noopener">' + esc(s.name) + '</a>. ' + esc(s.note) + '</li>'; }).join('');
     return '<header class="page-head"><h1>How it works</h1>' +
       '<p class="deck">Every day a job copies the TCGplayer market price of every English Pokémon single and sealed product, about ' + Number(issue.stats.productsScanned).toLocaleString('en-US') +
       ' products. Every morning it compares the latest prices with a week, 30 days and 90 days ago and re-runs the rules below, so the picks are fresh by 7 AM Eastern. Nothing is hand-picked.</p></header>' +
-      (days !== 7 ? '<section class="block tint t-sale article"><p>Today\u2019s picks measure their short-term move over ' + days + ' days instead of 7, because the saved price history has a gap in late September 2026. It returns to 7 days once a full week of daily prices is on file.</p></section>' : '') +
+      (days !== 7 ? '<section class="block tint t-sale article"><p>These picks measure their short-term move over ' + days + ' days instead of 7, because the saved price history has a gap in late September 2026. It returns to 7 days once a full week of daily prices is on file.</p></section>' : '') +
       '<section class="block article"><h2>Where the numbers come from</h2><ul>' + sources + '</ul></section>' +
       '<section class="block article"><h2>The rule for each list</h2><ul style="list-style:none;padding-left:0">' + rules + '</ul></section>' +
       '<section class="block sunk article"><h2>Checks on every pick</h2><ul>' +
@@ -703,7 +714,7 @@
     if (view === 'search') {
       setNav('search'); tabsEl.hidden = true;
       show(searchView()); wireSearch();
-      document.title = 'Search, Pokédex weekly';
+      document.title = 'Search, Pokédex daily';
       return;
     }
     if (view === 'p') {
@@ -714,6 +725,7 @@
     getIssue(number).then(function (ctx) {
       issueNoEl.textContent = ctx.kept ? 'Issue ' + pad(ctx.issue.number, 2) + ', ' + niceDate(ctx.issue.date, false) : 'Updated ' + updated(ctx.issue, true);
       var html;
+      today = !ctx.kept && madeToday(ctx.issue) ? ' today' : '';
       if (view === 'list') { setNav('issue'); renderTabs(ctx, parts[1]); html = listView(ctx, parts[1]); }
       else if (view === 'card') { setNav('issue'); renderTabs(ctx, parts[1]); html = cardView(ctx, parts[1], parts[2]); }
       else if (view === 'issues') { setNav('issues'); tabsEl.hidden = true; html = issuesView(ctx); }
@@ -721,7 +733,7 @@
       else { setNav('issue'); renderTabs(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; new Image().src = 'img/chromesby.webp'; }, 1500); } }
       screen.classList.toggle('kept', ctx.kept);
       show(html);
-      document.title = ctx.issue.title + ' weekly, issue ' + ctx.issue.number;
+      document.title = ctx.issue.title + ' daily' + (ctx.kept ? ', issue ' + ctx.issue.number : '');
     }).catch(fail);
   }
 

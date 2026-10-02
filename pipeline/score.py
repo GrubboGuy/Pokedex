@@ -1,4 +1,4 @@
-"""Turns the catalog and price history into the weekly lists."""
+"""Turns the catalog and price history into the lists of picks."""
 
 import datetime as dt
 import math
@@ -180,8 +180,8 @@ def _in_span():
     return f"in {SPAN} days"
 
 
-def _this_week():
-    return "this week" if SPAN <= 8 else f"in the last {SPAN} days"
+def _recently():
+    return f"in the last {SPAN} days"
 
 
 def _pct(x):
@@ -252,9 +252,9 @@ def _sealed():
 
     def reason(r):
         if r["ch30"] is not None:
-            return (f"Up {_pct(r['ch30'])} over 30 days and {_pct(r['ch7'])} {_this_week()}. "
+            return (f"Up {_pct(r['ch30'])} over 30 days and {_pct(r['ch7'])} {_recently()}. "
                     f"Lowest sealed copy listed is {_money(r['low'])}.")
-        return f"Up {_pct(r['ch7'])} {_this_week()}. Lowest sealed copy listed is {_money(r['low'])}."
+        return f"Up {_pct(r['ch7'])} {_recently()}. Lowest sealed copy listed is {_money(r['low'])}."
 
     return test, rank, _heat, reason
 
@@ -271,7 +271,7 @@ def _gems():
 
     def reason(r):
         return (f"A steady climb, not a spike: {_pct(r['ch30'])} over 30 days, {_pct(r['ch7'])} "
-                f"{_this_week()}, and still only {_money(r['price'])}.")
+                f"{_recently()}, and still only {_money(r['price'])}.")
 
     return test, lambda r: r["ch30"], _heat, reason
 
@@ -385,21 +385,21 @@ def _rebound():
 LISTS = [
     ("big-movers", "Big ups and downs", "Big ups/downs", "The largest moves on cards worth $100 and up", "red", "Swing", _big_movers(),
      "Singles worth $100 or more, before or after the move, whose market price moved at least 8% either way in {span} days. Up to four risers and four fallers, biggest move first."),
-    ("hot-vintage", "Vintage era singles this week", "Vintage era", "1999 to 2007: Wizards of the Coast and EX sets", "red", "Heat", _hot(("wotc", "ex"), 15),
+    ("hot-vintage", "Vintage era singles", "Vintage era", "1999 to 2007: Wizards of the Coast and EX sets", "red", "Heat", _hot(("wotc", "ex"), 15),
      "Singles from sets released before May 2007, $15 and up, that rose at least 5% in {span} days while the 30-day trend is also up."),
-    ("hot-middle", "DP to XY era singles this week", "DP to XY era", "2007 to 2016: Diamond & Pearl through XY sets", "blue", "Heat", _hot(("dp", "bwxy"), 10),
+    ("hot-middle", "DP to XY era singles", "DP to XY era", "2007 to 2016: Diamond & Pearl through XY sets", "blue", "Heat", _hot(("dp", "bwxy"), 10),
      "Singles from 2007 to 2016 sets, $10 and up, that rose at least 5% in {span} days while the 30-day trend is also up."),
-    ("hot-sm-swsh", "SM and SWSH era singles this week", "SM and SWSH era", "2017 to 2022: Sun & Moon and Sword & Shield sets", "yellow", "Heat", _hot(("sm", "swsh"), 8, 0.34),
+    ("hot-sm-swsh", "SM and SWSH era singles", "SM and SWSH era", "2017 to 2022: Sun & Moon and Sword & Shield sets", "yellow", "Heat", _hot(("sm", "swsh"), 8, 0.34),
      "Singles from 2017 to 2022 sets, $8 and up, that rose at least 5% in {span} days while the 30-day trend is also up."),
-    ("hot-modern", "Modern era singles this week", "Modern era", "2023 on: Scarlet & Violet and Mega Evolution sets", "red", "Heat", _hot(("sv", "mega"), 5, 0.45),
+    ("hot-modern", "Modern era singles", "Modern era", "2023 on: Scarlet & Violet and Mega Evolution sets", "red", "Heat", _hot(("sv", "mega"), 5, 0.45),
      "Singles from 2023 and later sets, $5 and up, that rose at least 5% in {span} days while the 30-day trend is also up."),
-    ("modern-sealed", "Top modern sealed this week", "Modern sealed", "Boxes, bundles and tins from 2023 on", "blue", "Heat", _sealed(),
+    ("modern-sealed", "Top modern sealed", "Modern sealed", "Boxes, bundles and tins from 2023 on", "blue", "Heat", _sealed(),
      "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by 30-day rise."),
     ("hidden-gems", "Hidden gems for cheap", "Hidden gems", "Under $20 and climbing steadily", "green", "Heat", _gems(),
      "Singles from $2 to $20 that rose 8% to 80% over 30 days, with the rise spread out and not one late jump."),
     ("get-em-now", "Get 'em now", "Get 'em now", "Proven cards on a dip that looks temporary", "green", "Rebound", _rebound(),
      "Singles that were $30 and up, trade often and held or gained value over the prior months, now down 5% to 35% in {span} days and under their own 90-day median. From sets at least a year old, so the normal slide after release is not counted. These are the conditions that tend to come before a recovery, not a forecast."),
-    ("on-sale", "On sale this week", "On sale", "Trading well under their own 90-day median", "yellow", "Deal", _on_sale(),
+    ("on-sale", "On sale", "On sale", "Trading well under their own 90-day median", "yellow", "Deal", _on_sale(),
      "Cards and sealed products $20 and up, at least 13% under their own 90-day median price, from sets at least a year old so the normal slide after release is not counted."),
     ("holding", "Holding strong", "Holding strong", "Big cards that barely moved", "green", "Steady", _holding(),
      "Cards and sealed products $100 and up whose price stayed within a 12% band across the tracked period without falling."),
@@ -444,13 +444,13 @@ def _sealed_listings():
 
     def reason(r):
         return (f"The cheapest sealed copy listed is {_money(r['low'])}, {discount(r) * 100:.0f}% under the "
-                f"{_money(r['price'])} market price. Sealed price history starts this week, so there is no trend yet.")
+                f"{_money(r['price'])} market price. Sealed price history is only a few days old, so there is no trend yet.")
 
     return test, discount, score, reason
 
 
 SEALED_FALLBACK = (
-    "modern-sealed", "Top modern sealed this week", "Modern sealed",
+    "modern-sealed", "Top modern sealed", "Modern sealed",
     "Boxes, bundles and tins listed under their market price", "blue", "Deal", _sealed_listings(),
     "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by how far "
     "the cheapest listing sits under the market price (3% to 25%). Trend ranking starts once a week of sealed prices exists.",

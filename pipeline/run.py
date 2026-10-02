@@ -1,4 +1,4 @@
-"""Daily job: refresh prices, backfill history, and cut the weekly issue.
+"""Daily job: refresh prices, re-pick the lists, and keep a numbered issue each week.
 
     python -m pipeline.run --data-dir _data [--cut auto|force|new|never]
 """
@@ -54,7 +54,7 @@ def backfill(store, today):
 def plan_cut(index, edition, today, mode):
     """Decides whether to re-pick the lists on this run and whether that starts a new numbered issue.
 
-    The picks are refreshed whenever the price data is newer than the picks on the site.
+    The morning run re-picks the lists every day on the latest prices.
     A new numbered issue starts with Thursday's prices (the Friday-morning run), or if a week was missed;
     the days in between update the current issue's daily edition.
     """
@@ -74,8 +74,8 @@ def plan_cut(index, edition, today, mode):
         return True, True
     if mode == "force":
         return True, new_number
-    stale = edition is None or edition["date"] < today
-    return stale or new_number, new_number
+    # auto: the morning run always re-runs the rules, so the picks are that day's even if prices did not move
+    return True, new_number
 
 
 def _keys(issue):
@@ -119,8 +119,10 @@ def main(argv=None):
             return 0 if index else 2
         number = (index[0]["number"] + 1 if index else 1) if new_number else index[0]["number"]
         issue_date = today if new_number else index[0]["date"]
-        # Picks that were not in the previous day's edition are marked as new.
-        if edition and edition["date"] < today:
+        # Picks that were not in the previous day's edition are marked as new. A second refresh
+        # on the same day keeps comparing against the day before.
+        now = dt.datetime.now(dt.timezone.utc)
+        if edition and (edition.get("generatedAt") or "")[:10] != now.date().isoformat():
             previous = _keys(edition)
         else:
             previous = (edition or {}).get("previousKeys")
@@ -136,7 +138,7 @@ def main(argv=None):
             "issueDate": issue_date,
             "title": config.TITLE,
             "tagline": config.TAGLINE,
-            "generatedAt": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+            "generatedAt": now.isoformat(timespec="seconds"),
             "shortSpanDays": span,
             "sources": config.SOURCES,
             "stats": {

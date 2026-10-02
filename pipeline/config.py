@@ -1,7 +1,7 @@
-"""Settings for the weekly issue. Change the numbers here to tune the picks."""
+"""Settings for the picks. Change the numbers here to tune them."""
 
 TITLE = "Pokédex"
-TAGLINE = "The weekly card market mag"
+TAGLINE = "The daily card market mag"
 
 # TCGplayer category for English Pokemon cards on TCGCSV.
 CATEGORY_ID = 3

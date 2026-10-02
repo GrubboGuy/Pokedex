@@ -1,6 +1,6 @@
-# Pokédex weekly
+# Pokédex daily
 
-A weekly magazine of Pokémon card market picks, built from real TCGplayer price data and published as a phone-friendly web app. Runs at $0.
+Daily Pokémon card market picks, built from real TCGplayer price data and published as a phone-friendly web app. Runs at $0.
 
 ## How it works
 
