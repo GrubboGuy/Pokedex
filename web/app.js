@@ -47,7 +47,7 @@
     var src = big && pick.image ? bigImage(pick.image) : small;
     var kind = pick.kind === 'sealed' ? ' sealed' : '';
     return '<img class="' + (cls || 'card-img') + kind + '" src="' + esc(src) + '" data-small="' + esc(small) +
-      '" alt="' + esc(pick.name) + '" loading="lazy" decoding="async">';
+      '" alt="' + esc(pick.name) + '" loading="' + (big ? 'eager' : 'lazy') + '" decoding="async">';
   }
   // Fall back from the large image to the small one, then to a drawn placeholder.
   document.addEventListener('error', function (e) {
