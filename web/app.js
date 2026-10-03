@@ -3,12 +3,10 @@
   'use strict';
 
   var screen = document.getElementById('screen');
-  var tabsEl = document.getElementById('tabs');
+  var sideEl = document.getElementById('side');
   var issueNoEl = document.getElementById('issue-no');
   var cache = {};
   var indexPromise = null, searchPromise = null, setCache = {};
-  var swipe = { prev: null, next: null };
-  var slideFrom = null;
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var TIERS = { UNOPENED: 'Sealed', NEAR_MINT: 'Near Mint', LIGHTLY_PLAYED: 'Lightly Played', MODERATELY_PLAYED: 'Moderately Played', HEAVILY_PLAYED: 'Heavily Played', DAMAGED: 'Damaged' };
@@ -138,8 +136,7 @@
   // Titles saved in older issues end in "this week"; the time word is added here only when it is true.
   function plainTitle(cat) { return String(cat.title).replace(/ (this week|today)$/, ''); }
   function listTitle(cat) {
-    var timed = cat.id.indexOf('hot-') === 0 || cat.id === 'modern-sealed' || cat.id === 'on-sale';
-    return (cat.id.indexOf('hot-') === 0 ? '🔥 ' : '') + plainTitle(cat) + (timed ? today : '');
+    return (cat.id.indexOf('hot-') === 0 ? '🔥 ' : '') + plainTitle(cat);
   }
   // A TCGplayer link that opens the copies for sale of this exact printing, cheapest first.
   function lowUrl(url, productId, printing, sealed, nearMint) {
@@ -212,15 +209,20 @@
   function base(ctx) { return ctx.kept ? '#/issue/' + ctx.issue.number : '#'; }
 
   // ---------- chrome ----------
-  function renderTabs(ctx, activeId) {
+  // The sidebar: every section, always in view. activeId is '' for the front page, null for none.
+  function renderSide(ctx, activeId) {
     var b = base(ctx);
-    var tabs = [['', 'Front page', 'front']].concat(ctx.issue.categories.map(function (c) { return [c.id, c.short || c.title, TONE[c.id] || 'steady']; }));
-    tabsEl.innerHTML = tabs.map(function (t) {
-      return '<a class="t-' + t[2] + '" href="' + b + (t[0] ? '/list/' + t[0] : '/') + '"' + (t[0] === activeId ? ' aria-current="true"' : '') + '><i class="dot"></i>' + esc(t[1]) + '</a>';
+    var rows = [['', 'Front page', 'Front page', 'front', 0]].concat(ctx.issue.categories.map(function (c) {
+      return [c.id, c.short || plainTitle(c), listTitle(c), TONE[c.id] || 'steady', ctx.kept ? 0 : c.picks.filter(function (p) { return p.isNew; }).length];
+    }));
+    sideEl.innerHTML = rows.map(function (r) {
+      return '<a class="t-' + r[3] + '" href="' + b + (r[0] ? '/list/' + r[0] : '/') + '" title="' + esc(r[2]) + '"' + (r[0] === activeId ? ' aria-current="true"' : '') + '>' +
+        '<i class="dot"></i><span>' + esc(r[1]) + '</span>' + (r[4] ? '<b class="n" aria-label="' + r[4] + ' new">' + r[4] + '</b>' : '') + '</a>';
     }).join('');
-    tabsEl.hidden = false;
-    var on = tabsEl.querySelector('[aria-current]');
-    if (on) tabsEl.scrollTo({ left: Math.max(0, on.offsetLeft - (tabsEl.clientWidth - on.offsetWidth) / 2), behavior: reduceMotion ? 'auto' : 'smooth' });
+    var on = sideEl.querySelector('[aria-current]');
+    if (on && (on.offsetTop < sideEl.scrollTop || on.offsetTop + on.offsetHeight > sideEl.scrollTop + sideEl.clientHeight)) {
+      sideEl.scrollTop = Math.max(0, on.offsetTop - (sideEl.clientHeight - on.offsetHeight) / 2);
+    }
   }
   function sectionPager(ctx, activeId) {
     var b = base(ctx), cats = ctx.issue.categories;
@@ -228,12 +230,10 @@
     var i = order.map(function (o) { return o.id; }).indexOf(activeId);
     var prev = order[i - 1], next = order[i + 1];
     var href = function (o) { return b + (o.id ? '/list/' + o.id : '/'); };
-    swipe.prev = prev ? href(prev) : null;
-    swipe.next = next ? href(next) : null;
     return '<nav class="pager" aria-label="Sections">' +
       (prev ? '<a class="prev" href="' + href(prev) + '"><small>Previous section</small><b>' + esc(prev.name) + '</b></a>' : '<span></span>') +
       (next ? '<a class="next" href="' + href(next) + '"><small>Next section</small><b>' + esc(next.name) + '</b></a>' : '<span></span>') +
-      '</nav><p class="swipe-hint">Swipe left or right to move between sections, or open the menu at the top left to jump to any of them.</p>';
+      '</nav>';
   }
 
   // ---------- views ----------
@@ -441,8 +441,6 @@
     var prev = cat.picks[p.rank - 2], next = cat.picks[p.rank];
     var listHref = b + '/list/' + cat.id;
     var hrefOf = function (x) { return b + '/card/' + cat.id + '/' + x.rank; };
-    swipe.prev = prev ? hrefOf(prev) : listHref;
-    swipe.next = next ? hrefOf(next) : listHref;
     var confText = { High: 'it sells often, we have a long price history, and sellers are asking close to the market price', Medium: 'we have only part of its price history, or sellers are asking a bit more or less than the market price', Low: 'we have little price history for it, or sellers are asking far more or less than the market price' }[p.confidence];
     var price = money(p.price);
 
@@ -468,8 +466,7 @@
       buyLinks({ name: p.name, number: p.number, abbr: p.setAbbr, url: p.url, productId: p.productId, printing: p.printing, sealed: p.kind === 'sealed', low: p.low }) +
       '<nav class="pager" aria-label="Picks">' +
       '<a class="prev" href="' + (prev ? hrefOf(prev) : listHref) + '"><small>' + (prev ? 'Previous pick' : 'Back to') + '</small><b>' + esc(prev ? shortName(prev.name) : (cat.short || cat.title)) + '</b></a>' +
-      '<a class="next" href="' + (next ? hrefOf(next) : listHref) + '"><small>' + (next ? 'Next pick' : 'Back to') + '</small><b>' + esc(next ? shortName(next.name) : (cat.short || cat.title)) + '</b></a></nav>' +
-      '<p class="swipe-hint">Swipe left or right for the next pick.</p></div>';
+      '<a class="next" href="' + (next ? hrefOf(next) : listHref) + '"><small>' + (next ? 'Next pick' : 'Back to') + '</small><b>' + esc(next ? shortName(next.name) : (cat.short || cat.title)) + '</b></a></nav></div>';
   }
 
   // ---------- search ----------
@@ -661,7 +658,6 @@
       if (pr[3] != null) rows.push('<div><small>Recent change</small><b>' + move(pr[3]) + '</b></div>');
       if (pr[4] != null) rows.push('<div><small>Last 30 days</small><b>' + move(pr[4]) + '</b></div>');
       if (q != null) rows.push('<div><small>Since ' + niceDate(first[0], false) + '</small><b>' + move(q) + '</b></div>');
-      swipe.prev = swipe.next = null;
       return '<div class="' + (eraTone(era) || 't-steady') + '"><header class="entry-head band"><a class="back" href="#/search">Search</a>' +
         '<span class="eyebrow"><i class="dot"></i>' + (it[4] ? 'Sealed product' : 'Single card') + '</span><h1>' + esc(shortName(it[1])) + '</h1>' +
         '<p class="where">' + esc([s[1], it[3] ? '#' + it[3] : '', it[5] || ''].filter(Boolean).join(', ')) + '</p>' +
@@ -720,56 +716,6 @@
 
   function notFound() { return '<p class="empty">That page is not in this issue. <a href="#/">Go to the front page</a>.</p>'; }
 
-  // ---------- menu of all sections ----------
-  var menuEl = document.getElementById('menu'), menuBtn = document.getElementById('menu-btn'), menuList = document.getElementById('menu-list');
-  var lastCtx = null, menuTimer = null;
-  function fillMenu(ctx) {
-    var b = base(ctx), fresh = !ctx.kept && madeToday(ctx.issue);
-    var parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
-    if (parts[0] === 'issue') parts = parts.slice(2);
-    var view = parts[0] || 'front', cur = view === 'front' ? '' : (view === 'list' || view === 'card' ? parts[1] : null);
-    var on = function (yes) { return yes ? ' aria-current="true"' : ''; };
-    var rows = '<a class="t-front" href="' + b + '/"' + on(cur === '') + '><i class="dot"></i><span>Front page</span></a>';
-    ctx.issue.categories.forEach(function (c) {
-      var isNew = c.picks.filter(function (p) { return p.isNew; }).length;
-      var timed = c.id.indexOf('hot-') === 0 || c.id === 'modern-sealed' || c.id === 'on-sale';
-      rows += '<a class="' + tone(c) + '" href="' + b + '/list/' + c.id + '"' + on(cur === c.id) + '><i class="dot"></i><span>' +
-        esc(plainTitle(c) + (timed && fresh ? ' today' : '')) + '</span><small>' + c.picks.length + ' picks' + (isNew && !ctx.kept ? ', ' + isNew + ' new' : '') + '</small></a>';
-    });
-    menuList.innerHTML = '<p class="menu-label">' + (ctx.kept ? 'Issue ' + pad(ctx.issue.number, 2) + ', ' + niceDate(ctx.issue.date, false) : (fresh ? 'Today\u2019s picks' : 'Latest picks')) + '</p>' + rows +
-      '<p class="menu-label">More</p>' +
-      '<a class="t-front" href="#/search"' + on(view === 'search' || view === 'p') + '><i class="dot"></i><span>Search every card</span></a>' +
-      '<a class="t-front" href="#/issues"' + on(view === 'issues') + '><i class="dot"></i><span>Back issues</span></a>' +
-      '<a class="t-front" href="#/how"' + on(view === 'how') + '><i class="dot"></i><span>How it works</span></a>';
-  }
-  function openMenu() {
-    clearTimeout(menuTimer);
-    var number = /^#\/issue\/(\d+)/.exec(location.hash);
-    var ready = lastCtx && (number ? lastCtx.kept && String(lastCtx.issue.number) === number[1] : !lastCtx.kept) ? Promise.resolve(lastCtx) : getIssue(number ? +number[1] : null);
-    ready.then(fillMenu).catch(function () { menuList.innerHTML = '<p class="menu-label">The sections could not be loaded.</p>'; });
-    menuEl.hidden = false;
-    void menuEl.offsetWidth;
-    menuEl.classList.add('open');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    document.documentElement.style.overflow = 'hidden';
-    menuEl.querySelector('.menu-close').focus({ preventScroll: true });
-  }
-  function closeMenu(refocus) {
-    if (menuEl.hidden) return;
-    menuEl.classList.remove('open');
-    menuBtn.setAttribute('aria-expanded', 'false');
-    document.documentElement.style.overflow = '';
-    clearTimeout(menuTimer);
-    menuTimer = setTimeout(function () { menuEl.hidden = true; }, 220);
-    if (refocus) menuBtn.focus({ preventScroll: true });
-  }
-  menuBtn.addEventListener('click', function () { if (menuEl.hidden) openMenu(); else closeMenu(true); });
-  menuEl.addEventListener('click', function (e) {
-    if (e.target.closest('[data-close]')) closeMenu(true);
-    else if (e.target.closest('a')) closeMenu(false);
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(true); });
-
   // ---------- router ----------
   function setNav(name) {
     document.querySelectorAll('.nav a').forEach(function (a) {
@@ -777,120 +723,50 @@
     });
   }
   function show(html) {
-    var from = slideFrom;
-    slideFrom = null;
-    screen.style.transition = 'none';
-    screen.style.transform = '';
-    screen.style.opacity = '';
     screen.innerHTML = html;
     wireChart(screen);
     window.scrollTo(0, 0);
-    if (from && !reduceMotion) {
-      // New page glides in from the side the finger was heading to.
-      screen.style.transform = 'translateX(' + (from === 'right' ? 36 : -36) + 'px)';
-      screen.style.opacity = '0';
-      void screen.offsetWidth;
-      screen.style.transition = 'transform .22s cubic-bezier(.2,.8,.2,1), opacity .18s ease-out';
-      screen.style.transform = '';
-      screen.style.opacity = '';
-    }
   }
   function fail(err) {
     show(err && err.message === 'empty'
       ? '<p class="empty">The first issue has not been built yet. It appears here after the data job runs.</p>'
       : '<p class="empty">Could not load this page. Check your connection and reload.</p>');
   }
+  // Pages outside the picks (search, a searched card) still show the sidebar, for today's sections.
+  function sideFor(activeId) {
+    getIssue(null).then(function (ctx) { renderSide(ctx, activeId); }).catch(function () {});
+  }
   function route() {
     var parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
     var number = null;
     if (parts[0] === 'issue') { number = parseInt(parts[1], 10) || null; parts = parts.slice(2); }
     var view = parts[0] || 'front';
-    swipe.prev = swipe.next = null;
 
     if (view === 'search') {
-      setNav('search'); tabsEl.hidden = true;
+      setNav('search'); sideFor(null);
       show(searchView()); wireSearch();
       document.title = 'Search, Pokédex daily';
       return;
     }
     if (view === 'p') {
-      setNav('search'); tabsEl.hidden = true;
+      setNav('search'); sideFor(null);
       productView(parts[1], parts[2], decodeURIComponent(parts[3] || '')).then(show).catch(fail);
       return;
     }
     getIssue(number).then(function (ctx) {
-      lastCtx = ctx;
       issueNoEl.textContent = ctx.kept ? 'Issue ' + pad(ctx.issue.number, 2) + ', ' + niceDate(ctx.issue.date, false) : 'Updated ' + updated(ctx.issue, true);
       var html;
       today = !ctx.kept && madeToday(ctx.issue) ? ' today' : '';
-      if (view === 'list') { setNav('issue'); renderTabs(ctx, parts[1]); html = listView(ctx, parts[1]); }
-      else if (view === 'card') { setNav('issue'); renderTabs(ctx, parts[1]); html = cardView(ctx, parts[1], parts[2]); }
-      else if (view === 'issues') { setNav('issues'); tabsEl.hidden = true; html = issuesView(ctx); }
-      else if (view === 'how') { setNav('how'); tabsEl.hidden = true; html = howView(ctx); }
-      else { setNav('issue'); renderTabs(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; new Image().src = 'img/chromesby.webp'; }, 1500); } }
+      if (view === 'list') { setNav('issue'); renderSide(ctx, parts[1]); html = listView(ctx, parts[1]); }
+      else if (view === 'card') { setNav('issue'); renderSide(ctx, parts[1]); html = cardView(ctx, parts[1], parts[2]); }
+      else if (view === 'issues') { setNav('issues'); renderSide(ctx, null); html = issuesView(ctx); }
+      else if (view === 'how') { setNav('how'); renderSide(ctx, null); html = howView(ctx); }
+      else { setNav('issue'); renderSide(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; new Image().src = 'img/chromesby.webp'; }, 1500); } }
       screen.classList.toggle('kept', ctx.kept);
       show(html);
       document.title = ctx.issue.title + ' daily' + (ctx.kept ? ', issue ' + ctx.issue.number : '');
     }).catch(fail);
   }
-
-  // ---------- swipe ----------
-  // The page follows the finger. Past a short distance, or on a quick flick, it slides away
-  // and the next section or pick glides in; otherwise it settles back.
-  var drag = null, noClickUntil = 0;
-  // A sideways drag must never also count as a tap on the card under the finger.
-  document.addEventListener('click', function (e) {
-    if (Date.now() < noClickUntil) { e.preventDefault(); e.stopPropagation(); }
-  }, true);
-  function settle() {
-    screen.style.transition = 'transform .18s cubic-bezier(.2,.8,.2,1), opacity .18s';
-    screen.style.transform = '';
-    screen.style.opacity = '';
-  }
-  screen.addEventListener('touchstart', function (e) {
-    if (e.touches.length !== 1 || e.target.closest('.chart, input, .tabs, details[open] table')) { drag = null; return; }
-    drag = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now(), dx: 0, lock: null };
-  }, { passive: true });
-  screen.addEventListener('touchmove', function (e) {
-    if (!drag) return;
-    var dx = e.touches[0].clientX - drag.x, dy = e.touches[0].clientY - drag.y;
-    if (drag.lock === null) {
-      if (Math.abs(dx) < 7 && Math.abs(dy) < 7) return;
-      drag.lock = Math.abs(dx) > Math.abs(dy) * 1.2 ? 'x' : 'y';
-      if (drag.lock === 'x') screen.style.transition = 'none';
-    }
-    if (drag.lock !== 'x') return;
-    drag.dx = dx;
-    var target = dx < 0 ? swipe.next : swipe.prev;
-    // With nowhere to go, the page resists instead of following.
-    screen.style.transform = 'translateX(' + (target ? dx : dx * 0.22) + 'px)';
-    screen.style.opacity = target ? String(1 - Math.min(0.45, Math.abs(dx) / 520)) : '';
-  }, { passive: true });
-  function release() {
-    if (!drag) return;
-    var d = drag;
-    drag = null;
-    if (d.lock !== 'x') return;
-    if (Math.abs(d.dx) > 10) noClickUntil = Date.now() + 350;
-    var dx = d.dx, speed = Math.abs(dx) / Math.max(1, Date.now() - d.t);
-    var target = dx < 0 ? swipe.next : swipe.prev;
-    var commit = target && (Math.abs(dx) > 44 || (speed > 0.3 && Math.abs(dx) > 14));
-    if (!commit) { settle(); return; }
-    if (reduceMotion) { location.hash = target; return; }
-    slideFrom = dx < 0 ? 'right' : 'left';
-    screen.style.transition = 'transform .12s ease-in, opacity .12s ease-in';
-    screen.style.transform = 'translateX(' + (dx < 0 ? -60 : 60) + '%)';
-    screen.style.opacity = '0';
-    setTimeout(function () { location.hash = target; }, 110);
-  }
-  screen.addEventListener('touchend', release, { passive: true });
-  screen.addEventListener('touchcancel', function () { if (drag && drag.lock === 'x') settle(); drag = null; }, { passive: true });
-  // Arrow keys do the same on a keyboard.
-  document.addEventListener('keydown', function (e) {
-    if (e.target.tagName === 'INPUT' || e.metaKey || e.ctrlKey || e.altKey) return;
-    var target = e.key === 'ArrowRight' ? swipe.next : (e.key === 'ArrowLeft' ? swipe.prev : null);
-    if (target) { slideFrom = e.key === 'ArrowRight' ? 'right' : 'left'; location.hash = target; }
-  });
 
   // ---------- the strategy button ----------
   // Looks like the most useful button on the page. It is not.
@@ -1008,7 +884,7 @@
     if (e.target.closest && e.target.closest('#strategy')) speak();
   });
 
-  window.addEventListener('hashchange', function () { hideGuide(); closeMenu(false); route(); });
+  window.addEventListener('hashchange', function () { hideGuide(); route(); });
   route();
 
   if ('serviceWorker' in navigator && location.protocol === 'https:') {

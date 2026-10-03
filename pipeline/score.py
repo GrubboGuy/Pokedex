@@ -395,25 +395,25 @@ def _rebound():
 
 
 LISTS = [
-    ("big-movers", "Big ups and downs", "Big ups/downs", "The largest moves on cards worth $100 and up", "red", "Swing", _big_movers(),
+    ("big-movers", "Big movers", "Big movers", "The biggest price moves on $100+ cards", "red", "Swing", _big_movers(),
      "Singles worth $100 or more, before or after the move, whose price moved at least 8% up or down in {span} days. Up to four that rose and four that fell, biggest move first."),
-    ("hot-vintage", "Vintage era singles", "Vintage era", "1999 to 2007: Wizards of the Coast and EX sets", "red", "Heat", _hot(("wotc", "ex"), 15),
+    ("hot-vintage", "Vintage", "Vintage", "Rising singles from 1999 to 2007 sets", "red", "Heat", _hot(("wotc", "ex"), 15),
      "Singles from sets released before May 2007, $15 and up, that rose at least 5% in {span} days and are also up over 30 days."),
-    ("hot-middle", "DP to XY era singles", "DP to XY era", "2007 to 2016: Diamond & Pearl through XY sets", "blue", "Heat", _hot(("dp", "bwxy"), 10),
+    ("hot-middle", "DP to XY", "DP to XY", "Rising singles from 2007 to 2016 sets", "blue", "Heat", _hot(("dp", "bwxy"), 10),
      "Singles from 2007 to 2016 sets, $10 and up, that rose at least 5% in {span} days and are also up over 30 days."),
-    ("hot-sm-swsh", "SM and SWSH era singles", "SM and SWSH era", "2017 to 2022: Sun & Moon and Sword & Shield sets", "yellow", "Heat", _hot(("sm", "swsh"), 8, 0.34),
+    ("hot-sm-swsh", "SM & SWSH", "SM & SWSH", "Rising singles from 2017 to 2022 sets", "yellow", "Heat", _hot(("sm", "swsh"), 8, 0.34),
      "Singles from 2017 to 2022 sets, $8 and up, that rose at least 5% in {span} days and are also up over 30 days."),
-    ("hot-modern", "Modern era singles", "Modern era", "2023 on: Scarlet & Violet and Mega Evolution sets", "red", "Heat", _hot(("sv", "mega"), 5, 0.45),
+    ("hot-modern", "Modern", "Modern", "Rising singles from 2023 and later sets", "red", "Heat", _hot(("sv", "mega"), 5, 0.45),
      "Singles from 2023 and later sets, $5 and up, that rose at least 5% in {span} days and are also up over 30 days."),
-    ("modern-sealed", "Top modern sealed", "Modern sealed", "Boxes, bundles and tins from 2023 on", "blue", "Heat", _sealed(),
+    ("modern-sealed", "Hot sealed", "Sealed", "Modern boxes, bundles and tins on the rise", "blue", "Heat", _sealed(),
      "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by how much they rose in 30 days."),
-    ("hidden-gems", "Hidden gems for cheap", "Hidden gems", "Under $20 and climbing steadily", "green", "Heat", _gems(),
+    ("hidden-gems", "Hidden gems", "Hidden gems", "Under $20 and climbing steadily", "green", "Heat", _gems(),
      "Singles from $2 to $20 that rose 8% to 80% over 30 days, with the rise spread across the month and not one sudden jump at the end."),
     ("get-em-now", "Get 'em now", "Get 'em now", "Proven cards on a dip that looks temporary", "green", "Rebound", _rebound(),
      "Singles that were $30 and up, sell often and held or gained value over the months before, now down 5% to 35% in {span} days and below their usual price over the last 90 days. From sets at least a year old, because new sets normally get cheaper after release. These are signs that often come before a price recovers, not a prediction."),
     ("on-sale", "On sale", "On sale", "Selling well below their usual price", "yellow", "Deal", _on_sale(),
      "Cards and sealed products $20 and up, at least 13% below their usual price over the last 90 days. From sets at least a year old, because new sets normally get cheaper after release."),
-    ("holding", "Holding strong", "Holding strong", "Big cards that barely moved", "green", "Steady", _holding(),
+    ("holding", "Holding strong", "Holding strong", "$100+ cards that barely moved", "green", "Steady", _holding(),
      "Cards and sealed products $100 and up whose price moved less than 12% between its lowest and highest in the time we have tracked it, without falling."),
 ]
 
@@ -462,8 +462,8 @@ def _sealed_listings():
 
 
 SEALED_FALLBACK = (
-    "modern-sealed", "Top modern sealed", "Modern sealed",
-    "Boxes, bundles and tins for sale below what they usually sell for", "blue", "Deal", _sealed_listings(),
+    "modern-sealed", "Sealed deals", "Sealed",
+    "Modern boxes, bundles and tins for sale below their usual price", "blue", "Deal", _sealed_listings(),
     "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by how far "
     "the cheapest copy for sale is below the market price (3% to 25%). Once we have a week of sealed prices, this list ranks by price rise.",
 )
