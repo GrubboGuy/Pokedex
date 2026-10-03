@@ -726,6 +726,7 @@
       data = d;
       fillAll();
       run();
+      settle();  // back from a card's details: return to the result you tapped
     }).catch(function () { count.textContent = 'The product list could not be loaded. Check your connection and reload.'; });
 
     input.addEventListener('input', function () { S.q = input.value; clearTimeout(timer); timer = setTimeout(changed, 120); });
@@ -857,11 +858,39 @@
       if (a.getAttribute('data-nav') === name) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
   }
-  function show(html) {
+  // ---------- remembering your place ----------
+  // Opening a card's details and then coming back returns you to where you were on the page you
+  // left, whether you use the Back button, the "Back to" link or the phone's back gesture.
+  // Going anywhere else starts at the top as usual.
+  var spot = null;       // { hash, y }: the page the reader left to look at details, and how far down they were
+  var returnTo = null;   // set while a page is being drawn that should reopen at a remembered place
+  var lastHash = location.hash;
+  try { spot = JSON.parse(sessionStorage.getItem('spot') || 'null'); } catch (e) { spot = null; }
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';  // we place the page ourselves
+  function pageKey(hash) { return String(hash || '').replace(/^#\/?/, '').replace(/\/+$/, ''); }
+  function isDetail(hash) { return /^(issue\/\d+\/)?(card|p)\//.test(pageKey(hash)); }
+  // Called when the address changes, before the new page is drawn (the old page is still on screen).
+  function leaving(next) {
+    if (!isDetail(lastHash) && isDetail(next)) spot = { hash: pageKey(lastHash), y: Math.round(window.scrollY || 0) };
+    returnTo = !isDetail(next) && spot && spot.hash === pageKey(next) ? spot.y : null;
+    if (!isDetail(next)) spot = null;
+    try { if (spot) sessionStorage.setItem('spot', JSON.stringify(spot)); else sessionStorage.removeItem('spot'); } catch (e) {}
+    lastHash = next;
+  }
+  // Puts the page back at the remembered place. Returns true if there was one.
+  function settle() {
+    if (returnTo == null) return false;
+    window.scrollTo(0, returnTo);
+    returnTo = null;
+    return true;
+  }
+  // "later" is for pages that fill in after they are shown (search results): they call settle() themselves.
+  function show(html, later) {
     screen.innerHTML = html;
     wireChart(screen);
-    window.scrollTo(0, 0);
-    setTimeout(watchTopScores, 300);  // after the jump back to the top has settled
+    if (later && returnTo != null) window.scrollTo(0, returnTo);
+    else if (!settle()) window.scrollTo(0, 0);
+    setTimeout(watchTopScores, 300);  // after the page has settled at its place
   }
   function fail(err) {
     show(err && err.message === 'empty'
@@ -880,7 +909,7 @@
 
     if (view === 'search') {
       setNav('search'); sideFor(null); screen.classList.remove('detail');
-      show(searchView()); wireSearch();
+      show(searchView(), true); wireSearch();
       document.title = 'Search, Pokédex daily';
       return;
     }
@@ -1116,7 +1145,7 @@
     if (card) card.setAttribute('aria-pressed', card.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
   });
 
-  window.addEventListener('hashchange', function () { hideGuide(); route(); });
+  window.addEventListener('hashchange', function () { hideGuide(); leaving(location.hash); route(); });
   route();
 
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
