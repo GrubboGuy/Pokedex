@@ -120,7 +120,7 @@
       swsh: [7.7, 14, 92.3, 51.7], sv: [8, 14, 92.7, 52.4] }
   };
   // Cards that break the standard frame (the artwork runs past the window), so no foil is drawn on them.
-  var ODD_FRAME = /\b(ex|EX|GX|V|VMAX|VSTAR|V-UNION|BREAK|LEGEND|Prime|Star)\b|LV\.X|Full Art|Secret|Alternate/;
+  var ODD_FRAME = /\b(ex|EX|GX|V|VMAX|VSTAR|V-UNION|BREAK|LEGEND|Prime|Star)\b|LV\.X|Full Art|Secret|Alternate|\((Alpha|Omega|Delta)\)/;
   // Rarities where a "Holofoil" card is an ordinary frame with foil in the artwork window only.
   var ART_HOLO = { 'Holo Rare': 1, 'Rare': 1, 'Common': 1, 'Uncommon': 1 };
   // Returns {mode, box}: 'out' = foil everywhere but the artwork (reverse holo), 'in' = foil in the

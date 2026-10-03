@@ -105,9 +105,12 @@ button, input { font: inherit; color: inherit; }
 /* Foil finish drawn over a card photo. --x0..--y1 mark the artwork window, set per card by the app. */
 .pic { position: relative; display: block; width: 100%; }
 .pic > img { display: block; }
-.sheen { position: absolute; inset: 0; pointer-events: none; border-radius: 4.6% / 3.3%; mix-blend-mode: multiply; opacity: .62;
+.sheen { position: absolute; inset: 0; pointer-events: none; border-radius: 4.6% / 3.3%; mix-blend-mode: multiply; opacity: .55;
   background: repeating-linear-gradient(118deg, hsl(340 95% 82%) 0, hsl(45 100% 78%) 7%, hsl(130 75% 80%) 14%, hsl(190 95% 78%) 21%, hsl(250 95% 86%) 28%, hsl(340 95% 82%) 35%); }
-.sheen.glare { mix-blend-mode: screen; opacity: .28; background: linear-gradient(118deg, transparent 22%, #fff 40%, transparent 50%, transparent 68%, rgba(255,255,255,.6) 78%, transparent 88%); }
+/* Inside the artwork the sheen has to show on dark pictures too, so it lightens as well as tints. */
+.sheen-in .sheen { mix-blend-mode: hard-light; opacity: .32;
+  background: repeating-linear-gradient(118deg, hsl(340 90% 60%) 0, hsl(45 95% 58%) 7%, hsl(130 70% 52%) 14%, hsl(190 90% 52%) 21%, hsl(250 90% 66%) 28%, hsl(340 90% 60%) 35%); }
+.sheen.glare, .sheen-in .sheen.glare { mix-blend-mode: screen; opacity: .28; background: linear-gradient(118deg, transparent 22%, #fff 40%, transparent 50%, transparent 68%, rgba(255,255,255,.6) 78%, transparent 88%); }
 .sheen-in .sheen { clip-path: inset(var(--y0) calc(100% - var(--x1)) calc(100% - var(--y1)) var(--x0)); }
 .sheen-out .sheen { clip-path: polygon(evenodd, 3.6% 2.6%, 96.4% 2.6%, 96.4% 97.4%, 3.6% 97.4%, 3.6% 2.6%, var(--x0) var(--y0), var(--x1) var(--y0), var(--x1) var(--y1), var(--x0) var(--y1), var(--x0) var(--y0)); }
 .sheen-all .sheen { clip-path: inset(2.6% 3.6% round 2%); }
