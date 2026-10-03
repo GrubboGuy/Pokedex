@@ -65,9 +65,24 @@
     return !!d && !isNaN(d) && d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
   }
   var today = '';  // ' today' while the picks on screen were made today, otherwise empty; set on each page load
-  function tags(p) {
-    var html = (p.isNew ? '<span class="new">New' + today + '</span>' : '') + eraChip(p.era);
-    return html ? '<div class="tags">' + html + '</div>' : '';
+  // Which printing of the card this is, said only when it matters: any special printing
+  // (reverse holo, 1st Edition and so on), or a plain one when the same card also comes in another.
+  function printLabel(p) {
+    if (p.kind === 'sealed' || !p.printing) return '';
+    var plain = p.printing === 'Normal' || p.printing === 'Holofoil';
+    var hasOther = (p.variants || []).some(function (v) { return String(v.productId) === String(p.productId) && v.printing !== p.printing; });
+    return plain && !hasOther ? '' : (PRINTS[p.printing] || p.printing);
+  }
+  function printChip(p) {
+    var label = printLabel(p);
+    return label ? '<span class="print' + (/holo/i.test(p.printing) ? ' foil' : (/1st/i.test(p.printing) ? ' first' : '')) + '">' + esc(label) + '</span>' : '';
+  }
+  function rarityChip(p) {
+    return p.kind !== 'sealed' && p.rarity && p.rarity !== 'None' && p.rarity !== 'Unconfirmed' ? '<span class="rar">' + esc(p.rarity) + '</span>' : '';
+  }
+  function tags(p, tagName) {
+    var html = (p.isNew ? '<span class="new">New' + today + '</span>' : '') + printChip(p) + rarityChip(p) + eraChip(p.era);
+    return html ? '<' + (tagName || 'div') + ' class="tags">' + html + '</' + (tagName || 'div') + '>' : '';
   }
   function pad(n, len) { n = String(n); while (n.length < len) n = '0' + n; return n; }
   function bigImage(url) { return url ? url.replace('_200w.', '_in_1000x1000.') : ''; }
@@ -153,7 +168,6 @@
   function where(p) {
     var bits = [p.set];
     if (p.number) bits.push('#' + p.number);
-    if (p.printing && p.printing !== 'Normal') bits.push(p.printing);
     return bits.filter(Boolean).join(', ');
   }
 
@@ -210,21 +224,35 @@
   function base(ctx) { return ctx.kept ? '#/issue/' + ctx.issue.number : '#'; }
 
   // ---------- chrome ----------
-  // The sidebar: every section, always in view. activeId is '' for the front page, null for none.
+  // The sidebar: a slim strip of section dots that opens into a wider list with the section names.
+  // activeId is '' for the front page, null for none.
   function renderSide(ctx, activeId) {
     var b = base(ctx);
-    var rows = [['', 'Front page', 'Front page', 'front', 0]].concat(ctx.issue.categories.map(function (c) {
-      return [c.id, c.short || plainTitle(c), listTitle(c), TONE[c.id] || 'steady', ctx.kept ? 0 : c.picks.filter(function (p) { return p.isNew; }).length];
+    var rows = [['', 'Front page', 'front', 0]].concat(ctx.issue.categories.map(function (c) {
+      return [c.id, listTitle(c), TONE[c.id] || 'steady', ctx.kept ? 0 : c.picks.filter(function (p) { return p.isNew; }).length];
     }));
-    sideEl.innerHTML = rows.map(function (r) {
-      return '<a class="t-' + r[3] + '" href="' + b + (r[0] ? '/list/' + r[0] : '/') + '" title="' + esc(r[2]) + '"' + (r[0] === activeId ? ' aria-current="true"' : '') + '>' +
-        '<i class="dot"></i><span>' + esc(r[1]) + '</span>' + (r[4] ? '<b class="n" aria-label="' + r[4] + ' new">' + r[4] + '</b>' : '') + '</a>';
-    }).join('');
-    var on = sideEl.querySelector('[aria-current]');
-    if (on && (on.offsetTop < sideEl.scrollTop || on.offsetTop + on.offsetHeight > sideEl.scrollTop + sideEl.clientHeight)) {
-      sideEl.scrollTop = Math.max(0, on.offsetTop - (sideEl.clientHeight - on.offsetHeight) / 2);
+    sideEl.classList.remove('open');
+    sideEl.innerHTML = '<div class="side-in"><button type="button" class="side-toggle" aria-expanded="false" aria-label="Show section names">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="bars" d="M4 7h16M4 12h16M4 17h16"/><path class="shut" d="M15 6l-6 6 6 6"/></svg><span>Sections</span></button>' +
+      rows.map(function (r) {
+        return '<a class="t-' + r[2] + '" href="' + b + (r[0] ? '/list/' + r[0] : '/') + '" title="' + esc(r[1]) + '"' + (r[0] === activeId ? ' aria-current="true"' : '') + '>' +
+          '<i class="dot"></i><span>' + esc(r[1]) + '</span>' + (r[3] ? '<b class="n" aria-label="' + r[3] + ' new">' + r[3] + '</b>' : '') + '</a>';
+      }).join('') + '</div>';
+    var box = sideEl.firstChild, on = box.querySelector('[aria-current]');
+    if (on && (on.offsetTop < box.scrollTop || on.offsetTop + on.offsetHeight > box.scrollTop + box.clientHeight)) {
+      box.scrollTop = Math.max(0, on.offsetTop - (box.clientHeight - on.offsetHeight) / 2);
     }
   }
+  function setSide(open) {
+    sideEl.classList.toggle('open', open);
+    var t = sideEl.querySelector('.side-toggle');
+    if (t) { t.setAttribute('aria-expanded', open ? 'true' : 'false'); t.setAttribute('aria-label', open ? 'Hide section names' : 'Show section names'); }
+  }
+  sideEl.addEventListener('click', function (e) {
+    if (e.target.closest('.side-toggle')) setSide(!sideEl.classList.contains('open'));
+    else if (e.target.closest('a') || !e.target.closest('.side-in')) setSide(false);  // picked a section, or tapped outside the open list
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setSide(false); });
   function sectionPager(ctx, activeId) {
     var b = base(ctx), cats = ctx.issue.categories;
     var order = [{ id: '', name: 'Front page' }].concat(cats.map(function (c) { return { id: c.id, name: c.short || c.title }; }));
@@ -256,7 +284,7 @@
       var art = c.picks.slice(0, 3).map(function (x) { return img(x, 'thumb'); }).join('');
       return '<li class="' + tone(c) + '"><a href="' + b + '/list/' + c.id + '">' +
         '<span><h3>' + esc(listTitle(c)) + '</h3><p class="blurb">' + esc(c.blurb) + '</p>' +
-        '<p class="lead-line"><b>' + esc(shortName(p.name)) + '</b><span class="price">' + money(p.price) + '</span>' + headlineMove(p) + '</p></span>' +
+        '<p class="lead-line"><b>' + esc(shortName(p.name)) + '</b>' + (printLabel(p) ? '<span class="lead-print">' + esc(printLabel(p)) + '</span>' : '') + '<span class="price">' + money(p.price) + '</span>' + headlineMove(p) + '</p></span>' +
         '<span class="sec-art">' + art + '</span></a></li>';
     }).join('');
 
@@ -267,7 +295,7 @@
       '<button type="button" class="cta" id="strategy">Today&#39;s strategy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></header>' +
       '<div class="' + tone(coverCat) + '"><a class="hero" href="' + coverHref + '">' + img(coverPick, 'card-img', true) +
         '<span><span class="eyebrow"><i class="dot"></i>Top pick, ' + esc(coverCat.short || coverCat.title) + '</span>' +
-        '<h2>' + esc(shortName(coverPick.name)) + '</h2><p class="where">' + esc(where(coverPick)) + '</p>' +
+        '<h2>' + esc(shortName(coverPick.name)) + '</h2><p class="where">' + esc(where(coverPick)) + '</p>' + tags(coverPick, 'span') +
         '<span class="figures"><span class="price">' + money(coverPick.price) + '</span>' + headlineMove(coverPick) + '</span><span class="foot">' + score(coverPick) + GO + '</span></span>' +
         '<span class="hero-why deck">' + esc(coverPick.reason) + '</span></a>' + lowLink(coverPick, 'under') + '</div>' +
       '<h2 class="strip">Sections <span>' + issue.categories.length + ' lists, ' + total + ' picks' + (fresh && !ctx.kept ? ', ' + fresh + ' new' + today : '') + '</span></h2>' +
@@ -477,7 +505,7 @@
 
     return '<div class="' + tone(cat) + '"><header class="entry-head band dark"><a class="back" href="' + listHref + '">Back to ' + esc(cat.short || cat.title) + '</a>' +
       '<span class="eyebrow"><i class="dot"></i>Card details, pick ' + p.rank + ' of ' + cat.picks.length + '</span><h1>' + esc(shortName(p.name)) + '</h1>' +
-      '<p class="where">' + esc(where(p)) + (p.rarity ? '. ' + esc(p.rarity) : '') + '</p>' +
+      '<p class="where">' + esc(where(p)) + '</p>' +
       tags(p) + '</header>' +
       '<div class="entry-main"><div class="slot">' + img(p, 'card-img', true) + variantSlotButton(p.variants) + '</div>' +
       '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +

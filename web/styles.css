@@ -71,14 +71,26 @@ button, input { font: inherit; color: inherit; }
 .body { flex: 1; display: flex; align-items: flex-start; min-width: 0; }
 .screen { flex: 1; min-width: 0; outline: none; padding-bottom: 26px; }
 
-/* Sidebar: every section, always in view. A slim rail on phones, a full list on wide screens. */
-.side { position: sticky; top: calc(51px + env(safe-area-inset-top)); flex: none; width: 66px; height: calc(100vh - 104px); height: calc(100dvh - 104px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; background: var(--paper); border-right: 1px solid var(--rule); padding: 6px 4px 10px; display: flex; flex-direction: column; gap: 2px; z-index: 5; }
-.side::-webkit-scrollbar { display: none; }
-.side a { position: relative; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-height: 54px; padding: 8px 2px 7px; border-radius: 10px; text-decoration: none; text-align: center; font-size: 10.5px; font-weight: 600; font-stretch: 86%; line-height: 1.12; color: var(--muted); }
-.side a .dot { width: 11px; height: 11px; margin: 0; }
+/* Sidebar: a slim strip of section dots on phones that opens into a wider list of names over the page.
+   On wide screens it is always the full list. */
+.side { position: sticky; top: calc(51px + env(safe-area-inset-top)); flex: none; width: 44px; height: calc(100vh - 104px); height: calc(100dvh - 104px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); z-index: 20; }
+.side.open::before { content: ""; position: fixed; inset: 0; z-index: -1; background: rgba(15,17,21,.3); }
+.side-in { position: absolute; top: 0; bottom: 0; left: 0; width: 44px; display: flex; flex-direction: column; gap: 2px; padding: 6px 5px 10px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; background: var(--paper); border-right: 1px solid var(--rule); transition: width .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s; }
+.side-in::-webkit-scrollbar { display: none; }
+.side.open .side-in { width: 196px; box-shadow: 14px 0 32px -14px rgba(15,17,21,.45); }
+.side-toggle { flex: none; width: 100%; height: 42px; display: flex; align-items: center; gap: 9px; padding: 0 5px; border: 0; border-radius: 10px; background: none; color: var(--ink); cursor: pointer; touch-action: manipulation; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.side-toggle svg { flex: none; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.side-toggle .shut, .side.open .side-toggle .bars { display: none; }
+.side.open .side-toggle .shut { display: inline; }
+.side a { position: relative; flex: none; display: flex; align-items: center; gap: 11px; min-height: 44px; padding: 0 11px; border-radius: 10px; text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1.15; color: var(--ink-2); white-space: nowrap; }
+.side a .dot { flex: none; width: 12px; height: 12px; margin: 0; }
+.side a span, .side-toggle span { opacity: 0; transition: opacity .15s; }
+.side.open a span, .side.open .side-toggle span { opacity: 1; }
 .side a[aria-current="true"] { background: var(--tint); color: var(--tone-ink); box-shadow: inset 3px 0 0 var(--tone); }
 .side a.t-front[aria-current="true"] { color: var(--ink); }
-.side .n { position: absolute; top: 4px; right: 6px; min-width: 15px; height: 15px; padding: 0 4px; border-radius: 8px; background: var(--ink); color: #fff; font-size: 9.5px; font-weight: 700; font-stretch: 100%; line-height: 15px; font-variant-numeric: tabular-nums; }
+.side .n { position: absolute; top: 9px; left: 24px; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 2px var(--paper); font-size: 0; }
+.side.open .n { position: static; margin-left: auto; width: auto; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; box-shadow: none; color: #fff; font-size: 11.5px; font-weight: 700; line-height: 20px; text-align: center; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .side-in, .side a span { transition: none; } }
 .loading, .empty { padding: 64px var(--gutter); text-align: center; color: var(--muted); font-family: var(--serif); font-size: 18px; }
 
 .nav { position: sticky; bottom: 0; z-index: 30; display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(255,255,255,.97); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-top: 1px solid var(--rule); padding-bottom: env(safe-area-inset-bottom); }
@@ -417,12 +429,24 @@ details.points td:last-child { text-align: right; font-weight: 600; }
 .band.dark .back { color: #fff; background: rgba(255,255,255,.14); padding: 7px 13px 7px 11px; border-radius: 999px; }
 .band.dark .new { background: #fff; color: var(--ink); }
 
+/* ---------- which version of the card: printing and rarity chips ---------- */
+.print { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 700; letter-spacing: .01em; line-height: 1; padding: 4px 8px 3px; border-radius: 999px; background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1.2px var(--ink); white-space: nowrap; }
+.print.foil { color: #2A2350; background: linear-gradient(110deg, #DDE8FF 0%, #F0E2FF 34%, #DDF8EC 66%, #FFEFCF 100%); box-shadow: inset 0 0 0 1.2px #8F7FC6; }
+.print.first { background: var(--ink); color: #fff; }
+span.tags { display: flex; }
+.lead-print { font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.band.dark .print:not(.foil) { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.2px #fff; }
+.band.dark .rar { background: rgba(255,255,255,.14); color: #E3E6EE; }
+
 /* ---------- wide screens: full sidebar, two columns of picks ---------- */
 @media (min-width: 820px) {
   .app { max-width: 900px; }
-  .side { width: 212px; padding: 10px 8px 14px; }
-  .side a { flex-direction: row; justify-content: flex-start; gap: 10px; min-height: 44px; padding: 8px 12px; text-align: left; font-size: 14.5px; font-stretch: 94%; }
-  .side .n { position: static; margin-left: auto; }
+  .side { width: 212px; }
+  .side.open::before { display: none; }
+  .side-in, .side.open .side-in { width: 212px; padding: 10px 8px 14px; box-shadow: none; transition: none; }
+  .side-toggle { display: none; }
+  .side a span { opacity: 1; }
+  .side .n, .side.open .n { position: static; margin-left: auto; width: auto; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; box-shadow: none; color: #fff; font-size: 11.5px; font-weight: 700; line-height: 20px; text-align: center; }
   .picks { grid-template-columns: 1fr 1fr; }
   .guide { width: min(100%, 900px); }
   .verdict { grid-template-columns: 220px 1fr; }
