@@ -2,9 +2,13 @@ name: Build issue and publish
 
 on:
   schedule:
-    # Morning run: refreshes the picks so they are ready by 7:00 AM US Eastern.
-    # 10:20 UTC is 6:20 AM during daylight time and 5:20 AM in winter; GitHub can start scheduled runs late.
-    - cron: "20 10 * * *"
+    # Morning runs: refresh the picks so they are ready by 7:00 AM US Eastern.
+    # GitHub starts scheduled runs late on this repo (the first one arrived over three hours late), so the
+    # first run is set for 06:10 UTC (2:10 AM Eastern daylight time, 1:10 AM in winter), leaving about five
+    # hours of slack. The price feed only changes once a day, around 20:00 UTC, so running early loses nothing.
+    # A second run at 08:40 UTC covers a first run that GitHub drops; if both happen the second repeats the first.
+    - cron: "10 6 * * *"
+    - cron: "40 8 * * *"
     # Evening run: saves the day's prices soon after TCGCSV's refresh at about 20:00 UTC. Does not change the picks.
     - cron: "30 21 * * *"
   workflow_dispatch:
@@ -56,9 +60,9 @@ jobs:
         run: |
           set -o pipefail
           CUT="${{ inputs.cut || 'auto' }}"
-          # Only the morning run and manual runs change the picks. The evening run and code pushes leave them alone,
+          # Only the morning runs and manual runs change the picks. The evening run and code pushes leave them alone,
           # unless a push's commit message contains [cut issue], which re-picks the lists now.
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" != "20 10 * * *" ]; then CUT=never; fi
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" = "30 21 * * *" ]; then CUT=never; fi
           if [ "${{ github.event_name }}" = "push" ]; then
             CUT=never
             if printf '%s' "$COMMIT_MESSAGE" | grep -q '\[cut issue\]'; then CUT=force; fi
