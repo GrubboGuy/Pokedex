@@ -134,7 +134,7 @@ def compute_rows(catalog, snapshots, today):
         release = group.get("release")
         if item["presale"] or (release and release > today):
             continue
-        for sub, (market, low, _mid) in item["prices"].items():
+        for sub, (market, low, mid) in item["prices"].items():
             if not market or not low:
                 continue  # no sales-based price, or nothing listed to buy
             key = price_key(item["id"], sub)
@@ -156,7 +156,7 @@ def compute_rows(catalog, snapshots, today):
                 "set": group.get("name"), "setAbbr": group.get("abbr"), "gid": item["gid"],
                 "era": era_for(group.get("name"), release),
                 "setAgeDays": _days(today, release) if release else None,
-                "price": market, "low": low,
+                "price": market, "low": low, "mid": mid,
                 "p7": p7, "p30": p30, "p90": p90,
                 "ch7": market / p7 - 1 if p7 else None,
                 "ch30": market / p30 - 1 if p30 else None,
@@ -201,6 +201,12 @@ def _dir(x):
     return "up" if x >= 0 else "down"
 
 
+def _asking(row):
+    """One honest sentence about the lowest asking price: it is not a quote for a clean copy delivered."""
+    return (f"Sellers on TCGplayer are asking from {_money(row['low'])}; that is the lowest listing in any condition, "
+            f"before shipping.")
+
+
 def _listed_near(row, floor=0.7, ceiling=None):
     ratio = row["low"] / row["price"]
     return ratio >= floor and (ceiling is None or ratio <= ceiling)
@@ -239,12 +245,7 @@ def _hot(eras, min_price, activity=0.28):
 
     def reason(r):
         month = f" and {_p(r['ch30'])} over 30 days" if r["ch30"] is not None else ""
-        gap = r["low"] / r["price"] - 1
-        if abs(gap) <= 0.10:
-            ask = "about what it has been selling for, so sellers are backing the new price"
-        else:
-            ask = f"{_p(gap)} {'below' if gap < 0 else 'above'} what it has been selling for"
-        return f"Up {_p(r['ch7'])} {_in_span()}{month}. The cheapest copy for sale is {_money(r['low'])}, {ask}."
+        return f"Up {_p(r['ch7'])} {_in_span()}{month}. {_asking(r)}"
 
     return test, _heat, _heat, reason
 
@@ -265,8 +266,8 @@ def _sealed():
     def reason(r):
         if r["ch30"] is not None:
             return (f"Up {_p(r['ch30'])} over 30 days and {_dir(r['ch7'])} {_p(r['ch7'])} {_recently()}. "
-                    f"The cheapest sealed copy for sale is {_money(r['low'])}.")
-        return f"Up {_p(r['ch7'])} {_recently()}. The cheapest sealed copy for sale is {_money(r['low'])}."
+                    f"Sellers are asking from {_money(r['low'])} before shipping.")
+        return f"Up {_p(r['ch7'])} {_recently()}. Sellers are asking from {_money(r['low'])} before shipping."
 
     return test, rank, _heat, reason
 
@@ -351,9 +352,9 @@ def _big_movers():
         month = f" Over 30 days it is {_dir(r['ch30'])} {_p(r['ch30'])}." if r["ch30"] is not None else ""
         if r["ch7"] > 0:
             return (f"Up {_p(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month} "
-                    f"The cheapest copy for sale is {_money(r['low'])}.")
+                    f"{_asking(r)}")
         return (f"Down {_p(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month} "
-                f"The cheapest copy for sale is {_money(r['low'])}. A drop this size can come from one low sale, "
+                f"{_asking(r)} A drop this size can come from one low sale, "
                 f"a reprint or a real change, so check recent sales.")
 
     return test, lambda r: abs(r["ch7"]), score, reason
@@ -436,7 +437,10 @@ def _public(row, score, label, reason, rank):
 def _sealed_listings():
     """Sealed list used until sealed products have a week of price history.
 
-    Ranks by how far the cheapest current listing sits under the market price.
+    Ranks by how far the lowest asking price sits under the market price. Only small gaps count:
+    a sealed listing far under the market price is nearly always the wrong product (loose packs,
+    another language), not a deal. The middle asking price must also be near the market price,
+    which shows that ordinary sellers really are listing around there.
     """
     core = ("booster box", "elite trainer box", "booster bundle", "collection", "tin", "build & battle")
 
@@ -448,24 +452,26 @@ def _sealed_listings():
         return (
             r["kind"] == "sealed" and r["era"] in ("sv", "mega") and r["price"] >= 20
             and (r["setAgeDays"] is None or r["setAgeDays"] >= 30)
-            and any(w in name for w in core) and 0.03 <= discount(r) <= 0.25
+            and any(w in name for w in core) and 0.03 <= discount(r) <= 0.10
+            and r.get("mid") and r["mid"] <= r["price"] * 1.05
         )
 
     def score(r):
-        return _clamp_score(50 + 49 * math.tanh(6 * discount(r)))
+        return _clamp_score(50 + 49 * math.tanh(5 * discount(r)))
 
     def reason(r):
-        return (f"The cheapest sealed copy for sale is {_money(r['low'])}, {discount(r) * 100:.0f}% below the "
-                f"{_money(r['price'])} it has been selling for. We only have a few days of sealed prices, so there is no trend yet.")
+        return (f"Sellers are asking from {_money(r['low'])} before shipping, {discount(r) * 100:.0f}% under the "
+                f"{_money(r['price'])} it has been selling for. Check the listing is the real sealed product: very cheap "
+                f"ones are sometimes loose packs or another language. No price trend yet, sealed tracking only just started.")
 
     return test, discount, score, reason
 
 
 SEALED_FALLBACK = (
     "modern-sealed", "Sealed deals", "Sealed",
-    "Modern boxes, bundles and tins for sale below their usual price", "blue", "Deal", _sealed_listings(),
+    "Modern boxes, bundles and tins listed a little under their usual price", "blue", "Deal", _sealed_listings(),
     "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by how far "
-    "the cheapest copy for sale is below the market price (3% to 25%). Once we have a week of sealed prices, this list ranks by price rise.",
+    "the lowest asking price is below the market price (3% to 10%; bigger gaps are usually the wrong product). Once we have a week of sealed prices, this list ranks by price rise.",
 )
 
 

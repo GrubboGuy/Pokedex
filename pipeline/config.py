@@ -54,7 +54,7 @@ SOURCES = [
         "id": "tcgcsv",
         "name": "TCGplayer market price, via TCGCSV",
         "url": "https://tcgcsv.com/",
-        "note": "Daily copy of TCGplayer's own price data. Market price is TCGplayer's figure for what a card has recently sold for. The cheapest copy for sale is the lowest-priced copy listed on TCGplayer at that time, in any condition.",
+        "note": "Daily copy of TCGplayer's own price data. Market price is TCGplayer's figure for what a card has recently sold for. The lowest asking price is the cheapest TCGplayer listing at that time, in any condition and before shipping; it is a starting point, not a price you are sure to get.",
     },
     {
         "id": "rarebox",

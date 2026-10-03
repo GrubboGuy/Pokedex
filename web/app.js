@@ -43,7 +43,7 @@
   function headlineMove(p) {
     if (p.ch7 != null) return move(p.ch7);
     var gap = Math.round((1 - p.low / p.price) * 100);
-    return '<span class="move gap">' + gap + '% below market</span>';
+    return '<span class="move gap">asking from ' + gap + '% under</span>';
   }
   function niceDate(iso, withYear) {
     var p = iso.split('-');
@@ -139,7 +139,7 @@
     if (kind === 'Swing') return 'how big the recent price move is, up or down';
     if (kind === 'Rebound') return 'how strong the signs are that the price will come back';
     if (kind === 'Steady') return 'how little the price has moved';
-    if (kind === 'Deal') return cat.id === 'modern-sealed' ? 'how far the cheapest copy is below what it usually sells for' : 'how far below its usual price it is';
+    if (kind === 'Deal') return cat.id === 'modern-sealed' ? 'how far the lowest asking price is below what it usually sells for' : 'how far below its usual price it is';
     return 'how fast the price is rising';
   }
   function verdict(p) {
@@ -161,9 +161,25 @@
       (nearMint ? '&Condition=Near+Mint' : '') + '&page=1';
   }
   var OUT = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16l8-8M9.5 8H16v6.5"/></svg>';
-  function lowLink(p, cls) {
-    return '<a class="low-link' + (cls ? ' ' + cls : '') + '" href="' + esc(lowUrl(p.url, p.productId, p.printing, p.kind === 'sealed')) +
-      '" target="_blank" rel="noopener"><span>' + (cls ? 'Cheapest copy for sale' : 'Cheapest copy') + '</span><b>' + money(p.low) + OUT + '</b></a>';
+  // An eBay search for this exact card. sold=false: copies for sale now, cheapest first with shipping counted.
+  // sold=true: what has recently sold.
+  function ebayUrl(o, sold) {
+    var words = [shortName(o.name)];
+    if (!o.sealed) {
+      if (o.number) words.push(String(o.number).split('/')[0]);
+      if (o.set) words.push(String(o.set).replace(/^[A-Z0-9]+\s*[:\-]\s*/, ''));
+      if (/reverse/i.test(o.printing || '')) words.push('reverse holo');
+      if (/1st/i.test(o.printing || '')) words.push('1st edition');
+    } else words.push('pokemon');
+    return 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(words.join(' ')).replace(/%20/g, '+') +
+      (sold ? '&LH_Sold=1&LH_Complete=1' : '&_sop=15&LH_BIN=1');
+  }
+  // Links to where the card is for sale right now, lowest price first. No price is promised on the link itself.
+  function shopLinks(p, cls) {
+    var o = { name: p.name, number: p.number, set: p.set, printing: p.printing, sealed: p.kind === 'sealed' };
+    return '<div class="shop' + (cls ? ' ' + cls : '') + '"><span>' + (cls ? 'Lowest prices now' : 'Lowest prices') + '</span>' +
+      '<a href="' + esc(lowUrl(p.url, p.productId, p.printing, o.sealed)) + '" target="_blank" rel="noopener">TCGplayer' + OUT + '</a>' +
+      '<a href="' + esc(ebayUrl(o, false)) + '" target="_blank" rel="noopener">eBay' + OUT + '</a></div>';
   }
   function where(p) {
     var bits = [p.set];
@@ -297,7 +313,7 @@
         '<span><span class="eyebrow"><i class="dot"></i>Top pick, ' + esc(coverCat.short || coverCat.title) + '</span>' +
         '<h2>' + esc(shortName(coverPick.name)) + '</h2><p class="where">' + esc(where(coverPick)) + '</p>' + tags(coverPick, 'span') +
         '<span class="figures"><span class="price">' + money(coverPick.price) + '</span>' + headlineMove(coverPick) + '</span><span class="foot">' + score(coverPick) + GO + '</span></span>' +
-        '<span class="hero-why deck">' + esc(coverPick.reason) + '</span></a>' + lowLink(coverPick, 'under') + '</div>' +
+        '<span class="hero-why deck">' + esc(coverPick.reason) + '</span></a>' + shopLinks(coverPick, 'under') + '</div>' +
       '<h2 class="strip">Sections <span>' + issue.categories.length + ' lists, ' + total + ' picks' + (fresh && !ctx.kept ? ', ' + fresh + ' new' + today : '') + '</span></h2>' +
       '<ol class="sections">' + sections + '</ol>' +
       '<div class="block dark stats"><div><b>' + Number(s.productsScanned).toLocaleString('en-US') + '</b><span>products checked</span></div>' +
@@ -320,11 +336,11 @@
         '<div class="pick-info"><h3>' + esc(shortName(p.name)) + '</h3><p class="where">' + esc(where(p)) + '</p>' +
         tags(p) +
         '<div class="figures"><span class="price">' + money(p.price) + '</span>' + headlineMove(p) + '</div><div class="foot">' + score(p) + GO + '</div></div></a>' +
-        lowLink(p) + '</div>';
+        shopLinks(p) + '</div>';
     }).join('');
     var trendNote = (lead.ch7 != null ? 'The big price is the TCGplayer market price: what the card has recently sold for. The % beside it is how much that price changed over the last ' + days + ' days.'
-      : 'The big price is the TCGplayer market price: what the product has recently sold for. The % beside it is how far the cheapest copy for sale is below that.') +
-      ' Score: ' + scoreMeans(cat, lead) + ', from 1 to 99. Prices as of ' + niceDate(issue.date) + '; tap a cheapest-copy link to see what is for sale right now.';
+      : 'The big price is the TCGplayer market price: what the product has recently sold for. Beside it is how far the lowest asking price is under that.') +
+      ' Score: ' + scoreMeans(cat, lead) + ', from 1 to 99. Prices as of ' + niceDate(issue.date) + '. The TCGplayer and eBay links under each card open what is for sale right now, lowest price first.';
     return '<div class="' + tone(cat) + '"><header class="sec-head band"><span class="eyebrow"><i class="dot"></i>Section ' + (idx + 1) + ' of ' + issue.categories.length + '</span>' +
       '<h1>' + esc(listTitle(cat)) + '</h1><p class="deck">' + esc(cat.blurb) + '</p></header>' +
       '<p class="tap-hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10m0 0V8.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.6a5 5 0 0 1-4-2l-3.1-4.2a1.5 1.5 0 0 1 2.3-1.9L9 14.5"/></svg>Tap any card for its sold prices, graded prices and price history.</p>' +
@@ -333,7 +349,7 @@
         '<div><h2>' + esc(shortName(lead.name)) + '</h2><p class="where">' + esc(where(lead)) + '</p>' +
         tags(lead) +
         '<div class="figures"><span class="price">' + money(lead.price) + '</span>' + headlineMove(lead) + '</div><div class="foot">' + score(lead) + GO + '</div></div>' +
-        '<p class="lead-why deck">' + esc(lead.reason) + '</p></a>' + lowLink(lead, 'under') +
+        '<p class="lead-why deck">' + esc(lead.reason) + '</p></a>' + shopLinks(lead, 'under') +
       '<div class="picks">' + rest + '</div>' +
       '<div class="block tint aside"><b>How this list is picked</b><p>' + esc(cat.rule) + ' ' + cat.eligible + ' met this rule' + today + '; these are the top ' + cat.picks.length + '.</p></div>' +
       '<p class="note fine">' + trendNote + '</p>' + sectionPager(ctx, cat.id) + '</div>';
@@ -403,7 +419,7 @@
     if (p.ch30 != null) rows.push(row('Last 30 days', move(p.ch30)));
     if (p.ch90 != null) rows.push(row('Last 90 days', move(p.ch90)));
     var gap = p.low / p.price - 1, g = Math.round(Math.abs(gap) * 100);
-    rows.push(row('Cheapest copy', g === 0 ? 'Same as market' : g + '% ' + (gap < 0 ? 'below market' : 'above market')));
+    rows.push(row('Lowest asking price', money(p.low)));
     if (p.activity != null && p.ch7 != null) rows.push(row('Sells', p.activity >= 0.6 ? 'Often' : (p.activity >= 0.34 ? 'Regularly' : 'Not often')));
     return rows.join('');
   }
@@ -476,10 +492,10 @@
   }
 
   function buyLinks(o) {
-    var ebay = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent([shortName(o.name), o.number ? String(o.number).split('/')[0] : '', o.abbr || ''].join(' ').trim()) + '&LH_Sold=1&LH_Complete=1';
-    return '<div class="buy"><a class="main" href="' + esc(lowUrl(o.url, o.productId, o.printing, o.sealed)) + '" target="_blank" rel="noopener">See the cheapest copy on TCGplayer' + (o.low != null ? ', ' + money(o.low) : '') + '</a>' +
-      (o.sealed ? '' : '<a class="alt" href="' + esc(lowUrl(o.url, o.productId, o.printing, false, true)) + '" target="_blank" rel="noopener">Cheapest Near Mint copy</a>') +
-      '<a class="alt" href="' + esc(ebay) + '" target="_blank" rel="noopener">Recent eBay sales</a></div>';
+    return '<div class="buy"><a href="' + esc(lowUrl(o.url, o.productId, o.printing, o.sealed)) + '" target="_blank" rel="noopener">Lowest on TCGplayer</a>' +
+      '<a href="' + esc(ebayUrl(o, false)) + '" target="_blank" rel="noopener">Lowest on eBay</a>' +
+      (o.sealed ? '' : '<a class="alt" href="' + esc(lowUrl(o.url, o.productId, o.printing, false, true)) + '" target="_blank" rel="noopener">Near Mint on TCGplayer</a>') +
+      '<a class="alt" href="' + esc(ebayUrl(o, true)) + '" target="_blank" rel="noopener">Recent eBay sales</a></div>';
   }
 
   function cardView(ctx, listId, rank) {
@@ -512,18 +528,18 @@
       '<p class="sub">What it has recently sold for.</p>' +
       '<span class="conf ' + p.confidence.toLowerCase() + '">Price reliability: ' + esc(p.confidence) + '</span></div></div>' +
       variantPanel(p, p.variants, p.set) +
-      lowLink(p, 'under') +
+      shopLinks(p, 'under') +
       '<section class="verdict"><div class="num"' + (p.score >= 99 ? ' data-top-score' : '') + ' style="--sc:' + scoreColor(p.score) + '"><b>' + p.score + '</b><small>Score</small><em>' + verdict(p) + '</em>' +
       '<span class="meter" aria-hidden="true"><i style="left:' + Math.max(3, Math.min(97, p.score)) + '%"></i></span></div>' +
       '<dl>' + breakdown(p, days) + '</dl>' +
       '<p class="verdict-note">In this list the score shows ' + scoreMeans(cat, p) + '. It runs from 1 to 99; higher is stronger.</p></section>' +
       '<section class="block tint"><h2>Why it is here</h2><p class="why">' + esc(p.reason) + '</p></section>' +
       soldBlocks(p) + graded + chartBlock(p.series) +
-      '<p class="note fine">The market price is what the ' + esc(p.printing) + ' printing has recently sold for on TCGplayer, from <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(issue.date) + '. The cheapest copy can be in any condition, and its price is from the same day; the link opens what is for sale right now. ' +
+      '<p class="note fine">The market price is what the ' + esc(p.printing) + ' printing has recently sold for on TCGplayer, from <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(issue.date) + '. The lowest asking price is the cheapest TCGplayer listing on that day, in any condition and before shipping, so a clean copy delivered will usually cost more and that listing may be gone. The TCGplayer and eBay links open what is for sale right now. ' +
       (p.sold ? 'eBay and by-condition prices are from <a href="https://poketrace.com/" rel="noopener">PokeTrace</a>, as of ' + niceDate(p.sold.date) + '; eBay sale numbers are approximate. ' : '') +
       (p.graded ? 'Graded prices are from completed eBay sales, from <a href="https://www.pokemonpricetracker.com/" rel="noopener">PokemonPriceTracker</a>, as of ' + niceDate(p.graded.date) + '; they can mix printings, so check the graded card matches this one. ' : '') +
       'Price reliability is ' + esc(p.confidence) + ' because ' + confText + '. <a href="#/how">What the numbers mean</a>. Not financial advice.</p>' +
-      buyLinks({ name: p.name, number: p.number, abbr: p.setAbbr, url: p.url, productId: p.productId, printing: p.printing, sealed: p.kind === 'sealed', low: p.low }) +
+      buyLinks({ name: p.name, number: p.number, set: p.set, url: p.url, productId: p.productId, printing: p.printing, sealed: p.kind === 'sealed' }) +
       '<nav class="pager" aria-label="Picks">' +
       '<a class="prev" href="' + (prev ? hrefOf(prev) : listHref) + '"><small>' + (prev ? 'Previous pick' : 'Back to') + '</small><b>' + esc(prev ? shortName(prev.name) : (cat.short || cat.title)) + '</b></a>' +
       '<a class="next" href="' + (next ? hrefOf(next) : listHref) + '"><small>' + (next ? 'Next pick' : 'Back to') + '</small><b>' + esc(next ? shortName(next.name) : (cat.short || cat.title)) + '</b></a></nav></div>';
@@ -741,11 +757,11 @@
         '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
         '<p class="sub">' + (pr[2] != null ? 'What it has recently sold for.' : 'What it has recently sold for. None were for sale when prices were last checked.') + '</p>' + chips + '</div></div>' +
         variantPanel({ productId: it[0], name: it[1] }, others, s[1]) +
-        (pr[2] != null ? lowLink({ url: null, productId: it[0], printing: pr[0], kind: pick.kind, low: pr[2] }, 'under') : '') +
+        shopLinks({ url: null, productId: it[0], name: it[1], number: it[3], set: s[1], printing: pr[0], kind: pick.kind }, 'under') +
         (rows.length ? '<section class="block tint"><h2>Price changes</h2><div class="figs' + (rows.length === 2 ? ' two' : '') + '">' + rows.join('') + '</div></section>' : '') +
         chartBlock(series) +
         '<p class="note fine">The market price is what the ' + esc(pr[0]) + ' printing has recently sold for on TCGplayer, from <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(data.date) + '. eBay and graded prices are looked up only for the cards in the picks.</p>' +
-        buyLinks({ name: it[1], number: it[3], abbr: s[2], url: null, productId: it[0], printing: pr[0], sealed: !!it[4], low: pr[2] }) + '</div>';
+        buyLinks({ name: it[1], number: it[3], set: s[1], url: null, productId: it[0], printing: pr[0], sealed: !!it[4] }) + '</div>';
     });
   }
 
@@ -768,7 +784,7 @@
       (days !== 7 ? '<section class="block tint t-sale article"><p>These picks measure their recent price change over ' + days + ' days instead of 7, because the saved price history has a gap in late September 2026. It returns to 7 days once a full week of daily prices is on file.</p></section>' : '') +
       '<section class="block dark article"><h2>What the numbers mean</h2><ul>' +
       '<li><b>Market price.</b> TCGplayer\u2019s figure for what a card has recently sold for. It is the main price shown everywhere.</li>' +
-      '<li><b>Cheapest copy for sale.</b> The lowest-priced copy listed on TCGplayer when prices were last checked, in any condition. Its link opens the copies for sale right now, cheapest first.</li>' +
+      '<li><b>Lowest asking price.</b> The cheapest TCGplayer listing when prices were last checked, in any condition and before shipping. Treat it as a starting point, not a quote: that copy may be played, may have sold since, and shipping is extra. The TCGplayer and eBay links on every card open what is for sale right now, lowest price first.</li>' +
       '<li><b>Price change.</b> How much the market price went up or down over the days shown.</li>' +
       '<li><b>Usual price.</b> The middle price over the last 90 days: half the days were higher, half were lower. One odd day does not throw it off.</li>' +
       '<li><b>Score.</b> One number from 1 to 99 on every pick; higher is stronger. Its colour runs from red at the low end through yellow in the middle to green at the top. What it measures depends on the list: how fast a price is rising, how big a discount is, how steady a price is, how big a move is, or how strong the signs of a comeback are. Each card page says which.</li>' +
@@ -779,7 +795,7 @@
       '<section class="block sunk article"><h2>Checks on every pick</h2><ul>' +
       '<li>It must have a market price today and at least one copy for sale now.</li>' +
       '<li>It must actually sell. A card whose price never changes is left out.</li>' +
-      '<li>For rising picks, the cheapest copy for sale must be between 30% below and 25% above the market price, so you can really buy near the price shown.</li>' +
+      '<li>For rising picks, the lowest asking price must be between 30% below and 25% above the market price, so sellers are actually listing it near the price shown.</li>' +
       '<li>A jump of more than 300% in the short period is treated as a data error and dropped.</li>' +
       '<li>At most three picks per set in a list, no card appears in two lists, and products not released yet are left out.</li></ul></section>' +
       '<section class="block article"><h2>What this free version cannot see</h2><ul>' +
