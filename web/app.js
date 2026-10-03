@@ -118,6 +118,7 @@
   function score(pick) {
     return '<span class="score" style="--sc:' + scoreColor(pick.score) + '" title="Score, from 1 to 99"><b>' + pick.score + '</b><small>Score</small></span>';
   }
+  var GO = '<span class="go">Details<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>';
   function scoreMeans(cat, p) {
     var kind = p.scoreLabel;
     if (kind === 'Swing') return 'how big the recent price move is, up or down';
@@ -267,7 +268,7 @@
       '<div class="' + tone(coverCat) + '"><a class="hero" href="' + coverHref + '">' + img(coverPick, 'card-img', true) +
         '<span><span class="eyebrow"><i class="dot"></i>Top pick, ' + esc(coverCat.short || coverCat.title) + '</span>' +
         '<h2>' + esc(shortName(coverPick.name)) + '</h2><p class="where">' + esc(where(coverPick)) + '</p>' +
-        '<span class="figures"><span class="price">' + money(coverPick.price) + '</span>' + headlineMove(coverPick) + '</span>' + score(coverPick) + '</span>' +
+        '<span class="figures"><span class="price">' + money(coverPick.price) + '</span>' + headlineMove(coverPick) + '</span><span class="foot">' + score(coverPick) + GO + '</span></span>' +
         '<span class="hero-why deck">' + esc(coverPick.reason) + '</span></a>' + lowLink(coverPick, 'under') + '</div>' +
       '<h2 class="strip">Sections <span>' + issue.categories.length + ' lists, ' + total + ' picks' + (fresh && !ctx.kept ? ', ' + fresh + ' new' + today : '') + '</span></h2>' +
       '<ol class="sections">' + sections + '</ol>' +
@@ -290,7 +291,7 @@
         '<div class="pick-art"><span class="rank">' + p.rank + '</span>' + img(p) + '</div>' +
         '<div class="pick-info"><h3>' + esc(shortName(p.name)) + '</h3><p class="where">' + esc(where(p)) + '</p>' +
         tags(p) +
-        '<div class="figures"><span class="price">' + money(p.price) + '</span>' + headlineMove(p) + '</div>' + score(p) + '</div></a>' +
+        '<div class="figures"><span class="price">' + money(p.price) + '</span>' + headlineMove(p) + '</div><div class="foot">' + score(p) + GO + '</div></div></a>' +
         lowLink(p) + '</div>';
     }).join('');
     var trendNote = (lead.ch7 != null ? 'The big price is the TCGplayer market price: what the card has recently sold for. The % beside it is how much that price changed over the last ' + days + ' days.'
@@ -298,11 +299,12 @@
       ' Score: ' + scoreMeans(cat, lead) + ', from 1 to 99. Prices as of ' + niceDate(issue.date) + '; tap a cheapest-copy link to see what is for sale right now.';
     return '<div class="' + tone(cat) + '"><header class="sec-head band"><span class="eyebrow"><i class="dot"></i>Section ' + (idx + 1) + ' of ' + issue.categories.length + '</span>' +
       '<h1>' + esc(listTitle(cat)) + '</h1><p class="deck">' + esc(cat.blurb) + '</p></header>' +
+      '<p class="tap-hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10m0 0V8.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.6a5 5 0 0 1-4-2l-3.1-4.2a1.5 1.5 0 0 1 2.3-1.9L9 14.5"/></svg>Tap any card for its sold prices, graded prices and price history.</p>' +
       '<a class="lead" href="' + b + '/card/' + cat.id + '/' + lead.rank + '">' +
         '<div class="lead-art"><span class="rank">1</span>' + img(lead, 'card-img', true) + '</div>' +
         '<div><h2>' + esc(shortName(lead.name)) + '</h2><p class="where">' + esc(where(lead)) + '</p>' +
         tags(lead) +
-        '<div class="figures"><span class="price">' + money(lead.price) + '</span>' + headlineMove(lead) + '</div>' + score(lead) + '</div>' +
+        '<div class="figures"><span class="price">' + money(lead.price) + '</span>' + headlineMove(lead) + '</div><div class="foot">' + score(lead) + GO + '</div></div>' +
         '<p class="lead-why deck">' + esc(lead.reason) + '</p></a>' + lowLink(lead, 'under') +
       '<div class="picks">' + rest + '</div>' +
       '<div class="block tint aside"><b>How this list is picked</b><p>' + esc(cat.rule) + ' ' + cat.eligible + ' met this rule' + today + '; these are the top ' + cat.picks.length + '.</p></div>' +
@@ -431,6 +433,8 @@
   function variantSlotButton(list) {
     return list && list.length ? '<button type="button" class="var-btn" aria-expanded="false" aria-controls="variants">Variants<b>' + list.length + '</b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>' : '';
   }
+  // The official card back, loaded from the Pokémon TCG site; a drawn stand-in is used if it cannot load.
+  var CARD_BACK = 'https://tcg.pokemon.com/assets/img/global/tcg-card-back.jpg';
   function variantPanel(main, list, setName) {
     if (!list || !list.length) return '';
     return '<section class="variants" id="variants" hidden><div class="var-grid">' + list.map(function (v) {
@@ -438,7 +442,7 @@
       var say = [label[0], label[1], other].filter(Boolean).join(', ');
       return '<button type="button" class="var" aria-pressed="false" aria-label="' + esc(say) + ': market price ' + money(v.price) + '. Tap to flip.">' +
         '<span class="var-card"><span class="var-face var-front"><img src="' + esc(productImage(v.productId)) + '" alt="" loading="lazy"></span>' +
-        '<span class="var-face var-back"><b>' + esc(label[0]) + '</b><strong>' + money(v.price, true) + '</strong><small>market price</small></span></span>' +
+        '<span class="var-face var-back"><img src="' + CARD_BACK + '" data-small="img/card-back.svg" referrerpolicy="no-referrer" alt="" loading="lazy"><b>' + esc(label[0]) + '</b><strong>' + money(v.price, true) + '</strong><small>market price</small></span></span>' +
         '<span class="var-name">' + esc(label[0]) + (label[1] ? '<small>' + esc(label[1]) + '</small>' : '') + '</span></button>';
     }).join('') + '</div><p class="note">Tap a card to flip it and see what that version sells for.</p></section>';
   }
@@ -471,8 +475,8 @@
     var confText = { High: 'it sells often, we have a long price history, and sellers are asking close to the market price', Medium: 'we have only part of its price history, or sellers are asking a bit more or less than the market price', Low: 'we have little price history for it, or sellers are asking far more or less than the market price' }[p.confidence];
     var price = money(p.price);
 
-    return '<div class="' + tone(cat) + '"><header class="entry-head band"><a class="back" href="' + listHref + '">' + esc(cat.short || cat.title) + '</a>' +
-      '<span class="eyebrow"><i class="dot"></i>Pick ' + p.rank + ' of ' + cat.picks.length + '</span><h1>' + esc(shortName(p.name)) + '</h1>' +
+    return '<div class="' + tone(cat) + '"><header class="entry-head band dark"><a class="back" href="' + listHref + '">Back to ' + esc(cat.short || cat.title) + '</a>' +
+      '<span class="eyebrow"><i class="dot"></i>Card details, pick ' + p.rank + ' of ' + cat.picks.length + '</span><h1>' + esc(shortName(p.name)) + '</h1>' +
       '<p class="where">' + esc(where(p)) + (p.rarity ? '. ' + esc(p.rarity) : '') + '</p>' +
       tags(p) + '</header>' +
       '<div class="entry-main"><div class="slot">' + img(p, 'card-img', true) + variantSlotButton(p.variants) + '</div>' +
@@ -701,8 +705,8 @@
       if (pr[3] != null) rows.push('<div><small>Recent change</small><b>' + move(pr[3]) + '</b></div>');
       if (pr[4] != null) rows.push('<div><small>Last 30 days</small><b>' + move(pr[4]) + '</b></div>');
       if (q != null) rows.push('<div><small>Since ' + niceDate(first[0], false) + '</small><b>' + move(q) + '</b></div>');
-      return '<div class="' + (eraTone(era) || 't-steady') + '"><header class="entry-head band"><a class="back" href="#/search">Search</a>' +
-        '<span class="eyebrow"><i class="dot"></i>' + (it[4] ? 'Sealed product' : 'Single card') + '</span><h1>' + esc(shortName(it[1])) + '</h1>' +
+      return '<div class="' + (eraTone(era) || 't-steady') + '"><header class="entry-head band dark"><a class="back" href="#/search">Back to search</a>' +
+        '<span class="eyebrow"><i class="dot"></i>' + (it[4] ? 'Sealed product details' : 'Card details') + '</span><h1>' + esc(shortName(it[1])) + '</h1>' +
         '<p class="where">' + esc([s[1], it[3] ? '#' + it[3] : '', it[5] || ''].filter(Boolean).join(', ')) + '</p>' +
         (era ? '<div class="tags">' + eraChip(era) + '</div>' : '') + '</header>' +
         '<div class="entry-main"><div class="slot">' + img(pick, 'card-img', true) + variantSlotButton(others) + '</div>' +
@@ -787,13 +791,13 @@
     var view = parts[0] || 'front';
 
     if (view === 'search') {
-      setNav('search'); sideFor(null);
+      setNav('search'); sideFor(null); screen.classList.remove('detail');
       show(searchView()); wireSearch();
       document.title = 'Search, Pokédex daily';
       return;
     }
     if (view === 'p') {
-      setNav('search'); sideFor(null);
+      setNav('search'); sideFor(null); screen.classList.add('detail');
       productView(parts[1], parts[2], decodeURIComponent(parts[3] || '')).then(show).catch(fail);
       return;
     }
@@ -807,6 +811,7 @@
       else if (view === 'how') { setNav('how'); renderSide(ctx, null); html = howView(ctx); }
       else { setNav('issue'); renderSide(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; new Image().src = 'img/chromesby.webp'; }, 1500); } }
       screen.classList.toggle('kept', ctx.kept);
+      screen.classList.toggle('detail', view === 'card');
       show(html);
       document.title = ctx.issue.title + ' daily' + (ctx.kept ? ', issue ' + ctx.issue.number : '');
     }).catch(fail);

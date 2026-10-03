@@ -377,14 +377,32 @@ details.points td:last-child { text-align: right; font-weight: 600; }
 .var-face { position: absolute; inset: 0; border-radius: 6px; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; box-shadow: 0 1px 2px rgba(15,17,21,.14), 0 6px 14px -6px rgba(15,17,21,.35); }
 .var-front { background: var(--well); }
 .var-front img { width: 100%; height: 100%; object-fit: contain; }
-.var-back { transform: rotateY(180deg); background: linear-gradient(rgba(6,8,14,.5), rgba(6,8,14,.5)), url("img/card-back.svg") center / cover no-repeat; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 6px 5px; }
-.var-back b { font-size: 11.5px; font-weight: 700; line-height: 1.15; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.var-back strong { margin-top: 5px; font-stretch: 86%; font-weight: 800; font-size: 17px; line-height: 1; font-variant-numeric: tabular-nums; }
-.var-back small { font-size: 9px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; line-height: 1.2; opacity: .88; overflow-wrap: anywhere; }
+.var-back { transform: rotateY(180deg); background: #16296B; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 6px 5px; text-shadow: 0 1px 2px rgba(0,0,0,.95), 0 0 6px rgba(0,0,0,.85), 0 0 14px rgba(0,0,0,.6); }
+.var-back img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.var-back::before { content: ""; position: absolute; inset: 0; z-index: 1; background: radial-gradient(ellipse at center, rgba(0,0,0,.62) 0%, rgba(0,0,0,.44) 70%, rgba(0,0,0,.34) 100%); }
+.var-back b, .var-back strong, .var-back small { position: relative; z-index: 2; }
+.var-back b { font-size: 12.5px; font-weight: 800; line-height: 1.15; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.var-back strong { margin-top: 5px; font-stretch: 90%; font-weight: 800; font-size: 19px; line-height: 1; font-variant-numeric: tabular-nums; }
+.var-back small { font-size: 9.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; line-height: 1.2; overflow-wrap: anywhere; }
 .var-name { display: block; margin-top: 7px; font-size: 11.5px; font-weight: 600; line-height: 1.2; color: var(--ink-2); overflow-wrap: anywhere; }
 .var-name small { display: block; margin-top: 1px; font-size: 11px; font-weight: 500; color: var(--muted); }
 .variants .note { margin-top: 12px; }
 @media (prefers-reduced-motion: reduce) { .var-card { transition: none; } }
+
+/* ---------- showing that cards open, and giving card pages their own look ---------- */
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 10px; }
+.foot .score, .hero .foot .score, .lead .foot .score, .pick-info .foot .score { margin-top: 0; }
+.go { display: inline-flex; align-items: center; gap: 1px; font-size: 13px; font-weight: 700; color: var(--tone-ink); white-space: nowrap; }
+.go svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.pick-main:active, .lead:active, .hero:active { filter: brightness(.97); }
+.tap-hint { display: flex; align-items: center; gap: 7px; margin: 12px var(--gutter) 0; font-size: 13px; line-height: 1.3; color: var(--muted); }
+.tap-hint svg { flex: none; width: 20px; height: 20px; fill: none; stroke: var(--tone); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.screen.detail { background: #E6E8EE; }
+.band.dark { background: var(--ink); color: #fff; }
+.band.dark::after { background: var(--tone); opacity: .28; }
+.band.dark .eyebrow, .band.dark .where { color: #C5CAD6; }
+.band.dark .back { color: #fff; background: rgba(255,255,255,.14); padding: 7px 13px 7px 11px; border-radius: 999px; }
+.band.dark .new { background: #fff; color: var(--ink); }
 
 /* ---------- wide screens: full sidebar, two columns of picks ---------- */
 @media (min-width: 820px) {
@@ -396,3 +414,4 @@ details.points td:last-child { text-align: right; font-weight: 600; }
   .guide { width: min(100%, 900px); }
   .verdict { grid-template-columns: 220px 1fr; }
 }
+.lead > div, .hero > span { min-width: 0; }
