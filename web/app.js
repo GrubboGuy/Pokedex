@@ -810,7 +810,7 @@
       else if (view === 'card') { setNav('issue'); renderSide(ctx, parts[1]); html = cardView(ctx, parts[1], parts[2]); }
       else if (view === 'issues') { setNav('issues'); renderSide(ctx, null); html = issuesView(ctx); }
       else if (view === 'how') { setNav('how'); renderSide(ctx, null); html = howView(ctx); }
-      else { setNav('issue'); renderSide(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; new Image().src = 'img/chromesby.webp'; new Image().src = 'img/brother.webp'; }, 1500); } }
+      else { setNav('issue'); renderSide(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; new Image().src = 'img/chromesby.webp'; new Image().src = 'img/hatguy.webp'; new Image().src = 'img/brother.webp'; }, 1500); } }
       screen.classList.toggle('kept', ctx.kept);
       screen.classList.toggle('detail', view === 'card');
       show(html);
@@ -894,9 +894,10 @@
     'My dream is simple. Every child, chrome.',
     'You can\u2019t spell change without... well. You can. But add chrome.'
   ];
-  // Every so often the older brother turns up. He is fed up with his brother and sorry about him. Dad is the real boss.
-  var BROTHER_ODDS = 1 / 8;
-  var BROTHER = [
+  // Every so often the guy in the Venusaur hat turns up. He is fed up with his brother and sorry about him. Dad is the real boss.
+  // One time in four his brother is peeking over his shoulder.
+  var HATGUY_ODDS = 1 / 8, PEEK_ODDS = 1 / 4;
+  var HATGUY = [
     'Hold on. HOLD ON. My brother is still talking.',
     'I was mid-sentence. He KNOWS I was mid-sentence.',
     'Can he not interrupt me for ONE pick? One.',
@@ -914,6 +915,22 @@
     'That\u2019s my call. Well. It\u2019s Dad\u2019s call. But I agree with it.',
     'Don\u2019t tell Dad I yelled. Actually, he heard. He always hears.'
   ];
+  // Very, very rarely the brother pops up on his own and whispers. He is stressed, and very excited to trade.
+  var BROTHER_ODDS = 1 / 40;
+  var BROTHER = [
+    'he\u2019s been like this all morning. i\u2019m so stressed. i just want to trade.',
+    'psst. don\u2019t tell him i\u2019m here. my hands are shaking. i\u2019m so excited to trade.',
+    'he said five more minutes an hour ago. i have a binder ready. please.',
+    'he apologized for me again, didn\u2019t he. it\u2019s fine. it\u2019s fine. wanna trade?',
+    'i haven\u2019t slept. i reorganized my trade binder twice. will you look at it?',
+    'he thinks i\u2019m slow. i\u2019m thorough. ...do you have any doubles?',
+    'everything\u2019s fine. i\u2019m sweating through this jacket. let\u2019s trade.',
+    'i wore the tie for the trade. he says it\u2019s too much. is it too much?',
+    'shh. if he hears me he\u2019ll start again. quick, what do you need?',
+    'my heart is going so fast. in a good way. mostly. trade?',
+    'i\u2019m not interrupting. i\u2019m whispering. it\u2019s different. so. trades?',
+    'he yells because he cares. i think. anyway i brought my best cards.'
+  ];
   var guide = null, guideTimer = null;
   // Every line gets its turn before any repeats.
   function dealer(lines) {
@@ -928,29 +945,33 @@
       return lines[last];
     };
   }
-  var nextLine = dealer(WISDOM), nextChrome = dealer(CHROME), nextBrother = dealer(BROTHER);
+  var nextLine = dealer(WISDOM), nextChrome = dealer(CHROME), nextHatguy = dealer(HATGUY), nextBrother = dealer(BROTHER);
   function buildGuide() {
     guide = document.createElement('div');
     guide.className = 'guide';
-    guide.innerHTML = '<p class="guide-say" role="status" aria-live="polite"><b></b><span></span></p><img alt="">';
+    guide.innerHTML = '<p class="guide-say" role="status" aria-live="polite"><b></b><span></span></p><img class="peek" alt=""><img class="who" alt="">';
     guide.addEventListener('click', hideGuide);
     document.body.appendChild(guide);
   }
   function hideGuide() { clearTimeout(guideTimer); if (guide) guide.classList.remove('on'); }
   function speak() {
     if (!guide) buildGuide();
-    var roll = Math.random();
-    var chrome = roll < CHROMESBY_ODDS, brother = !chrome && roll < CHROMESBY_ODDS + BROTHER_ODDS;
+    var roll = Math.random(), who = 'guide';
+    if (roll < CHROMESBY_ODDS) who = 'chromesby';
+    else if (roll < CHROMESBY_ODDS + HATGUY_ODDS) who = 'hatguy';
+    else if (roll < CHROMESBY_ODDS + HATGUY_ODDS + BROTHER_ODDS) who = 'brother';
+    var peeking = who === 'hatguy' && Math.random() < PEEK_ODDS;
     guide.classList.remove('on', 'shock');
-    guide.classList.toggle('chromesby', chrome);
-    guide.classList.toggle('brother', brother);
-    guide.querySelector('img').src = chrome ? 'img/chromesby.webp' : (brother ? 'img/brother.webp' : 'img/guide.webp');
-    guide.querySelector('b').textContent = chrome ? 'Chromesby' : '';
-    guide.querySelector('span').textContent = chrome ? nextChrome() : (brother ? nextBrother() : nextLine());
+    ['chromesby', 'hatguy', 'brother'].forEach(function (c) { guide.classList.toggle(c, who === c); });
+    guide.classList.toggle('peeking', peeking);
+    guide.querySelector('img.who').src = 'img/' + who + '.webp';
+    if (peeking) guide.querySelector('img.peek').src = 'img/brother.webp';
+    guide.querySelector('b').textContent = who === 'chromesby' ? 'Chromesby' : (who === 'brother' ? 'whispering' : '');
+    guide.querySelector('span').textContent = who === 'chromesby' ? nextChrome() : (who === 'hatguy' ? nextHatguy() : (who === 'brother' ? nextBrother() : nextLine()));
     void guide.offsetWidth;
     guide.classList.add('on');
     clearTimeout(guideTimer);
-    guideTimer = setTimeout(hideGuide, chrome || brother ? 5200 : 4200);
+    guideTimer = setTimeout(hideGuide, who === 'guide' ? 4200 : (who === 'brother' ? 6000 : 5200));
   }
   // Very rarely, when the reader scrolls to a card with a top score of 99 and stays on it for a second,
   // a shocked Chromesby pops up.
@@ -958,9 +979,9 @@
   var topWatch = null, topTimers = [], scrolled = false, lastShock = 0;
   function shock() {
     if (!guide) buildGuide();
-    guide.classList.remove('on', 'brother');
+    guide.classList.remove('on', 'hatguy', 'brother', 'peeking');
     guide.classList.add('chromesby', 'shock');
-    guide.querySelector('img').src = 'img/chromesby-shock.webp';
+    guide.querySelector('img.who').src = 'img/chromesby-shock.webp';
     guide.querySelector('b').textContent = 'Chromesby';
     guide.querySelector('span').textContent = 'Holy Shit!';
     void guide.offsetWidth;
