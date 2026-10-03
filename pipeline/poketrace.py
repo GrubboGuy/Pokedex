@@ -56,6 +56,7 @@ def _slim(card):
     prices = card.get("prices") or {}
     return {
         "variant": card.get("variant"),
+        "image": card.get("image"),
         "updated": (card.get("lastUpdated") or "")[:10] or None,
         "ebay": _tiers(prices.get("ebay")),
         "tcgplayer": _tiers(prices.get("tcgplayer")),
@@ -114,4 +115,21 @@ def top_up(issue, today, log=print):
                             "ebay": chosen["ebay"], "tcgplayer": chosen["tcgplayer"]}
             matched += 1
     log(f"  PokeTrace: {made} requests, {matched} of {len(picks)} picks matched")
+    _report_images(found, log)
     return made, sample
+
+
+def _report_images(found, log):
+    """Says whether PokeTrace has a different picture for each variant of a card, and saves the links to look at."""
+    multi = {pid: cards for pid, cards in found.items() if len({c["variant"] for c in cards}) > 1}
+    distinct = {pid: cards for pid, cards in multi.items()
+                if len({c["image"] for c in cards if c.get("image")}) > 1}
+    log(f"  PokeTrace pictures: {len(multi)} cards came back with more than one variant; "
+        f"{len(distinct)} of them have a different picture per variant")
+    out = {pid: {c["variant"]: c.get("image") for c in cards} for pid, cards in list(multi.items())[:40]}
+    path = os.path.join(os.environ.get("POKEDEX_DATA_DIR", "_data"), "poketrace-images.json")
+    try:
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(out, fh, indent=1)
+    except OSError:
+        pass
