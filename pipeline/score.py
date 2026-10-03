@@ -469,6 +469,42 @@ SEALED_FALLBACK = (
 )
 
 
+# ---------- variants ----------
+
+def _base_name(name):
+    """'Zebstrika (Master Ball Pattern)' and 'Zebstrika - 032/086' both come back as 'zebstrika'."""
+    return re.split(r"\s+-\s+|\s*[\(\[]", name or "")[0].strip().lower()
+
+
+def variant_index(catalog):
+    """Single cards grouped by card number and name, so other versions of a card can be found."""
+    index = {}
+    for item in catalog["items"]:
+        if item["kind"] == "single" and item.get("number"):
+            index.setdefault((item["number"], _base_name(item["name"])), []).append(item)
+    return index
+
+
+def variants_for(row, index, groups, limit=12):
+    """Other versions of the same card: its other printings, and stamped or patterned copies sold as separate products.
+
+    A match needs the same name and card number. Copies filed under another set (prerelease and
+    other stamped promos) only count when the number carries the set size, like 096/182.
+    """
+    out = []
+    for item in index.get((row["number"], _base_name(row["name"])), []):
+        if item["gid"] != row["gid"] and "/" not in row["number"]:
+            continue
+        for sub, (market, low, _mid) in item["prices"].items():
+            if not market or (item["id"] == row["productId"] and sub == row["printing"]):
+                continue
+            out.append({"productId": item["id"], "name": item["name"], "printing": sub,
+                        "set": (groups.get(str(item["gid"])) or {}).get("name"),
+                        "price": round(market, 2), "low": round(low, 2) if low else None})
+    out.sort(key=lambda v: (v["productId"] != row["productId"], -v["price"]))
+    return out[:limit]
+
+
 def _balanced(rows, each):
     """Risers and fallers in equal numbers where both exist, biggest move first.
 
@@ -483,9 +519,10 @@ def _balanced(rows, each):
     return head + sorted(rest, key=lambda r: abs(r["ch7"]), reverse=True)
 
 
-def make_categories(rows, span=7):
+def make_categories(rows, span=7, catalog=None):
     global SPAN
     SPAN = span
+    index = variant_index(catalog) if catalog else None
     all_rows = rows
     rows = [r for r in all_rows if r["ch7"] is not None]
     categories, counts, used = [], {}, set()
@@ -504,7 +541,12 @@ def make_categories(rows, span=7):
                 continue
             seen_products.add(r["productId"])
             per_set[r["gid"]] = per_set.get(r["gid"], 0) + 1
-            picks.append(_public(r, score(r), label, reason(r), len(picks) + 1))
+            pick = _public(r, score(r), label, reason(r), len(picks) + 1)
+            if index and r["kind"] == "single" and r["number"]:
+                others = variants_for(r, index, catalog["groups"])
+                if others:
+                    pick["variants"] = others
+            picks.append(pick)
             if len(picks) == config.PICKS_PER_LIST:
                 break
         if len(picks) >= 3:

@@ -360,6 +360,32 @@ details.points td:last-child { text-align: right; font-weight: 600; }
 .meter i { position: absolute; top: -4px; width: 5px; height: 14px; margin-left: -2.5px; border-radius: 3px; background: #fff; box-shadow: 0 0 0 2px #1C1F27; }
 
 
+/* ---------- other versions of a card: a row of small cards that flip to show their price ---------- */
+.slot { min-width: 0; }
+.var-btn { margin-top: 10px; width: 100%; min-height: 38px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 10px; background: var(--well); font-size: 13px; font-weight: 700; cursor: pointer; touch-action: manipulation; }
+.var-btn b { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--ink); color: #fff; font-size: 11px; line-height: 18px; font-variant-numeric: tabular-nums; }
+.var-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
+.var-btn[aria-expanded="true"] { background: var(--ink); color: #fff; }
+.var-btn[aria-expanded="true"] b { background: #fff; color: var(--ink); }
+.var-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.variants { margin: 8px var(--edge) 0; padding: 14px 14px 12px; background: var(--paper); border-radius: var(--radius); }
+.variants[hidden] { display: none; }
+.var-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 14px 10px; }
+.var { display: flex; flex-direction: column; justify-content: flex-start; align-self: start; border: 0; padding: 0; background: none; font: inherit; color: inherit; cursor: pointer; text-align: center; perspective: 700px; touch-action: manipulation; min-width: 0; }
+.var-card { display: block; position: relative; aspect-ratio: 5 / 7; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.3,.7,.2,1); }
+.var[aria-pressed="true"] .var-card { transform: rotateY(180deg); }
+.var-face { position: absolute; inset: 0; border-radius: 6px; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; box-shadow: 0 1px 2px rgba(15,17,21,.14), 0 6px 14px -6px rgba(15,17,21,.35); }
+.var-front { background: var(--well); }
+.var-front img { width: 100%; height: 100%; object-fit: contain; }
+.var-back { transform: rotateY(180deg); background: linear-gradient(rgba(6,8,14,.5), rgba(6,8,14,.5)), url("img/card-back.svg") center / cover no-repeat; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 6px 5px; }
+.var-back b { font-size: 11.5px; font-weight: 700; line-height: 1.15; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.var-back strong { margin-top: 5px; font-stretch: 86%; font-weight: 800; font-size: 17px; line-height: 1; font-variant-numeric: tabular-nums; }
+.var-back small { font-size: 9px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; line-height: 1.2; opacity: .88; overflow-wrap: anywhere; }
+.var-name { display: block; margin-top: 7px; font-size: 11.5px; font-weight: 600; line-height: 1.2; color: var(--ink-2); overflow-wrap: anywhere; }
+.var-name small { display: block; margin-top: 1px; font-size: 11px; font-weight: 500; color: var(--muted); }
+.variants .note { margin-top: 12px; }
+@media (prefers-reduced-motion: reduce) { .var-card { transition: none; } }
+
 /* ---------- wide screens: full sidebar, two columns of picks ---------- */
 @media (min-width: 820px) {
   .app { max-width: 900px; }

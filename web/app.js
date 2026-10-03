@@ -416,6 +416,33 @@
     return out;
   }
 
+  // ---------- other versions of a card ----------
+  var PRINTS = { 'Normal': 'Non-holo', 'Holofoil': 'Holo', 'Reverse Holofoil': 'Reverse holo', '1st Edition': '1st Edition', '1st Edition Holofoil': '1st Edition holo', 'Unlimited': 'Unlimited', 'Unlimited Holofoil': 'Unlimited holo' };
+  function baseName(n) { return String(n || '').split(/\s+-\s+|\s*[(\[]/)[0].trim().toLowerCase(); }
+  // What sets a version apart: its printing, or for a separately sold copy its stamp or pattern.
+  function variantLabel(main, v) {
+    var print = PRINTS[v.printing] || v.printing;
+    if (String(v.productId) === String(main.productId)) return [print, ''];
+    var tags = [];
+    String(v.name).replace(/[(\[]([^)\]]+)[)\]]/g, function (_, t) { if (String(main.name).indexOf(t) < 0) tags.push(t); });
+    var tag = tags.join(', ') || 'Other version';
+    return [tag, tag.toLowerCase() === print.toLowerCase() ? '' : print];
+  }
+  function variantSlotButton(list) {
+    return list && list.length ? '<button type="button" class="var-btn" aria-expanded="false" aria-controls="variants">Variants<b>' + list.length + '</b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>' : '';
+  }
+  function variantPanel(main, list, setName) {
+    if (!list || !list.length) return '';
+    return '<section class="variants" id="variants" hidden><div class="var-grid">' + list.map(function (v) {
+      var label = variantLabel(main, v), other = v.set && v.set !== setName ? v.set : '';
+      var say = [label[0], label[1], other].filter(Boolean).join(', ');
+      return '<button type="button" class="var" aria-pressed="false" aria-label="' + esc(say) + ': market price ' + money(v.price) + '. Tap to flip.">' +
+        '<span class="var-card"><span class="var-face var-front"><img src="' + esc(productImage(v.productId)) + '" alt="" loading="lazy"></span>' +
+        '<span class="var-face var-back"><b>' + esc(label[0]) + '</b><strong>' + money(v.price, true) + '</strong><small>market price</small></span></span>' +
+        '<span class="var-name">' + esc(label[0]) + (label[1] ? '<small>' + esc(label[1]) + '</small>' : '') + '</span></button>';
+    }).join('') + '</div><p class="note">Tap a card to flip it and see what that version sells for.</p></section>';
+  }
+
   function buyLinks(o) {
     var ebay = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent([shortName(o.name), o.number ? String(o.number).split('/')[0] : '', o.abbr || ''].join(' ').trim()) + '&LH_Sold=1&LH_Complete=1';
     return '<div class="buy"><a class="main" href="' + esc(lowUrl(o.url, o.productId, o.printing, o.sealed)) + '" target="_blank" rel="noopener">See the cheapest copy on TCGplayer' + (o.low != null ? ', ' + money(o.low) : '') + '</a>' +
@@ -448,10 +475,11 @@
       '<span class="eyebrow"><i class="dot"></i>Pick ' + p.rank + ' of ' + cat.picks.length + '</span><h1>' + esc(shortName(p.name)) + '</h1>' +
       '<p class="where">' + esc(where(p)) + (p.rarity ? '. ' + esc(p.rarity) : '') + '</p>' +
       tags(p) + '</header>' +
-      '<div class="entry-main">' + img(p, 'card-img', true) +
+      '<div class="entry-main"><div class="slot">' + img(p, 'card-img', true) + variantSlotButton(p.variants) + '</div>' +
       '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
       '<p class="sub">What it has recently sold for.</p>' +
       '<span class="conf ' + p.confidence.toLowerCase() + '">Price reliability: ' + esc(p.confidence) + '</span></div></div>' +
+      variantPanel(p, p.variants, p.set) +
       lowLink(p, 'under') +
       '<section class="verdict"><div class="num" style="--sc:' + scoreColor(p.score) + '"><b>' + p.score + '</b><small>Score</small><em>' + verdict(p) + '</em>' +
       '<span class="meter" aria-hidden="true"><i style="left:' + Math.max(3, Math.min(97, p.score)) + '%"></i></span></div>' +
@@ -654,6 +682,21 @@
         return '<a href="#/p/' + gid + '/' + pid + '/' + encodeURIComponent(x[0]) + '"' + (x[0] === pr[0] ? ' aria-current="true"' : '') + '>' + esc(x[0]) + '</a>';
       }).join('') + '</div>' : '';
       var pick = { name: it[1], image: productImage(it[0]), kind: it[4] ? 'sealed' : 'single' };
+      // Other versions: this product's other printings, then same-name, same-number copies sold separately.
+      var others = [];
+      if (!it[4] && it[3]) {
+        var mine = baseName(it[1]);
+        data.items.forEach(function (x) {
+          if (x[4] || x[3] !== it[3] || baseName(x[1]) !== mine) return;
+          if (x[2] !== it[2] && String(it[3]).indexOf('/') < 0) return;
+          x[6].forEach(function (q) {
+            if (x[0] === it[0] && q[0] === pr[0]) return;
+            others.push({ productId: x[0], name: x[1], printing: q[0], price: q[1], set: data.sets[x[2]][1] });
+          });
+        });
+        others.sort(function (a, b) { return (a.productId !== it[0]) - (b.productId !== it[0]) || b.price - a.price; });
+        others = others.slice(0, 12);
+      }
       var rows = [];
       if (pr[3] != null) rows.push('<div><small>Recent change</small><b>' + move(pr[3]) + '</b></div>');
       if (pr[4] != null) rows.push('<div><small>Last 30 days</small><b>' + move(pr[4]) + '</b></div>');
@@ -662,9 +705,10 @@
         '<span class="eyebrow"><i class="dot"></i>' + (it[4] ? 'Sealed product' : 'Single card') + '</span><h1>' + esc(shortName(it[1])) + '</h1>' +
         '<p class="where">' + esc([s[1], it[3] ? '#' + it[3] : '', it[5] || ''].filter(Boolean).join(', ')) + '</p>' +
         (era ? '<div class="tags">' + eraChip(era) + '</div>' : '') + '</header>' +
-        '<div class="entry-main">' + img(pick, 'card-img', true) +
+        '<div class="entry-main"><div class="slot">' + img(pick, 'card-img', true) + variantSlotButton(others) + '</div>' +
         '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
         '<p class="sub">' + (pr[2] != null ? 'What it has recently sold for.' : 'What it has recently sold for. None were for sale when prices were last checked.') + '</p>' + chips + '</div></div>' +
+        variantPanel({ productId: it[0], name: it[1] }, others, s[1]) +
         (pr[2] != null ? lowLink({ url: null, productId: it[0], printing: pr[0], kind: pick.kind, low: pr[2] }, 'under') : '') +
         (rows.length ? '<section class="block tint"><h2>Price changes</h2><div class="figs' + (rows.length === 2 ? ' two' : '') + '">' + rows.join('') + '</div></section>' : '') +
         chartBlock(series) +
@@ -881,7 +925,17 @@
     guideTimer = setTimeout(hideGuide, chrome ? 5200 : 4200);
   }
   document.addEventListener('click', function (e) {
-    if (e.target.closest && e.target.closest('#strategy')) speak();
+    if (!e.target.closest) return;
+    if (e.target.closest('#strategy')) { speak(); return; }
+    var toggle = e.target.closest('.var-btn');
+    if (toggle) {
+      var panel = document.getElementById('variants'), open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (panel) panel.hidden = !open;
+      return;
+    }
+    var card = e.target.closest('.var');
+    if (card) card.setAttribute('aria-pressed', card.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
   });
 
   window.addEventListener('hashchange', function () { hideGuide(); route(); });

@@ -123,7 +123,7 @@ def main(argv=None):
     edition = store.load_today() or (store.load_issue(index[0]["number"]) if index else None)
     cut, new_number = plan_cut(index, edition, today, args.cut)
     if cut:
-        categories, counts = score.make_categories(rows, span or 7)
+        categories, counts = score.make_categories(rows, span or 7, catalog)
         print("Eligible per list: " + ", ".join(f"{k}={v}" for k, v in counts.items()))
         if not categories:
             print("No list had enough picks (history too thin?). Not refreshing the picks.")

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 350">
+  <defs>
+    <radialGradient id="f" cx="50%" cy="50%" r="70%">
+      <stop offset="0" stop-color="#4C86E8"/>
+      <stop offset=".55" stop-color="#2B55BF"/>
+      <stop offset="1" stop-color="#172E86"/>
+    </radialGradient>
+    <clipPath id="c"><rect x="14" y="14" width="222" height="322" rx="10"/></clipPath>
+  </defs>
+  <rect width="250" height="350" rx="14" fill="#13246B"/>
+  <rect x="14" y="14" width="222" height="322" rx="10" fill="url(#f)"/>
+  <g clip-path="url(#c)" fill="none" stroke="#BFD6FF" stroke-linecap="round" opacity=".32">
+    <path d="M125 175c40-70 120-70 150-10" stroke-width="16"/>
+    <path d="M125 175c-40 70-120 70-150 10" stroke-width="16"/>
+    <path d="M125 175c70 40 70 120 10 170" stroke-width="12" opacity=".8"/>
+    <path d="M125 175c-70-40-70-120-10-170" stroke-width="12" opacity=".8"/>
+    <path d="M125 175c80-10 130 50 120 120" stroke-width="7" opacity=".7"/>
+    <path d="M125 175c-80 10-130-50-120-120" stroke-width="7" opacity=".7"/>
+  </g>
+  <g transform="rotate(-20 125 175)">
+    <circle cx="125" cy="175" r="58" fill="#13246B"/>
+    <path d="M73 175a52 52 0 0 1 104 0z" fill="#E23A36"/>
+    <path d="M73 175a52 52 0 0 0 104 0z" fill="#F5F6F8"/>
+    <rect x="71" y="169" width="108" height="12" fill="#161B2C"/>
+    <circle cx="125" cy="175" r="17" fill="#161B2C"/>
+    <circle cx="125" cy="175" r="10" fill="#F5F6F8"/>
+    <path d="M92 150a40 40 0 0 1 30-22" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".45"/>
+  </g>
+</svg>
