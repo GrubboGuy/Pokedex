@@ -12,12 +12,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Pokédex">
   <link rel="preload" href="fonts/archivo.woff" as="font" type="font/woff" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
 </head>
 <body>
   <div class="app">
     <header class="top">
       <div class="bar">
+        <button type="button" class="menu-btn" id="menu-btn" aria-label="All sections" aria-expanded="false" aria-controls="menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <a class="wordmark" href="#/">Pokédex<small>daily</small></a>
         <span class="issue-no" id="issue-no"></span>
       </div>
@@ -35,6 +36,15 @@
       <a href="#/how" data-nav="how"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.6v.2"/></svg>How it works</a>
     </nav>
   </div>
-  <script src="app.js?v=13" defer></script>
+  <div class="menu" id="menu" hidden>
+    <div class="menu-back" data-close></div>
+    <div class="menu-frame">
+      <nav class="menu-panel" aria-label="All sections">
+        <div class="menu-head"><b>Sections</b><button type="button" class="menu-close" data-close aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+        <div id="menu-list"></div>
+      </nav>
+    </div>
+  </div>
+  <script src="app.js?v=14" defer></script>
 </body>
 </html>

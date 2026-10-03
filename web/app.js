@@ -111,8 +111,14 @@
   }, true);
 
   // One score for every pick, 1 to 99. What it measures depends on the list the pick is in.
+  // Score colour: red at 0, yellow at 50, green at 100. Tuned to stay readable on the dark score chip.
+  function scoreColor(n) {
+    n = Math.max(0, Math.min(100, +n || 0));
+    var hue = n <= 50 ? 2 + n / 50 * 48 : 50 + (n - 50) / 50 * 85;
+    return 'hsl(' + Math.round(hue) + ', ' + Math.round(88 - n * 0.2) + '%, ' + Math.round(62 - n * 0.1) + '%)';
+  }
   function score(pick) {
-    return '<span class="score" title="Score, from 1 to 99"><b>' + pick.score + '</b><small>Score</small></span>';
+    return '<span class="score" style="--sc:' + scoreColor(pick.score) + '" title="Score, from 1 to 99"><b>' + pick.score + '</b><small>Score</small></span>';
   }
   function scoreMeans(cat, p) {
     var kind = p.scoreLabel;
@@ -227,7 +233,7 @@
     return '<nav class="pager" aria-label="Sections">' +
       (prev ? '<a class="prev" href="' + href(prev) + '"><small>Previous section</small><b>' + esc(prev.name) + '</b></a>' : '<span></span>') +
       (next ? '<a class="next" href="' + href(next) + '"><small>Next section</small><b>' + esc(next.name) + '</b></a>' : '<span></span>') +
-      '</nav><p class="swipe-hint">Swipe left or right to move between sections.</p>';
+      '</nav><p class="swipe-hint">Swipe left or right to move between sections, or open the menu at the top left to jump to any of them.</p>';
   }
 
   // ---------- views ----------
@@ -449,7 +455,8 @@
       '<p class="sub">What it has recently sold for.</p>' +
       '<span class="conf ' + p.confidence.toLowerCase() + '">Price reliability: ' + esc(p.confidence) + '</span></div></div>' +
       lowLink(p, 'under') +
-      '<section class="verdict"><div class="num"><b>' + p.score + '</b><small>Score</small><em>' + verdict(p) + '</em></div>' +
+      '<section class="verdict"><div class="num" style="--sc:' + scoreColor(p.score) + '"><b>' + p.score + '</b><small>Score</small><em>' + verdict(p) + '</em>' +
+      '<span class="meter" aria-hidden="true"><i style="left:' + Math.max(3, Math.min(97, p.score)) + '%"></i></span></div>' +
       '<dl>' + breakdown(p, days) + '</dl>' +
       '<p class="verdict-note">In this list the score shows ' + scoreMeans(cat, p) + '. It runs from 1 to 99; higher is stronger.</p></section>' +
       '<section class="block tint"><h2>Why it is here</h2><p class="why">' + esc(p.reason) + '</p></section>' +
@@ -692,7 +699,7 @@
       '<li><b>Cheapest copy for sale.</b> The lowest-priced copy listed on TCGplayer when prices were last checked, in any condition. Its link opens the copies for sale right now, cheapest first.</li>' +
       '<li><b>Price change.</b> How much the market price went up or down over the days shown.</li>' +
       '<li><b>Usual price.</b> The middle price over the last 90 days: half the days were higher, half were lower. One odd day does not throw it off.</li>' +
-      '<li><b>Score.</b> One number from 1 to 99 on every pick; higher is stronger. What it measures depends on the list: how fast a price is rising, how big a discount is, how steady a price is, how big a move is, or how strong the signs of a comeback are. Each card page says which.</li>' +
+      '<li><b>Score.</b> One number from 1 to 99 on every pick; higher is stronger. Its colour runs from red at the low end through yellow in the middle to green at the top. What it measures depends on the list: how fast a price is rising, how big a discount is, how steady a price is, how big a move is, or how strong the signs of a comeback are. Each card page says which.</li>' +
       '<li><b>Price reliability.</b> High when the card sells often, we have a long price history and sellers are asking close to the market price. Low when any of those is missing.</li>' +
       '<li><b>Sells often, regularly or not often.</b> How frequently the market price changed from day to day. A price that never changes usually means nothing is selling.</li></ul></section>' +
       '<section class="block article"><h2>Where the numbers come from</h2><ul>' + sources + '</ul></section>' +
@@ -712,6 +719,56 @@
   }
 
   function notFound() { return '<p class="empty">That page is not in this issue. <a href="#/">Go to the front page</a>.</p>'; }
+
+  // ---------- menu of all sections ----------
+  var menuEl = document.getElementById('menu'), menuBtn = document.getElementById('menu-btn'), menuList = document.getElementById('menu-list');
+  var lastCtx = null, menuTimer = null;
+  function fillMenu(ctx) {
+    var b = base(ctx), fresh = !ctx.kept && madeToday(ctx.issue);
+    var parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
+    if (parts[0] === 'issue') parts = parts.slice(2);
+    var view = parts[0] || 'front', cur = view === 'front' ? '' : (view === 'list' || view === 'card' ? parts[1] : null);
+    var on = function (yes) { return yes ? ' aria-current="true"' : ''; };
+    var rows = '<a class="t-front" href="' + b + '/"' + on(cur === '') + '><i class="dot"></i><span>Front page</span></a>';
+    ctx.issue.categories.forEach(function (c) {
+      var isNew = c.picks.filter(function (p) { return p.isNew; }).length;
+      var timed = c.id.indexOf('hot-') === 0 || c.id === 'modern-sealed' || c.id === 'on-sale';
+      rows += '<a class="' + tone(c) + '" href="' + b + '/list/' + c.id + '"' + on(cur === c.id) + '><i class="dot"></i><span>' +
+        esc(plainTitle(c) + (timed && fresh ? ' today' : '')) + '</span><small>' + c.picks.length + ' picks' + (isNew && !ctx.kept ? ', ' + isNew + ' new' : '') + '</small></a>';
+    });
+    menuList.innerHTML = '<p class="menu-label">' + (ctx.kept ? 'Issue ' + pad(ctx.issue.number, 2) + ', ' + niceDate(ctx.issue.date, false) : (fresh ? 'Today\u2019s picks' : 'Latest picks')) + '</p>' + rows +
+      '<p class="menu-label">More</p>' +
+      '<a class="t-front" href="#/search"' + on(view === 'search' || view === 'p') + '><i class="dot"></i><span>Search every card</span></a>' +
+      '<a class="t-front" href="#/issues"' + on(view === 'issues') + '><i class="dot"></i><span>Back issues</span></a>' +
+      '<a class="t-front" href="#/how"' + on(view === 'how') + '><i class="dot"></i><span>How it works</span></a>';
+  }
+  function openMenu() {
+    clearTimeout(menuTimer);
+    var number = /^#\/issue\/(\d+)/.exec(location.hash);
+    var ready = lastCtx && (number ? lastCtx.kept && String(lastCtx.issue.number) === number[1] : !lastCtx.kept) ? Promise.resolve(lastCtx) : getIssue(number ? +number[1] : null);
+    ready.then(fillMenu).catch(function () { menuList.innerHTML = '<p class="menu-label">The sections could not be loaded.</p>'; });
+    menuEl.hidden = false;
+    void menuEl.offsetWidth;
+    menuEl.classList.add('open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    document.documentElement.style.overflow = 'hidden';
+    menuEl.querySelector('.menu-close').focus({ preventScroll: true });
+  }
+  function closeMenu(refocus) {
+    if (menuEl.hidden) return;
+    menuEl.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    document.documentElement.style.overflow = '';
+    clearTimeout(menuTimer);
+    menuTimer = setTimeout(function () { menuEl.hidden = true; }, 220);
+    if (refocus) menuBtn.focus({ preventScroll: true });
+  }
+  menuBtn.addEventListener('click', function () { if (menuEl.hidden) openMenu(); else closeMenu(true); });
+  menuEl.addEventListener('click', function (e) {
+    if (e.target.closest('[data-close]')) closeMenu(true);
+    else if (e.target.closest('a')) closeMenu(false);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(true); });
 
   // ---------- router ----------
   function setNav(name) {
@@ -762,6 +819,7 @@
       return;
     }
     getIssue(number).then(function (ctx) {
+      lastCtx = ctx;
       issueNoEl.textContent = ctx.kept ? 'Issue ' + pad(ctx.issue.number, 2) + ', ' + niceDate(ctx.issue.date, false) : 'Updated ' + updated(ctx.issue, true);
       var html;
       today = !ctx.kept && madeToday(ctx.issue) ? ' today' : '';
@@ -950,7 +1008,7 @@
     if (e.target.closest && e.target.closest('#strategy')) speak();
   });
 
-  window.addEventListener('hashchange', function () { hideGuide(); route(); });
+  window.addEventListener('hashchange', function () { hideGuide(); closeMenu(false); route(); });
   route();
 
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
