@@ -42,6 +42,7 @@
   // A pick's headline figure: its short-term move, or for picks without a trend, the listing gap.
   function headlineMove(p) {
     if (p.ch7 != null) return move(p.ch7);
+    if (p.chSince != null) return move(p.chSince);
     var gap = Math.round((1 - p.low / p.price) * 100);
     return '<span class="move gap">asking from ' + gap + '% under</span>';
   }
@@ -139,7 +140,7 @@
     if (kind === 'Swing') return 'how big the recent price move is, up or down';
     if (kind === 'Rebound') return 'how strong the signs are that the price will come back';
     if (kind === 'Steady') return 'how little the price has moved';
-    if (kind === 'Deal') return cat.id === 'modern-sealed' ? 'how far the lowest asking price is below what it usually sells for' : 'how far below its usual price it is';
+    if (kind === 'Deal') return 'how far below its usual price it is';
     return 'how fast the price is rising';
   }
   function verdict(p) {
@@ -339,7 +340,7 @@
         shopLinks(p) + '</div>';
     }).join('');
     var trendNote = (lead.ch7 != null ? 'The big price is the TCGplayer market price: what the card has recently sold for. The % beside it is how much that price changed over the last ' + days + ' days.'
-      : 'The big price is the TCGplayer market price: what the product has recently sold for. Beside it is how far the lowest asking price is under that.') +
+      : 'The big price is the TCGplayer market price: what the product has recently sold for. The % beside it is how much that price has changed since ' + (lead.since ? niceDate(lead.since, false) : 'we started tracking it') + '.') +
       ' Score: ' + scoreMeans(cat, lead) + ', from 1 to 99. Prices as of ' + niceDate(issue.date) + '. The TCGplayer and eBay links under each card open what is for sale right now, lowest price first.';
     return '<div class="' + tone(cat) + '"><header class="sec-head band"><span class="eyebrow"><i class="dot"></i>Section ' + (idx + 1) + ' of ' + issue.categories.length + '</span>' +
       '<h1>' + esc(listTitle(cat)) + '</h1><p class="deck">' + esc(cat.blurb) + '</p></header>' +
@@ -416,6 +417,7 @@
     function row(label, value) { return '<div class="rowb"><dt>' + label + '</dt><dd>' + value + '</dd></div>'; }
     var rows = [];
     if (p.ch7 != null) rows.push(row('Last ' + days + ' days', move(p.ch7)));
+    else if (p.chSince != null) rows.push(row('Since ' + niceDate(p.since, false), move(p.chSince)));
     if (p.ch30 != null) rows.push(row('Last 30 days', move(p.ch30)));
     if (p.ch90 != null) rows.push(row('Last 90 days', move(p.ch90)));
     var gap = p.low / p.price - 1, g = Math.round(Math.abs(gap) * 100);
@@ -801,7 +803,7 @@
       '<section class="block article"><h2>What this free version cannot see</h2><ul>' +
       '<li>Each eBay sale one by one. For the picks we show the most recent sale price, the typical price and how many sold. The "Recent eBay sales" button on every card opens the actual sales on eBay.</li>' +
       '<li>How many copies sold, for every card. We only have that for the picks themselves.</li>' +
-      '<li>Sealed price changes before October 2026. Our older price history covers single cards only, so the sealed list ranks by discount until a week of sealed prices is saved.</li>' +
+      '<li>Sealed price changes before October 2026. Our older price history covers single cards only. Until a full week of sealed prices is saved, the sealed list shows what has risen since October 1, and it is left out on days when too few products qualify.</li>' +
       '<li>Reddit and X chatter. Not connected yet.</li></ul></section>' +
       '<section class="block sunk article"><h2>The fine print</h2><p>This is market information, not financial advice. A price that rose last week can fall next week. Not affiliated with or endorsed by Nintendo, The Pokémon Company, TCGplayer or eBay. Card images are shown only to identify the cards being priced.</p></section>';
   }

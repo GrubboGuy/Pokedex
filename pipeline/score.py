@@ -167,6 +167,8 @@ def compute_rows(catalog, snapshots, today):
                 # how often the card actually sells, since the free feed has no sales counts
                 "activity": moves / max(1, len(past) - 1),
                 "points": len(series), "series": series,
+                # change since the first price on file, for products too new to our records for a full trend
+                "since": series[0][0], "chSince": market / series[0][1] - 1 if len(series) >= 2 else None,
             })
     return rows, span
 
@@ -428,50 +430,55 @@ def _public(row, score, label, reason, rank):
     for k in ("ch7", "ch30", "ch90"):
         out[k] = None if out[k] is None else round(out[k], 4)
     out["gid"] = row["gid"]
+    if row["ch7"] is None and row.get("chSince") is not None:
+        out["since"] = row["since"]
+        out["chSince"] = round(row["chSince"], 4)
     out["activity"] = round(row["activity"], 2)
     out.update({"rank": rank, "score": score, "scoreLabel": label,
                 "confidence": _confidence(row), "reason": reason})
     return out
 
 
-def _sealed_listings():
+def _nice_day(iso):
+    d = dt.date.fromisoformat(iso)
+    return f"{d.strftime('%b')} {d.day}"
+
+
+def _sealed_since():
     """Sealed list used until sealed products have a week of price history.
 
-    Ranks by how far the lowest asking price sits under the market price. Only small gaps count:
-    a sealed listing far under the market price is nearly always the wrong product (loose packs,
-    another language), not a deal. The middle asking price must also be near the market price,
-    which shows that ordinary sellers really are listing around there.
+    Ranks by how much the market price has risen since sealed tracking began. An earlier version
+    ranked by how far the lowest asking price sat under the market price; checked against the live
+    listings, those low prices were stale or the wrong product, so it was dropped.
     """
     core = ("booster box", "elite trainer box", "booster bundle", "collection", "tin", "build & battle")
-
-    def discount(r):
-        return 1 - r["low"] / r["price"]
 
     def test(r):
         name = (r["name"] or "").lower()
         return (
             r["kind"] == "sealed" and r["era"] in ("sv", "mega") and r["price"] >= 20
             and (r["setAgeDays"] is None or r["setAgeDays"] >= 30)
-            and any(w in name for w in core) and 0.03 <= discount(r) <= 0.10
-            and r.get("mid") and r["mid"] <= r["price"] * 1.05
+            and any(w in name for w in core)
+            and r["chSince"] is not None and 0.02 <= r["chSince"] <= 0.6
+            and _listed_near(r, 0.85, 1.2)
         )
 
     def score(r):
-        return _clamp_score(50 + 49 * math.tanh(5 * discount(r)))
+        return _clamp_score(50 + 45 * math.tanh(6 * r["chSince"]))
 
     def reason(r):
-        return (f"Sellers are asking from {_money(r['low'])} before shipping, {discount(r) * 100:.0f}% under the "
-                f"{_money(r['price'])} it has been selling for. Check the listing is the real sealed product: very cheap "
-                f"ones are sometimes loose packs or another language. No price trend yet, sealed tracking only just started.")
+        return (f"Up {_p(r['chSince'])} since {_nice_day(r['since'])}, from {_money(r['series'][0][1])} to "
+                f"{_money(r['price'])}. We only started tracking sealed prices then, so this is a short window.")
 
-    return test, discount, score, reason
+    return test, lambda r: r["chSince"], score, reason
 
 
 SEALED_FALLBACK = (
-    "modern-sealed", "Sealed deals", "Sealed",
-    "Modern boxes, bundles and tins listed a little under their usual price", "blue", "Deal", _sealed_listings(),
-    "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by how far "
-    "the lowest asking price is below the market price (3% to 10%; bigger gaps are usually the wrong product). Once we have a week of sealed prices, this list ranks by price rise.",
+    "modern-sealed", "Sealed risers", "Sealed",
+    "Modern boxes, bundles and tins that have gone up since we started tracking them", "blue", "Heat", _sealed_since(),
+    "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, whose market price "
+    "has risen at least 2% since sealed tracking began on October 1, 2026. Once a full week of sealed prices is saved, "
+    "this list ranks by the weekly rise like the others.",
 )
 
 
