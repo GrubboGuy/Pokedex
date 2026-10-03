@@ -1,5 +1,5 @@
 /* Offline support: the app shell is cached, issue data is fetched fresh when online. */
-var SHELL = 'shell-v19';
+var SHELL = 'shell-v20';
 var FILES = ['./', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'icons/icon-192.png', 'fonts/archivo.woff', 'fonts/newsreader.woff', 'fonts/newsreader-italic.woff'];
 
 self.addEventListener('install', function (event) {

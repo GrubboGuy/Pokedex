@@ -893,7 +893,7 @@
     'My dream is simple. Every child, chrome.',
     'You can\u2019t spell change without... well. You can. But add chrome.'
   ];
-  // Every so often the older brother turns up. He is fed up with his brother, sorry about him, and answers to Dad.
+  // Every so often the older brother turns up. He is fed up with his brother and sorry about him. Dad is the real boss.
   var BROTHER_ODDS = 1 / 8;
   var BROTHER = [
     'Hold on. HOLD ON. My brother is still talking.',
@@ -911,13 +911,7 @@
     'Sorry, he sneezed on the display case. Again.',
     'I apologize in advance for whatever my brother is about to say.',
     'That\u2019s my call. Well. It\u2019s Dad\u2019s call. But I agree with it.',
-    'I run this operation. Under Dad. Dad runs it.',
-    'I\u2019d say buy it, but let me check with Dad.',
-    'Dad says we\u2019re leaving in five. So we\u2019re leaving in five.',
-    'Don\u2019t tell Dad I yelled. Actually, he heard. He always hears.',
-    'My brother\u2019s banned from the binder. Dad\u2019s ruling, not mine.',
-    'I\u2019m in charge here. After Dad. Dad\u2019s in charge.',
-    'Ask my brother. No, don\u2019t. Ask Dad.'
+    'Don\u2019t tell Dad I yelled. Actually, he heard. He always hears.'
   ];
   var guide = null, guideTimer = null;
   // Every line gets its turn before any repeats.
