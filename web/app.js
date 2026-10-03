@@ -116,7 +116,7 @@
     return 'hsl(' + Math.round(hue) + ', ' + Math.round(88 - n * 0.2) + '%, ' + Math.round(62 - n * 0.1) + '%)';
   }
   function score(pick) {
-    return '<span class="score" style="--sc:' + scoreColor(pick.score) + '" title="Score, from 1 to 99"><b>' + pick.score + '</b><small>Score</small></span>';
+    return '<span class="score"' + (pick.score >= 99 ? ' data-top-score' : '') + ' style="--sc:' + scoreColor(pick.score) + '" title="Score, from 1 to 99"><b>' + pick.score + '</b><small>Score</small></span>';
   }
   var GO = '<span class="go">Details<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>';
   function scoreMeans(cat, p) {
@@ -485,7 +485,7 @@
       '<span class="conf ' + p.confidence.toLowerCase() + '">Price reliability: ' + esc(p.confidence) + '</span></div></div>' +
       variantPanel(p, p.variants, p.set) +
       lowLink(p, 'under') +
-      '<section class="verdict"><div class="num" style="--sc:' + scoreColor(p.score) + '"><b>' + p.score + '</b><small>Score</small><em>' + verdict(p) + '</em>' +
+      '<section class="verdict"><div class="num"' + (p.score >= 99 ? ' data-top-score' : '') + ' style="--sc:' + scoreColor(p.score) + '"><b>' + p.score + '</b><small>Score</small><em>' + verdict(p) + '</em>' +
       '<span class="meter" aria-hidden="true"><i style="left:' + Math.max(3, Math.min(97, p.score)) + '%"></i></span></div>' +
       '<dl>' + breakdown(p, days) + '</dl>' +
       '<p class="verdict-note">In this list the score shows ' + scoreMeans(cat, p) + '. It runs from 1 to 99; higher is stronger.</p></section>' +
@@ -774,6 +774,7 @@
     screen.innerHTML = html;
     wireChart(screen);
     window.scrollTo(0, 0);
+    setTimeout(watchTopScores, 300);  // after the jump back to the top has settled
   }
   function fail(err) {
     show(err && err.message === 'empty'
@@ -940,7 +941,7 @@
     if (!guide) buildGuide();
     var roll = Math.random();
     var chrome = roll < CHROMESBY_ODDS, brother = !chrome && roll < CHROMESBY_ODDS + BROTHER_ODDS;
-    guide.classList.remove('on');
+    guide.classList.remove('on', 'shock');
     guide.classList.toggle('chromesby', chrome);
     guide.classList.toggle('brother', brother);
     guide.querySelector('img').src = chrome ? 'img/chromesby.webp' : (brother ? 'img/brother.webp' : 'img/guide.webp');
@@ -951,6 +952,48 @@
     clearTimeout(guideTimer);
     guideTimer = setTimeout(hideGuide, chrome || brother ? 5200 : 4200);
   }
+  // Very rarely, when the reader scrolls to a card with a top score of 99 and stays on it for a second,
+  // a shocked Chromesby pops up.
+  var SHOCK_ODDS = 1 / 10, SHOCK_REST = 60000;
+  var topWatch = null, topTimers = [], scrolled = false, lastShock = 0;
+  function shock() {
+    if (!guide) buildGuide();
+    guide.classList.remove('on', 'brother');
+    guide.classList.add('chromesby', 'shock');
+    guide.querySelector('img').src = 'img/chromesby-shock.webp';
+    guide.querySelector('b').textContent = 'Chromesby';
+    guide.querySelector('span').textContent = 'Holy Shit!';
+    void guide.offsetWidth;
+    guide.classList.add('on');
+    clearTimeout(guideTimer);
+    guideTimer = setTimeout(hideGuide, 3200);
+    lastShock = Date.now();
+  }
+  function watchTopScores() {
+    if (topWatch) topWatch.disconnect();
+    topTimers.forEach(clearTimeout);
+    topTimers = [];
+    scrolled = false;
+    var targets = screen.querySelectorAll('[data-top-score]');
+    if (!targets.length || !('IntersectionObserver' in window)) return;
+    new Image().src = 'img/chromesby-shock.webp';
+    topWatch = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var el = entry.target;
+        clearTimeout(el._dwell);
+        if (!entry.isIntersecting) return;
+        el._dwell = setTimeout(function () {
+          // Only after a scroll, only if nothing else is talking, and not again for a while.
+          if (!scrolled || (guide && guide.classList.contains('on')) || Date.now() - lastShock < SHOCK_REST) return;
+          if (Math.random() < SHOCK_ODDS) shock();
+        }, 1000);
+        topTimers.push(el._dwell);
+      });
+    }, { threshold: 0.95 });
+    targets.forEach(function (el) { topWatch.observe(el); });
+  }
+  window.addEventListener('scroll', function () { scrolled = true; }, { passive: true });
+
   document.addEventListener('click', function (e) {
     if (!e.target.closest) return;
     if (e.target.closest('#strategy')) { speak(); return; }
