@@ -809,7 +809,7 @@
       else if (view === 'card') { setNav('issue'); renderSide(ctx, parts[1]); html = cardView(ctx, parts[1], parts[2]); }
       else if (view === 'issues') { setNav('issues'); renderSide(ctx, null); html = issuesView(ctx); }
       else if (view === 'how') { setNav('how'); renderSide(ctx, null); html = howView(ctx); }
-      else { setNav('issue'); renderSide(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; new Image().src = 'img/chromesby.webp'; }, 1500); } }
+      else { setNav('issue'); renderSide(ctx, ''); html = frontView(ctx); if (!route.warmed) { route.warmed = true; setTimeout(function () { new Image().src = 'img/guide.webp'; new Image().src = 'img/chromesby.webp'; new Image().src = 'img/brother.webp'; }, 1500); } }
       screen.classList.toggle('kept', ctx.kept);
       screen.classList.toggle('detail', view === 'card');
       show(html);
@@ -893,6 +893,32 @@
     'My dream is simple. Every child, chrome.',
     'You can\u2019t spell change without... well. You can. But add chrome.'
   ];
+  // Every so often the older brother turns up. He is fed up with his brother, sorry about him, and answers to Dad.
+  var BROTHER_ODDS = 1 / 8;
+  var BROTHER = [
+    'Hold on. HOLD ON. My brother is still talking.',
+    'I was mid-sentence. He KNOWS I was mid-sentence.',
+    'Can he not interrupt me for ONE pick? One.',
+    'He has been \u201Calmost ready\u201D for twenty minutes.',
+    'We\u2019d be done by now if my brother could read a price tag.',
+    'He\u2019s been sleeving the same card since lunch.',
+    'Sorry about my brother. He thinks reverse holo is a direction.',
+    'I apologize for my brother. He alphabetized the binder by vibes.',
+    'Sorry about him. He tried to haggle with a vending machine.',
+    'I\u2019m so sorry. He called it \u201CPokey-man\u201D in front of the vendor.',
+    'Apologies for my brother. He brought a calculator and no batteries.',
+    'My brother says hi. I apologize for that too.',
+    'Sorry, he sneezed on the display case. Again.',
+    'I apologize in advance for whatever my brother is about to say.',
+    'That\u2019s my call. Well. It\u2019s Dad\u2019s call. But I agree with it.',
+    'I run this operation. Under Dad. Dad runs it.',
+    'I\u2019d say buy it, but let me check with Dad.',
+    'Dad says we\u2019re leaving in five. So we\u2019re leaving in five.',
+    'Don\u2019t tell Dad I yelled. Actually, he heard. He always hears.',
+    'My brother\u2019s banned from the binder. Dad\u2019s ruling, not mine.',
+    'I\u2019m in charge here. After Dad. Dad\u2019s in charge.',
+    'Ask my brother. No, don\u2019t. Ask Dad.'
+  ];
   var guide = null, guideTimer = null;
   // Every line gets its turn before any repeats.
   function dealer(lines) {
@@ -907,7 +933,7 @@
       return lines[last];
     };
   }
-  var nextLine = dealer(WISDOM), nextChrome = dealer(CHROME);
+  var nextLine = dealer(WISDOM), nextChrome = dealer(CHROME), nextBrother = dealer(BROTHER);
   function buildGuide() {
     guide = document.createElement('div');
     guide.className = 'guide';
@@ -918,16 +944,18 @@
   function hideGuide() { clearTimeout(guideTimer); if (guide) guide.classList.remove('on'); }
   function speak() {
     if (!guide) buildGuide();
-    var chrome = Math.random() < CHROMESBY_ODDS;
+    var roll = Math.random();
+    var chrome = roll < CHROMESBY_ODDS, brother = !chrome && roll < CHROMESBY_ODDS + BROTHER_ODDS;
     guide.classList.remove('on');
     guide.classList.toggle('chromesby', chrome);
-    guide.querySelector('img').src = chrome ? 'img/chromesby.webp' : 'img/guide.webp';
+    guide.classList.toggle('brother', brother);
+    guide.querySelector('img').src = chrome ? 'img/chromesby.webp' : (brother ? 'img/brother.webp' : 'img/guide.webp');
     guide.querySelector('b').textContent = chrome ? 'Chromesby' : '';
-    guide.querySelector('span').textContent = chrome ? nextChrome() : nextLine();
+    guide.querySelector('span').textContent = chrome ? nextChrome() : (brother ? nextBrother() : nextLine());
     void guide.offsetWidth;
     guide.classList.add('on');
     clearTimeout(guideTimer);
-    guideTimer = setTimeout(hideGuide, chrome ? 5200 : 4200);
+    guideTimer = setTimeout(hideGuide, chrome || brother ? 5200 : 4200);
   }
   document.addEventListener('click', function (e) {
     if (!e.target.closest) return;
