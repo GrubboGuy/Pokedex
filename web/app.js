@@ -442,7 +442,7 @@
       var say = [label[0], label[1], other].filter(Boolean).join(', ');
       return '<button type="button" class="var" aria-pressed="false" aria-label="' + esc(say) + ': market price ' + money(v.price) + '. Tap to flip.">' +
         '<span class="var-card"><span class="var-face var-front"><img src="' + esc(productImage(v.productId)) + '" alt="" loading="lazy"></span>' +
-        '<span class="var-face var-back"><img src="' + CARD_BACK + '" data-small="img/card-back.svg" referrerpolicy="no-referrer" alt="" loading="lazy"><b>' + esc(label[0]) + '</b><strong>' + money(v.price, true) + '</strong><small>market price</small></span></span>' +
+        '<span class="var-face var-back"><img src="' + CARD_BACK + '" data-small="img/card-back.svg" referrerpolicy="no-referrer" alt=""><b>' + esc(label[0]) + '</b><strong>' + money(v.price, true) + '</strong><small>market price</small></span></span>' +
         '<span class="var-name">' + esc(label[0]) + (label[1] ? '<small>' + esc(label[1]) + '</small>' : '') + '</span></button>';
     }).join('') + '</div><p class="note">Tap a card to flip it and see what that version sells for.</p></section>';
   }
