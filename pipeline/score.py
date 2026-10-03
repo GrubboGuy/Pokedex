@@ -31,6 +31,40 @@ def era_for(name, release):
     return era
 
 
+def frame_for(name, release):
+    """Which card frame design a set uses, or None when it mixes several or the date is unknown."""
+    lname = (name or "").lower()
+    for set_name, frame in config.FRAME_BY_NAME:
+        if lname == set_name.lower():
+            return frame
+    if any(w in lname for w in config.FRAME_SKIP_WORDS):
+        return None
+    if not release:
+        return config.ERA_FRAMES.get(era_for(name, None))
+    frame = None
+    for frame_id, start in config.FRAMES:
+        if release >= start:
+            frame = frame_id
+    return frame
+
+
+_TRAINER = re.compile(r"trainer|item|supporter|stadium|tool|technical machine|^tm$", re.I)
+
+
+def _layout(name, ext):
+    """p = Pokemon, t = Trainer, e = Energy. TCGplayer's card details are patchy, so be forgiving."""
+    card_type = (ext.get("Card Type") or "").strip()
+    if _TRAINER.search(card_type):
+        return "t"
+    if "energy" in card_type.lower():
+        return "e"
+    if card_type or ext.get("HP"):
+        return "p"
+    if re.search(r"\bEnergy\b", name or ""):
+        return "e"
+    return None
+
+
 def _kind(name, ext):
     lname = (name or "").lower()
     if ext.get("Number"):
@@ -55,6 +89,7 @@ def build_catalog(date, groups, fetch_products, fetch_prices, log=print):
             "release": release,
             "era": era_for(g.get("name"), release),
         }
+        frame = frame_for(g.get("name"), release)
         price_rows = {}
         for row in fetch_prices(gid):
             price_rows.setdefault(row["productId"], {})[row.get("subTypeName") or "Normal"] = [
@@ -72,6 +107,8 @@ def build_catalog(date, groups, fetch_products, fetch_prices, log=print):
                 "kind": kind,
                 "number": ext.get("Number"),
                 "rarity": ext.get("Rarity"),
+                "art": (f"{frame}.{_layout(p.get('name'), ext)}"
+                        if kind == "single" and frame and _layout(p.get("name"), ext) else None),
                 "image": p.get("imageUrl"),
                 "url": p.get("url"),
                 "presale": bool((p.get("presaleInfo") or {}).get("isPresale")),
@@ -79,7 +116,7 @@ def build_catalog(date, groups, fetch_products, fetch_prices, log=print):
             })
         if (i + 1) % 40 == 0:
             log(f"  fetched {i + 1}/{len(groups)} sets, {len(items)} products so far")
-    return {"date": date, "groups": cat_groups, "items": items}
+    return {"date": date, "v": config.CATALOG_VERSION, "groups": cat_groups, "items": items}
 
 
 def snapshot_from_catalog(catalog):
@@ -151,7 +188,7 @@ def compute_rows(catalog, snapshots, today):
             rows.append({
                 "key": key, "productId": item["id"], "printing": sub,
                 "name": item["name"], "kind": item["kind"],
-                "number": item["number"], "rarity": item["rarity"],
+                "number": item["number"], "rarity": item["rarity"], "art": item.get("art"),
                 "image": item["image"], "url": item["url"],
                 "set": group.get("name"), "setAbbr": group.get("abbr"), "gid": item["gid"],
                 "era": era_for(group.get("name"), release),
@@ -430,6 +467,8 @@ def _public(row, score, label, reason, rank):
     for k in ("ch7", "ch30", "ch90"):
         out[k] = None if out[k] is None else round(out[k], 4)
     out["gid"] = row["gid"]
+    if row.get("art"):
+        out["art"] = row["art"]
     if row["ch7"] is None and row.get("chSince") is not None:
         out["since"] = row["since"]
         out["chSince"] = round(row["chSince"], 4)
@@ -513,6 +552,7 @@ def variants_for(row, index, groups, limit=12):
                 continue
             out.append({"productId": item["id"], "name": item["name"], "printing": sub,
                         "set": (groups.get(str(item["gid"])) or {}).get("name"),
+                        "rarity": item.get("rarity"), "art": item.get("art"),
                         "price": round(market, 2), "low": round(low, 2) if low else None})
     out.sort(key=lambda v: (v["productId"] != row["productId"], -v["price"]))
     return out[:limit]

@@ -38,6 +38,23 @@ ERA_PREFIXES = [
     ("BW", "bwxy"), ("HGSS", "dp"), ("DP", "dp"), ("EX ", "ex"),
 ]
 
+# Card frame designs, by first release date. The site uses these to know where the artwork sits on a
+# card so it can draw a foil finish over the right part of the picture.
+FRAMES = [
+    ("wotc", "1999-01-01"), ("ecard", "2002-09-01"), ("ex", "2003-06-01"), ("dp", "2007-05-01"),
+    ("hgss", "2010-02-01"), ("bwxy", "2011-04-01"), ("sm", "2016-12-01"), ("swsh", "2019-11-10"),
+    ("sv", "2023-03-01"),
+]
+# Used when a set has no usable release date; None where the era spans two frame designs.
+ERA_FRAMES = {"mega": "sv", "sv": "sv", "swsh": "swsh", "sm": "sm", "bwxy": "bwxy", "ex": "ex"}
+# Sets that reprint an older design, and sets that mix cards from many years (no single frame).
+FRAME_BY_NAME = [("XY - Evolutions", "evo")]
+FRAME_SKIP_WORDS = (
+    "world championship", "jumbo", "league & championship", "deck exclusives", "trading card game classic",
+    "classic collection", "miscellaneous", "blister exclusives", "celebrations",
+)
+CATALOG_VERSION = 2
+
 SEALED_WORDS = (
     "booster box", "elite trainer box", "booster bundle", "booster pack",
     "collection", "tin", "build & battle", "blister", "premium", "bundle",

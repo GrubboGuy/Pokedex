@@ -66,7 +66,7 @@ class Store:
         if not os.path.isfile(path):
             return None
         data = _read_gz(path)
-        return data if data.get("date") == date else None
+        return data if data.get("date") == date and data.get("v") == config.CATALOG_VERSION else None
 
     def save_catalog(self, catalog):
         _write_gz(os.path.join(self.root, "catalog.json.gz"), catalog)

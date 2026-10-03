@@ -34,7 +34,7 @@ def export(site_dir, catalog, snapshots, today, rows):
         if printings:
             printings.sort(key=lambda p: -p[1])
             items.append([item["id"], item["name"], set_index[str(item["gid"])], item["number"],
-                          1 if item["kind"] == "sealed" else 0, item["rarity"], printings])
+                          1 if item["kind"] == "sealed" else 0, item["rarity"], printings, item.get("art")])
 
     write_json(os.path.join(site_dir, "search.json"), {"date": today, "sets": sets, "items": items})
     for gid, series in by_set.items():

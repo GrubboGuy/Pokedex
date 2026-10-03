@@ -108,12 +108,52 @@
     '<rect x="16" y="16" width="218" height="318" rx="8" fill="none" stroke="#D5D8DF" stroke-width="3"/>' +
     '<path d="M95 190l22-26 18 18 24-32" fill="none" stroke="#B9BEC9" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 
+  // Where the artwork sits on a card (left, top, right, bottom, in % of the picture), by frame design
+  // and card type. Measured from TCGplayer's pictures. Sellers photograph one version of a card, so
+  // the foil on a reverse holo or holo is drawn on top of that picture rather than photographed.
+  var MODERN = [7.7, 9.5, 92.3, 47.1];
+  var ART = {
+    p: { wotc: [10.6, 12, 90.4, 52.5], ecard: [10.3, 12, 96, 50], ex: [7, 9, 92.7, 46.7], dp: [7.5, 9.5, 92.4, 50.2],
+      hgss: [7, 9.3, 92.7, 52.6], bwxy: [8.7, 9.5, 91, 49.8], evo: [11, 14, 90, 54], sm: MODERN, swsh: MODERN, sv: MODERN },
+    t: { wotc: [10, 23, 91.3, 55.5], ecard: [9.3, 16.5, 90.5, 51], ex: [8.3, 14.3, 91.3, 48.8], dp: [8.7, 14.2, 91, 50],
+      hgss: [8.3, 14.5, 91, 53.1], bwxy: [9.3, 15.2, 90, 52.9], evo: [9.7, 22.4, 91.7, 55.7], sm: [7.7, 13.3, 91.7, 52.1],
+      swsh: [7.7, 14, 92.3, 51.7], sv: [8, 14, 92.7, 52.4] }
+  };
+  // Cards that break the standard frame (the artwork runs past the window), so no foil is drawn on them.
+  var ODD_FRAME = /\b(ex|EX|GX|V|VMAX|VSTAR|V-UNION|BREAK|LEGEND|Prime|Star)\b|LV\.X|Full Art|Secret|Alternate/;
+  // Rarities where a "Holofoil" card is an ordinary frame with foil in the artwork window only.
+  var ART_HOLO = { 'Holo Rare': 1, 'Rare': 1, 'Common': 1, 'Uncommon': 1 };
+  // Returns {mode, box}: 'out' = foil everywhere but the artwork (reverse holo), 'in' = foil in the
+  // artwork only (holo), 'all' = whole face (foil energy). Null when we cannot tell, so nothing is drawn.
+  function foilOf(o) {
+    if (!o || !o.art || !o.printing || o.kind === 'sealed') return null;
+    var reverse = /Reverse/.test(o.printing), holo = !reverse && /Holofoil/.test(o.printing);
+    if (!reverse && !holo) return null;
+    var bits = String(o.art).split('.');
+    if (bits[1] === 'e') return { mode: 'all', box: [0, 0, 100, 100] };
+    var box = ART[bits[1]] && ART[bits[1]][bits[0]];
+    if (!box || ODD_FRAME.test(o.name || '')) return null;
+    if (reverse) return { mode: 'out', box: box };
+    return ART_HOLO[o.rarity] ? { mode: 'in', box: box } : null;
+  }
+  function foilWrap(o, imgHtml) {
+    var f = foilOf(o);
+    if (!f) return imgHtml;
+    return '<span class="pic sheen-' + f.mode + '" style="--x0:' + f.box[0] + '%;--y0:' + f.box[1] + '%;--x1:' + f.box[2] + '%;--y1:' + f.box[3] + '%">' +
+      imgHtml + '<i class="sheen"></i><i class="sheen glare"></i></span>';
+  }
+  function foilNote(o) {
+    var f = foilOf(o);
+    return f ? '<p class="sheen-note">' + (/Reverse/.test(o.printing) ? 'Reverse holo' : 'Holo') + ' foil is drawn on, not photographed.</p>' : '';
+  }
+
   function img(pick, cls, big) {
     var small = pick.image || PLACEHOLDER;
     var src = big && pick.image ? bigImage(pick.image) : small;
     var kind = pick.kind === 'sealed' ? ' sealed' : '';
-    return '<img class="' + (cls || 'card-img') + kind + '" src="' + esc(src) + '" data-small="' + esc(small) +
+    var html = '<img class="' + (cls || 'card-img') + kind + '" src="' + esc(src) + '" data-small="' + esc(small) +
       '" alt="' + esc(pick.name) + '" loading="' + (big ? 'eager' : 'lazy') + '" decoding="async">';
+    return cls === 'thumb' || !pick.image ? html : foilWrap(pick, html);
   }
   // Fall back from the large image to the small one, then to a drawn placeholder.
   document.addEventListener('error', function (e) {
@@ -487,7 +527,7 @@
       var label = variantLabel(main, v), other = v.set && v.set !== setName ? v.set : '';
       var say = [label[0], label[1], other].filter(Boolean).join(', ');
       return '<button type="button" class="var" aria-pressed="false" aria-label="' + esc(say) + ': market price ' + money(v.price) + '. Tap to flip.">' +
-        '<span class="var-card"><span class="var-face var-front"><img src="' + esc(productImage(v.productId)) + '" alt="" loading="lazy"></span>' +
+        '<span class="var-card"><span class="var-face var-front">' + foilWrap(v, '<img src="' + esc(productImage(v.productId)) + '" alt="" loading="lazy">') + '</span>' +
         '<span class="var-face var-back"><img src="' + CARD_BACK + '" data-small="img/card-back.svg" referrerpolicy="no-referrer" alt=""><b>' + esc(label[0]) + '</b><strong>' + money(v.price, true) + '</strong><small>market price</small></span></span>' +
         '<span class="var-name">' + esc(label[0]) + (label[1] ? '<small>' + esc(label[1]) + '</small>' : '') + '</span></button>';
     }).join('') + '</div><p class="note">Tap a card to flip it and see what that version sells for.</p></section>';
@@ -525,7 +565,7 @@
       '<span class="eyebrow"><i class="dot"></i>Card details, pick ' + p.rank + ' of ' + cat.picks.length + '</span><h1>' + esc(shortName(p.name)) + '</h1>' +
       '<p class="where">' + esc(where(p)) + '</p>' +
       tags(p) + '</header>' +
-      '<div class="entry-main"><div class="slot">' + img(p, 'card-img', true) + variantSlotButton(p.variants) + '</div>' +
+      '<div class="entry-main"><div class="slot">' + img(p, 'card-img', true) + foilNote(p) + variantSlotButton(p.variants) + '</div>' +
       '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
       '<p class="sub">What it has recently sold for.</p>' +
       '<span class="conf ' + p.confidence.toLowerCase() + '">Price reliability: ' + esc(p.confidence) + '</span></div></div>' +
@@ -674,7 +714,7 @@
       list.innerHTML = hits.slice(0, shown).map(function (hit) {
         var it = data.items[hit[0]], s = data.sets[it[2]], pr = hit[1], era = data.setEra[it[2]];
         var meta = [s[1], it[3] ? '#' + it[3] : '', pr[0] !== 'Normal' ? pr[0] : '', !S.printing && it[6].length > 1 ? '+' + (it[6].length - 1) + ' more' : ''].filter(Boolean).join(', ');
-        return '<li class="' + eraTone(era) + '"><a href="#/p/' + s[0] + '/' + it[0] + '/' + encodeURIComponent(pr[0]) + '"><img src="' + productImage(it[0]) + '" alt="" loading="lazy">' +
+        return '<li class="' + eraTone(era) + '"><a href="#/p/' + s[0] + '/' + it[0] + '/' + encodeURIComponent(pr[0]) + '">' + foilWrap({ art: it[7], printing: pr[0], rarity: it[5], name: it[1] }, '<img src="' + productImage(it[0]) + '" alt="" loading="lazy">') +
           '<span><b>' + esc(it[1]) + '</b><small>' + esc(meta) + '</small><span class="tags">' + eraChip(era) + (it[5] && !it[4] ? '<span class="rar">' + esc(it[5]) + '</span>' : '') + '</span></span>' +
           '<span class="r"><span class="price">' + money(pr[1]) + '</span>' + (pr[4] != null ? move(pr[4]) : '') + '</span></a></li>';
       }).join('');
@@ -731,7 +771,7 @@
       var chips = it[6].length > 1 ? '<div class="printings">' + it[6].map(function (x) {
         return '<a href="#/p/' + gid + '/' + pid + '/' + encodeURIComponent(x[0]) + '"' + (x[0] === pr[0] ? ' aria-current="true"' : '') + '>' + esc(x[0]) + '</a>';
       }).join('') + '</div>' : '';
-      var pick = { name: it[1], image: productImage(it[0]), kind: it[4] ? 'sealed' : 'single' };
+      var pick = { name: it[1], image: productImage(it[0]), kind: it[4] ? 'sealed' : 'single', art: it[7], printing: pr[0], rarity: it[5] };
       // Other versions: this product's other printings, then same-name, same-number copies sold separately.
       var others = [];
       if (!it[4] && it[3]) {
@@ -741,7 +781,7 @@
           if (x[2] !== it[2] && String(it[3]).indexOf('/') < 0) return;
           x[6].forEach(function (q) {
             if (x[0] === it[0] && q[0] === pr[0]) return;
-            others.push({ productId: x[0], name: x[1], printing: q[0], price: q[1], set: data.sets[x[2]][1] });
+            others.push({ productId: x[0], name: x[1], printing: q[0], price: q[1], set: data.sets[x[2]][1], art: x[7], rarity: x[5] });
           });
         });
         others.sort(function (a, b) { return (a.productId !== it[0]) - (b.productId !== it[0]) || b.price - a.price; });
@@ -755,7 +795,7 @@
         '<span class="eyebrow"><i class="dot"></i>' + (it[4] ? 'Sealed product details' : 'Card details') + '</span><h1>' + esc(shortName(it[1])) + '</h1>' +
         '<p class="where">' + esc([s[1], it[3] ? '#' + it[3] : '', it[5] || ''].filter(Boolean).join(', ')) + '</p>' +
         (era ? '<div class="tags">' + eraChip(era) + '</div>' : '') + '</header>' +
-        '<div class="entry-main"><div class="slot">' + img(pick, 'card-img', true) + variantSlotButton(others) + '</div>' +
+        '<div class="entry-main"><div class="slot">' + img(pick, 'card-img', true) + foilNote(pick) + variantSlotButton(others) + '</div>' +
         '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
         '<p class="sub">' + (pr[2] != null ? 'What it has recently sold for.' : 'What it has recently sold for. None were for sale when prices were last checked.') + '</p>' + chips + '</div></div>' +
         variantPanel({ productId: it[0], name: it[1] }, others, s[1]) +
@@ -791,7 +831,8 @@
       '<li><b>Usual price.</b> The middle price over the last 90 days: half the days were higher, half were lower. One odd day does not throw it off.</li>' +
       '<li><b>Score.</b> One number from 1 to 99 on every pick; higher is stronger. Its colour runs from red at the low end through yellow in the middle to green at the top. What it measures depends on the list: how fast a price is rising, how big a discount is, how steady a price is, how big a move is, or how strong the signs of a comeback are. Each card page says which.</li>' +
       '<li><b>Price reliability.</b> High when the card sells often, we have a long price history and sellers are asking close to the market price. Low when any of those is missing.</li>' +
-      '<li><b>Sells often, regularly or not often.</b> How frequently the market price changed from day to day. A price that never changes usually means nothing is selling.</li></ul></section>' +
+      '<li><b>Sells often, regularly or not often.</b> How frequently the market price changed from day to day. A price that never changes usually means nothing is selling.</li>' +
+      '<li><b>Foil on the pictures.</b> Sellers photograph one version of each card, so a reverse holo and a plain copy share the same photo. To tell them apart at a glance, a rainbow sheen is drawn over the part of the card that is foil: everything but the artwork on a reverse holo, the artwork only on a holo. It shows where the foil is, not the exact pattern, and it is left off cards whose layout we can\u2019t be sure of.</li></ul></section>' +
       '<section class="block article"><h2>Where the numbers come from</h2><ul>' + sources + '</ul></section>' +
       '<section class="block article"><h2>The rule for each list</h2><ul style="list-style:none;padding-left:0">' + rules + '</ul></section>' +
       '<section class="block sunk article"><h2>Checks on every pick</h2><ul>' +
