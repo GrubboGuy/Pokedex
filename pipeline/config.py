@@ -2,6 +2,7 @@
 
 TITLE = "Pokédex"
 TAGLINE = "The daily card market mag"
+EDITION_TZ = "America/New_York"  # the calendar day the picks belong to, for marking what is new today
 
 # TCGplayer category for English Pokemon cards on TCGCSV.
 CATEGORY_ID = 3
@@ -53,24 +54,24 @@ SOURCES = [
         "id": "tcgcsv",
         "name": "TCGplayer market price, via TCGCSV",
         "url": "https://tcgcsv.com/",
-        "note": "Daily copy of TCGplayer's own price data. Market price is TCGplayer's figure based on recent sales; low is the lowest current listing.",
+        "note": "Daily copy of TCGplayer's own price data. Market price is TCGplayer's figure for what a card has recently sold for. The cheapest copy for sale is the lowest-priced copy listed on TCGplayer at that time, in any condition.",
     },
     {
         "id": "rarebox",
         "name": "Price history before Sept 16, 2026, via Rarebox",
         "url": "https://github.com/novaoc/rarebox-price-history",
-        "note": "A public per-card copy of TCGCSV's daily archive, used once to seed history after TCGCSV withdrew that archive. Singles only. Where TCGplayer had no market price on a day, it holds the mid listing price.",
+        "note": "A public copy of older daily TCGplayer prices, used once to fill in our price history from June to mid-September 2026. Single cards only. On days when a card had no market price, it uses the middle asking price.",
     },
     {
         "id": "poketrace",
         "name": "eBay sold prices and prices by condition, via PokeTrace",
         "url": "https://poketrace.com/",
-        "note": "eBay sold averages for raw cards, and TCGplayer prices by condition, each with a sale count. Looked up for this issue's picks only. eBay sale counts are approximate.",
+        "note": "eBay sold prices for ungraded cards, and TCGplayer prices by condition, each with the number of sales. Looked up for the current picks only. eBay sale counts are approximate.",
     },
     {
         "id": "ppt",
         "name": "eBay graded sales, via PokemonPriceTracker",
         "url": "https://www.pokemonpricetracker.com/",
-        "note": "PSA prices from completed eBay sales, looked up for this issue's picks only.",
+        "note": "Prices of PSA-graded copies from completed eBay sales, looked up for the current picks only.",
     },
 ]

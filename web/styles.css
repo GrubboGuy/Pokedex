@@ -177,7 +177,8 @@ button, input { font: inherit; color: inherit; }
 .lead .score { margin-top: 12px; }
 .lead-why { grid-column: 1 / -1; background: var(--tint); border-radius: 10px; padding: 12px 14px; font-size: 16.5px; box-shadow: inset 3px 0 0 var(--tone); }
 .picks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px var(--edge) 0; }
-.pick { position: relative; text-decoration: none; display: flex; flex-direction: column; min-width: 0; background: var(--paper); border-radius: var(--radius); overflow: hidden; }
+.pick { position: relative; display: flex; flex-direction: column; min-width: 0; background: var(--paper); border-radius: var(--radius); overflow: hidden; }
+.pick-main { display: flex; flex-direction: column; flex: 1; min-width: 0; text-decoration: none; }
 .pick-art { padding: 16px 22px 14px; background: var(--well); }
 .pick:nth-child(4n+2) .pick-art, .pick:nth-child(4n+3) .pick-art { background: var(--tint); }
 .pick-art .rank { left: 9px; top: 9px; }
@@ -255,8 +256,9 @@ details.points summary { cursor: pointer; color: var(--muted); padding: 8px 0 2p
 details.points table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; margin-top: 6px; }
 details.points td { padding: 4px 0; border-bottom: 1px solid var(--rule); }
 details.points td:last-child { text-align: right; font-weight: 600; }
-.buy { display: flex; gap: 10px; margin: 18px var(--edge) 0; }
-.buy a { flex: 1; min-height: 48px; display: flex; align-items: center; justify-content: center; text-align: center; text-decoration: none; font-weight: 700; font-size: 14.5px; background: var(--tone); color: #fff; border-radius: var(--radius); padding: 8px 12px; }
+.buy { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px var(--edge) 0; }
+.buy a.main { flex-basis: 100%; }
+.buy a { flex: 1 1 40%; min-height: 48px; display: flex; align-items: center; justify-content: center; text-align: center; text-decoration: none; font-weight: 700; font-size: 14.5px; background: var(--tone); color: #fff; border-radius: var(--radius); padding: 8px 12px; }
 .buy a.alt { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
 
 /* ---------- search ---------- */
@@ -324,11 +326,12 @@ details.points td:last-child { text-align: right; font-weight: 600; }
 }
 
 /* A lone last pick runs the full width, picture beside the text, instead of leaving a gap. */
-.picks .pick:last-child:nth-child(odd) { grid-column: 1 / -1; flex-direction: row; }
+.picks .pick:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.picks .pick:last-child:nth-child(odd) .pick-main { flex-direction: row; }
 .picks .pick:last-child:nth-child(odd) .pick-art { flex: 0 0 42%; background: var(--tint); }
 .picks .pick:last-child:nth-child(odd) .pick-info { padding: 16px 14px; }
 .picks .pick:last-child:nth-child(odd) .pick-info .figures { margin-top: 0; }
-@media (max-width: 349px) { .picks .pick:last-child:nth-child(odd) { flex-direction: column; } .picks .pick:last-child:nth-child(odd) .pick-art { flex: none; } }
+@media (max-width: 349px) { .picks .pick:last-child:nth-child(odd) .pick-main { flex-direction: column; } .picks .pick:last-child:nth-child(odd) .pick-art { flex: none; } }
 
 /* ---------- strategy button and the guide who answers it ---------- */
 .cta { margin-top: 16px; width: 100%; height: 50px; border: 0; border-radius: 12px; background: var(--ink); color: #fff; font-weight: 700; font-size: 15.5px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; touch-action: manipulation; }
@@ -348,3 +351,12 @@ details.points td:last-child { text-align: right; font-weight: 600; }
 .guide.chromesby .guide-say b { display: block; font-stretch: 72%; font-weight: 900; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 3px; }
 .new { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 700; letter-spacing: .02em; line-height: 1; padding: 4px 8px 3px; border-radius: 999px; background: var(--ink); color: #fff; white-space: nowrap; }
 .kept .new { display: none; }
+
+/* ---------- cheapest-copy links and score note ---------- */
+.low-link { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 9px 12px 10px; border-top: 1px solid var(--rule); text-decoration: none; font-size: 12.5px; line-height: 1.2; color: var(--muted); min-height: 40px; }
+.low-link b { display: inline-flex; align-items: center; gap: 3px; font-size: 14px; font-weight: 700; color: var(--tone-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.low-link svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.low-link.under { margin: 8px var(--edge) 0; padding: 12px 14px; border-top: 0; border-radius: 12px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--tone); font-size: 14.5px; font-weight: 600; color: var(--ink); min-height: 48px; }
+.low-link.under b { font-size: 16px; }
+.verdict-note { grid-column: 1 / -1; margin: 0; padding: 10px 16px 12px; border-top: 1px solid rgba(255,255,255,.13); font-family: var(--serif); font-size: 14.5px; line-height: 1.35; color: #D5D8E0; }
+.block.dark.article li b { color: #fff; }

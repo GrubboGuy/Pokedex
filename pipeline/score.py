@@ -192,6 +192,15 @@ def _money(x):
     return f"${x:,.2f}"
 
 
+def _p(x):
+    """A percentage without a sign, for sentences that already say up or down."""
+    return f"{abs(x) * 100:.0f}%"
+
+
+def _dir(x):
+    return "up" if x >= 0 else "down"
+
+
 def _listed_near(row, floor=0.7, ceiling=None):
     ratio = row["low"] / row["price"]
     return ratio >= floor and (ceiling is None or ratio <= ceiling)
@@ -229,10 +238,13 @@ def _hot(eras, min_price, activity=0.28):
         )
 
     def reason(r):
-        month = f" and {_pct(r['ch30'])} over 30 days" if r["ch30"] is not None else ""
-        gap = abs(r["low"] / r["price"] - 1) * 100
-        return (f"Up {_pct(r['ch7'])} {_in_span()}{month}. The lowest listing is {_money(r['low'])}, "
-                f"within {gap:.0f}% of the market price, so sellers are holding the new level.")
+        month = f" and {_p(r['ch30'])} over 30 days" if r["ch30"] is not None else ""
+        gap = r["low"] / r["price"] - 1
+        if abs(gap) <= 0.10:
+            ask = "about what it has been selling for, so sellers are backing the new price"
+        else:
+            ask = f"{_p(gap)} {'below' if gap < 0 else 'above'} what it has been selling for"
+        return f"Up {_p(r['ch7'])} {_in_span()}{month}. The cheapest copy for sale is {_money(r['low'])}, {ask}."
 
     return test, _heat, _heat, reason
 
@@ -252,9 +264,9 @@ def _sealed():
 
     def reason(r):
         if r["ch30"] is not None:
-            return (f"Up {_pct(r['ch30'])} over 30 days and {_pct(r['ch7'])} {_recently()}. "
-                    f"Lowest sealed copy listed is {_money(r['low'])}.")
-        return f"Up {_pct(r['ch7'])} {_recently()}. Lowest sealed copy listed is {_money(r['low'])}."
+            return (f"Up {_p(r['ch30'])} over 30 days and {_dir(r['ch7'])} {_p(r['ch7'])} {_recently()}. "
+                    f"The cheapest sealed copy for sale is {_money(r['low'])}.")
+        return f"Up {_p(r['ch7'])} {_recently()}. The cheapest sealed copy for sale is {_money(r['low'])}."
 
     return test, rank, _heat, reason
 
@@ -270,7 +282,7 @@ def _gems():
         )
 
     def reason(r):
-        return (f"A steady climb, not a spike: {_pct(r['ch30'])} over 30 days, {_pct(r['ch7'])} "
+        return (f"A steady climb, not a sudden jump: up {_p(r['ch30'])} over 30 days, up {_p(r['ch7'])} "
                 f"{_recently()}, and still only {_money(r['price'])}.")
 
     return test, lambda r: r["ch30"], _heat, reason
@@ -293,8 +305,8 @@ def _on_sale():
 
     def reason(r):
         was = f" It was {_money(r['p30'])} a month ago." if r["p30"] else ""
-        return (f"{discount(r) * 100:.0f}% under its 90-day median of {_money(r['median90'])}.{was} "
-                f"A dip, not a guarantee: check for a reprint before buying.")
+        return (f"{discount(r) * 100:.0f}% below its usual price over the last 90 days ({_money(r['median90'])}).{was} "
+                f"Prices can drop for a reason, so check for a reprint before buying.")
 
     return test, discount, score, reason
 
@@ -317,8 +329,8 @@ def _holding():
         return _clamp_score(60 + 39 * (1 - band(r) / 0.12))
 
     def reason(r):
-        return (f"Stayed inside a {band(r) * 100:.0f}% band for the whole tracked period, "
-                f"around {_money(r['median90'])}. Listings sit right at the market price.")
+        return (f"Its price has stayed around {_money(r['median90'])} the whole time we have tracked it, moving less than "
+                f"{max(1, math.ceil(band(r) * 100))}% between its lowest and highest. Sellers are asking about the same.")
 
     return test, rank, score, reason
 
@@ -336,13 +348,13 @@ def _big_movers():
         return _clamp_score(50 + 49 * math.tanh(3.2 * abs(r["ch7"])))
 
     def reason(r):
-        month = f" Over 30 days it is {_pct(r['ch30'])}." if r["ch30"] is not None else ""
+        month = f" Over 30 days it is {_dir(r['ch30'])} {_p(r['ch30'])}." if r["ch30"] is not None else ""
         if r["ch7"] > 0:
-            return (f"Up {_pct(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month} "
-                    f"The lowest listing is {_money(r['low'])}.")
-        return (f"Down {_pct(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month} "
-                f"The lowest listing is {_money(r['low'])}. A fall this size can be one soft sale, a reprint or a real "
-                f"shift, so check recent sold listings.")
+            return (f"Up {_p(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month} "
+                    f"The cheapest copy for sale is {_money(r['low'])}.")
+        return (f"Down {_p(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month} "
+                f"The cheapest copy for sale is {_money(r['low'])}. A drop this size can come from one low sale, "
+                f"a reprint or a real change, so check recent sales.")
 
     return test, lambda r: abs(r["ch7"]), score, reason
 
@@ -373,10 +385,10 @@ def _rebound():
 
     def reason(r):
         prior = before(r)
-        trend = (f"gaining {_pct(prior)} over the months before" if prior >= 0.03
+        trend = (f"gaining {_p(prior)} over the months before" if prior >= 0.03
                  else f"holding around {_money(r['median90'])} for months")
-        return (f"Down {_pct(r['ch7'])} {_in_span()} to {_money(r['price'])}, after {trend}. It trades often and "
-                f"the fall runs against its own trend, which is the pattern that tends to recover. "
+        return (f"Down {_p(r['ch7'])} {_in_span()} to {_money(r['price'])}, after {trend}. It sells often and "
+                f"the drop goes against its own trend, which is when prices tend to come back. "
                 f"A sign, not a promise: check for a reprint first.")
 
     return test, score, score, reason
@@ -384,25 +396,25 @@ def _rebound():
 
 LISTS = [
     ("big-movers", "Big ups and downs", "Big ups/downs", "The largest moves on cards worth $100 and up", "red", "Swing", _big_movers(),
-     "Singles worth $100 or more, before or after the move, whose market price moved at least 8% either way in {span} days. Up to four risers and four fallers, biggest move first."),
+     "Singles worth $100 or more, before or after the move, whose price moved at least 8% up or down in {span} days. Up to four that rose and four that fell, biggest move first."),
     ("hot-vintage", "Vintage era singles", "Vintage era", "1999 to 2007: Wizards of the Coast and EX sets", "red", "Heat", _hot(("wotc", "ex"), 15),
-     "Singles from sets released before May 2007, $15 and up, that rose at least 5% in {span} days while the 30-day trend is also up."),
+     "Singles from sets released before May 2007, $15 and up, that rose at least 5% in {span} days and are also up over 30 days."),
     ("hot-middle", "DP to XY era singles", "DP to XY era", "2007 to 2016: Diamond & Pearl through XY sets", "blue", "Heat", _hot(("dp", "bwxy"), 10),
-     "Singles from 2007 to 2016 sets, $10 and up, that rose at least 5% in {span} days while the 30-day trend is also up."),
+     "Singles from 2007 to 2016 sets, $10 and up, that rose at least 5% in {span} days and are also up over 30 days."),
     ("hot-sm-swsh", "SM and SWSH era singles", "SM and SWSH era", "2017 to 2022: Sun & Moon and Sword & Shield sets", "yellow", "Heat", _hot(("sm", "swsh"), 8, 0.34),
-     "Singles from 2017 to 2022 sets, $8 and up, that rose at least 5% in {span} days while the 30-day trend is also up."),
+     "Singles from 2017 to 2022 sets, $8 and up, that rose at least 5% in {span} days and are also up over 30 days."),
     ("hot-modern", "Modern era singles", "Modern era", "2023 on: Scarlet & Violet and Mega Evolution sets", "red", "Heat", _hot(("sv", "mega"), 5, 0.45),
-     "Singles from 2023 and later sets, $5 and up, that rose at least 5% in {span} days while the 30-day trend is also up."),
+     "Singles from 2023 and later sets, $5 and up, that rose at least 5% in {span} days and are also up over 30 days."),
     ("modern-sealed", "Top modern sealed", "Modern sealed", "Boxes, bundles and tins from 2023 on", "blue", "Heat", _sealed(),
-     "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by 30-day rise."),
+     "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by how much they rose in 30 days."),
     ("hidden-gems", "Hidden gems for cheap", "Hidden gems", "Under $20 and climbing steadily", "green", "Heat", _gems(),
-     "Singles from $2 to $20 that rose 8% to 80% over 30 days, with the rise spread out and not one late jump."),
+     "Singles from $2 to $20 that rose 8% to 80% over 30 days, with the rise spread across the month and not one sudden jump at the end."),
     ("get-em-now", "Get 'em now", "Get 'em now", "Proven cards on a dip that looks temporary", "green", "Rebound", _rebound(),
-     "Singles that were $30 and up, trade often and held or gained value over the prior months, now down 5% to 35% in {span} days and under their own 90-day median. From sets at least a year old, so the normal slide after release is not counted. These are the conditions that tend to come before a recovery, not a forecast."),
-    ("on-sale", "On sale", "On sale", "Trading well under their own 90-day median", "yellow", "Deal", _on_sale(),
-     "Cards and sealed products $20 and up, at least 13% under their own 90-day median price, from sets at least a year old so the normal slide after release is not counted."),
+     "Singles that were $30 and up, sell often and held or gained value over the months before, now down 5% to 35% in {span} days and below their usual price over the last 90 days. From sets at least a year old, because new sets normally get cheaper after release. These are signs that often come before a price recovers, not a prediction."),
+    ("on-sale", "On sale", "On sale", "Selling well below their usual price", "yellow", "Deal", _on_sale(),
+     "Cards and sealed products $20 and up, at least 13% below their usual price over the last 90 days. From sets at least a year old, because new sets normally get cheaper after release."),
     ("holding", "Holding strong", "Holding strong", "Big cards that barely moved", "green", "Steady", _holding(),
-     "Cards and sealed products $100 and up whose price stayed within a 12% band across the tracked period without falling."),
+     "Cards and sealed products $100 and up whose price moved less than 12% between its lowest and highest in the time we have tracked it, without falling."),
 ]
 
 
@@ -443,17 +455,17 @@ def _sealed_listings():
         return _clamp_score(50 + 49 * math.tanh(6 * discount(r)))
 
     def reason(r):
-        return (f"The cheapest sealed copy listed is {_money(r['low'])}, {discount(r) * 100:.0f}% under the "
-                f"{_money(r['price'])} market price. Sealed price history is only a few days old, so there is no trend yet.")
+        return (f"The cheapest sealed copy for sale is {_money(r['low'])}, {discount(r) * 100:.0f}% below the "
+                f"{_money(r['price'])} it has been selling for. We only have a few days of sealed prices, so there is no trend yet.")
 
     return test, discount, score, reason
 
 
 SEALED_FALLBACK = (
     "modern-sealed", "Top modern sealed", "Modern sealed",
-    "Boxes, bundles and tins listed under their market price", "blue", "Deal", _sealed_listings(),
+    "Boxes, bundles and tins for sale below what they usually sell for", "blue", "Deal", _sealed_listings(),
     "Sealed products from Scarlet & Violet and Mega Evolution sets at least 30 days old, $20 and up, ranked by how far "
-    "the cheapest listing sits under the market price (3% to 25%). Trend ranking starts once a week of sealed prices exists.",
+    "the cheapest copy for sale is below the market price (3% to 25%). Once we have a week of sealed prices, this list ranks by price rise.",
 )
 
 

@@ -45,7 +45,7 @@
   function headlineMove(p) {
     if (p.ch7 != null) return move(p.ch7);
     var gap = Math.round((1 - p.low / p.price) * 100);
-    return '<span class="move gap">' + gap + '% under market</span>';
+    return '<span class="move gap">' + gap + '% below market</span>';
   }
   function niceDate(iso, withYear) {
     var p = iso.split('-');
@@ -110,13 +110,22 @@
     if (el.src !== PLACEHOLDER) { el.src = PLACEHOLDER; el.classList.add('missing'); }
   }, true);
 
+  // One score for every pick, 1 to 99. What it measures depends on the list the pick is in.
   function score(pick) {
-    return '<span class="score" title="' + esc(pick.scoreLabel) + ' score, 1 to 99"><b>' + pick.score + '</b><small>' + esc(pick.scoreLabel) + '</small></span>';
+    return '<span class="score" title="Score, from 1 to 99"><b>' + pick.score + '</b><small>Score</small></span>';
+  }
+  function scoreMeans(cat, p) {
+    var kind = p.scoreLabel;
+    if (kind === 'Swing') return 'how big the recent price move is, up or down';
+    if (kind === 'Rebound') return 'how strong the signs are that the price will come back';
+    if (kind === 'Steady') return 'how little the price has moved';
+    if (kind === 'Deal') return cat.id === 'modern-sealed' ? 'how far the cheapest copy is below what it usually sells for' : 'how far below its usual price it is';
+    return 'how fast the price is rising';
   }
   function verdict(p) {
     if (p.scoreLabel === 'Deal') return p.score >= 80 ? 'Deep discount' : (p.score >= 70 ? 'Solid discount' : 'Mild discount');
     if (p.scoreLabel === 'Swing') return p.ch7 > 0 ? 'Big jump' : 'Sharp drop';
-    if (p.scoreLabel === 'Rebound') return p.score >= 72 ? 'Strong setup' : (p.score >= 64 ? 'Good setup' : 'Early sign');
+    if (p.scoreLabel === 'Rebound') return p.score >= 72 ? 'Strong signs' : (p.score >= 64 ? 'Good signs' : 'Early signs');
     if (p.scoreLabel === 'Steady') return p.score >= 85 ? 'Rock steady' : 'Steady';
     return p.score >= 80 ? 'Red hot' : (p.score >= 65 ? 'Hot' : 'Warming up');
   }
@@ -125,6 +134,17 @@
   function listTitle(cat) {
     var timed = cat.id.indexOf('hot-') === 0 || cat.id === 'modern-sealed' || cat.id === 'on-sale';
     return (cat.id.indexOf('hot-') === 0 ? '🔥 ' : '') + plainTitle(cat) + (timed ? today : '');
+  }
+  // A TCGplayer link that opens the copies for sale of this exact printing, cheapest first.
+  function lowUrl(url, productId, printing, sealed, nearMint) {
+    var u = String(url || 'https://www.tcgplayer.com/product/' + productId).split('?')[0];
+    return u + '?Language=English' + (!sealed && printing ? '&Printing=' + encodeURIComponent(printing).replace(/%20/g, '+') : '') +
+      (nearMint ? '&Condition=Near+Mint' : '') + '&page=1';
+  }
+  var OUT = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16l8-8M9.5 8H16v6.5"/></svg>';
+  function lowLink(p, cls) {
+    return '<a class="low-link' + (cls ? ' ' + cls : '') + '" href="' + esc(lowUrl(p.url, p.productId, p.printing, p.kind === 'sealed')) +
+      '" target="_blank" rel="noopener"><span>' + (cls ? 'Cheapest copy for sale' : 'Cheapest copy') + '</span><b>' + money(p.low) + OUT + '</b></a>';
   }
   function where(p) {
     var bits = [p.set];
@@ -238,18 +258,18 @@
       '<h1>' + (ctx.kept ? 'Picks from ' + niceDate(issue.date, false) : (today ? 'Today&#39;s picks' : 'Latest picks')) + '</h1>' +
       '<p class="deck">' + total + ' cards and sealed products worth a look, chosen by rule from ' + Number(s.productsScanned).toLocaleString('en-US') + ' tracked products.</p>' +
       '<button type="button" class="cta" id="strategy">Today&#39;s strategy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></header>' +
-      '<a class="hero ' + tone(coverCat) + '" href="' + coverHref + '">' + img(coverPick, 'card-img', true) +
+      '<div class="' + tone(coverCat) + '"><a class="hero" href="' + coverHref + '">' + img(coverPick, 'card-img', true) +
         '<span><span class="eyebrow"><i class="dot"></i>Top pick, ' + esc(coverCat.short || coverCat.title) + '</span>' +
         '<h2>' + esc(shortName(coverPick.name)) + '</h2><p class="where">' + esc(where(coverPick)) + '</p>' +
         '<span class="figures"><span class="price">' + money(coverPick.price) + '</span>' + headlineMove(coverPick) + '</span>' + score(coverPick) + '</span>' +
-        '<span class="hero-why deck">' + esc(coverPick.reason) + '</span></a>' +
+        '<span class="hero-why deck">' + esc(coverPick.reason) + '</span></a>' + lowLink(coverPick, 'under') + '</div>' +
       '<h2 class="strip">Sections <span>' + issue.categories.length + ' lists, ' + total + ' picks' + (fresh && !ctx.kept ? ', ' + fresh + ' new' + today : '') + '</span></h2>' +
       '<ol class="sections">' + sections + '</ol>' +
       '<div class="block dark stats"><div><b>' + Number(s.productsScanned).toLocaleString('en-US') + '</b><span>products checked</span></div>' +
         '<div><b>' + s.snapshots + '</b><span>days of prices since ' + niceDate(s.historyFrom, false) + '</span></div>' +
-        '<div><b>' + days + ' days</b><span>short-term move in this issue</span></div></div>' +
-      '<p class="note fine">Prices are TCGplayer market prices via TCGCSV, pulled ' + niceDate(issue.date) + '. Market information, not financial advice; past moves do not predict future prices. ' +
-        '<a href="#/how">How the picks are made</a>. Not affiliated with or endorsed by Nintendo, The Pokémon Company, TCGplayer or eBay.</p>' +
+        '<div><b>' + days + ' days</b><span>covered by each price change shown</span></div></div>' +
+      '<p class="note fine">Prices are TCGplayer market prices, meaning what each card has recently sold for, as of ' + niceDate(issue.date) + '. The score on each pick runs from 1 to 99. This is market information, not financial advice; a price that went up can come back down. ' +
+        '<a href="#/how">What the numbers mean</a>. Not affiliated with or endorsed by Nintendo, The Pokémon Company, TCGplayer or eBay.</p>' +
       sectionPager(ctx, '');
   }
 
@@ -260,14 +280,16 @@
     if (!cat) return notFound();
     var lead = cat.picks[0];
     var rest = cat.picks.slice(1).map(function (p) {
-      return '<a class="pick" href="' + b + '/card/' + cat.id + '/' + p.rank + '">' +
+      return '<div class="pick"><a class="pick-main" href="' + b + '/card/' + cat.id + '/' + p.rank + '">' +
         '<div class="pick-art"><span class="rank">' + p.rank + '</span>' + img(p) + '</div>' +
         '<div class="pick-info"><h3>' + esc(shortName(p.name)) + '</h3><p class="where">' + esc(where(p)) + '</p>' +
         tags(p) +
-        '<div class="figures"><span class="price">' + money(p.price) + '</span>' + headlineMove(p) + '</div>' + score(p) + '</div></a>';
+        '<div class="figures"><span class="price">' + money(p.price) + '</span>' + headlineMove(p) + '</div>' + score(p) + '</div></a>' +
+        lowLink(p) + '</div>';
     }).join('');
-    var trendNote = lead.ch7 != null ? 'Change shown is the ' + days + '-day move in TCGplayer market price, as of ' + niceDate(issue.date) + '.'
-      : 'Prices are TCGplayer market prices and lowest listings as of ' + niceDate(issue.date) + '.';
+    var trendNote = (lead.ch7 != null ? 'The big price is the TCGplayer market price: what the card has recently sold for. The % beside it is how much that price changed over the last ' + days + ' days.'
+      : 'The big price is the TCGplayer market price: what the product has recently sold for. The % beside it is how far the cheapest copy for sale is below that.') +
+      ' Score: ' + scoreMeans(cat, lead) + ', from 1 to 99. Prices as of ' + niceDate(issue.date) + '; tap a cheapest-copy link to see what is for sale right now.';
     return '<div class="' + tone(cat) + '"><header class="sec-head band"><span class="eyebrow"><i class="dot"></i>Section ' + (idx + 1) + ' of ' + issue.categories.length + '</span>' +
       '<h1>' + esc(listTitle(cat)) + '</h1><p class="deck">' + esc(cat.blurb) + '</p></header>' +
       '<a class="lead" href="' + b + '/card/' + cat.id + '/' + lead.rank + '">' +
@@ -275,9 +297,9 @@
         '<div><h2>' + esc(shortName(lead.name)) + '</h2><p class="where">' + esc(where(lead)) + '</p>' +
         tags(lead) +
         '<div class="figures"><span class="price">' + money(lead.price) + '</span>' + headlineMove(lead) + '</div>' + score(lead) + '</div>' +
-        '<p class="lead-why deck">' + esc(lead.reason) + '</p></a>' +
+        '<p class="lead-why deck">' + esc(lead.reason) + '</p></a>' + lowLink(lead, 'under') +
       '<div class="picks">' + rest + '</div>' +
-      '<div class="block tint aside"><b>How this list is picked</b><p>' + esc(cat.rule) + ' ' + cat.eligible + ' passed' + today + '; these are the top ' + cat.picks.length + '.</p></div>' +
+      '<div class="block tint aside"><b>How this list is picked</b><p>' + esc(cat.rule) + ' ' + cat.eligible + ' met this rule' + today + '; these are the top ' + cat.picks.length + '.</p></div>' +
       '<p class="note fine">' + trendNote + '</p>' + sectionPager(ctx, cat.id) + '</div>';
   }
 
@@ -334,22 +356,26 @@
   }
   function chartBlock(series) {
     var rows = series.slice().reverse().map(function (s) { return '<tr><td>' + niceDate(s[0]) + '</td><td>' + money(s[1]) + '</td></tr>'; }).join('');
-    return '<section class="block"><h2>TCGplayer market price <span>' + niceDate(series[0][0], false) + ' to ' + niceDate(series[series.length - 1][0], false) + '</span></h2>' + chart(series) +
-      (series.length > 1 ? '<details class="points"><summary>Show all ' + series.length + ' price readings</summary><table>' + rows + '</table></details>' : '') + '</section>';
+    return '<section class="block"><h2>Price history <span>' + niceDate(series[0][0], false) + ' to ' + niceDate(series[series.length - 1][0], false) + '</span></h2>' + chart(series) +
+      (series.length > 1 ? '<details class="points"><summary>Show the price on each of ' + series.length + ' days</summary><table>' + rows + '</table></details>' : '') + '</section>';
   }
 
   function breakdown(p, days) {
     function row(label, value) { return '<div class="rowb"><dt>' + label + '</dt><dd>' + value + '</dd></div>'; }
     var rows = [];
     if (p.ch7 != null) rows.push(row('Last ' + days + ' days', move(p.ch7)));
-    if (p.ch30 != null) rows.push(row('30 days', move(p.ch30)));
-    if (p.ch90 != null) rows.push(row('90 days', move(p.ch90)));
+    if (p.ch30 != null) rows.push(row('Last 30 days', move(p.ch30)));
+    if (p.ch90 != null) rows.push(row('Last 90 days', move(p.ch90)));
     var gap = p.low / p.price - 1, g = Math.round(Math.abs(gap) * 100);
-    rows.push(row('Cheapest listing', g === 0 ? 'At market' : g + '% ' + (gap < 0 ? 'under market' : 'over market')));
-    if (p.activity != null && p.ch7 != null) rows.push(row('Trading', p.activity >= 0.6 ? 'Busy' : (p.activity >= 0.34 ? 'Regular' : 'Light')));
+    rows.push(row('Cheapest copy', g === 0 ? 'Same as market' : g + '% ' + (gap < 0 ? 'below market' : 'above market')));
+    if (p.activity != null && p.ch7 != null) rows.push(row('Sells', p.activity >= 0.6 ? 'Often' : (p.activity >= 0.34 ? 'Regularly' : 'Not often')));
     return rows.join('');
   }
 
+  function versusText(x) {
+    var v = Math.round(Math.abs(x) * 100);
+    return v === 0 ? 'Same as TCGplayer' : v + '% ' + (x < 0 ? 'below' : 'above') + ' TCGplayer';
+  }
   function soldBlocks(p) {
     if (!p.sold) return '';
     var out = '', ebay = p.sold.ebay || {}, tcg = p.sold.tcgplayer || {};
@@ -362,31 +388,33 @@
       var t = ebay[ek[0]];
       var m30 = t.median30d != null ? t.median30d : t.avg30d, m7 = t.median7d != null ? t.median7d : t.avg7d;
       var versus = m30 != null ? m30 : t.avg;
-      out += '<section class="block"><h2>eBay sold <span>' + esc(tierName(ek[0])) + (p.kind === 'sealed' ? '' : ', raw') + '</span></h2><div class="figs">' +
-        '<div><small>Latest sold</small><b>' + money(t.avg, true) + '</b><span>' + (on(t) || 'date not given') + '</span></div>' +
-        '<div><small>30-day median</small><b>' + (m30 != null ? money(m30, true) : 'n/a') + '</b><span>' + (m7 != null ? '7 days: ' + money(m7, true) : '') + '</span></div>' +
-        '<div><small>Sales counted</small><b>' + (t.saleCount != null ? (t.approxSaleCount ? 'about ' : '') + Number(t.saleCount).toLocaleString('en-US') : 'n/a') + '</b><span>' + (versus != null && p.price ? pct(versus / p.price - 1) + ' vs TCGplayer' : '') + '</span></div></div>';
+      out += '<section class="block"><h2>Sold on eBay <span>' + esc(tierName(ek[0])) + (p.kind === 'sealed' ? '' : ', ungraded') + '</span></h2><div class="figs">' +
+        '<div><small>Most recent sale</small><b>' + money(t.avg, true) + '</b><span>' + (on(t) || 'date not given') + '</span></div>' +
+        '<div><small>Typical price, last 30 days</small><b>' + (m30 != null ? money(m30, true) : 'n/a') + '</b><span>' + (versus != null && p.price ? versusText(versus / p.price - 1) : (m7 != null ? 'Last 7 days: ' + money(m7, true) : '')) + '</span></div>' +
+        '<div><small>Number of sales</small><b>' + (t.saleCount != null ? Number(t.saleCount).toLocaleString('en-US') : 'n/a') + '</b><span>' + (t.approxSaleCount ? 'a rough count' : '') + '</span></div></div>';
       if (ek.length > 1) {
-        out += '<table class="cond" style="margin-top:14px"><tr><th>Other conditions on eBay</th><th>Latest sold</th><th>Sales</th></tr>' + ek.slice(1).map(function (k) {
+        out += '<table class="cond" style="margin-top:14px"><tr><th>Other conditions on eBay</th><th>Most recent sale</th><th>Sales</th></tr>' + ek.slice(1).map(function (k) {
           return '<tr><td>' + esc(tierName(k)) + '</td><td>' + money(ebay[k].avg) + '</td><td class="muted">' + (ebay[k].saleCount != null ? ebay[k].saleCount : '') + '</td></tr>';
         }).join('') + '</table>';
       }
       out += '</section>';
     } else {
-      out += '<section class="block sunk"><h2>eBay sold</h2><p class="note">No eBay sales on record for this item in the feed. The button at the bottom opens the live sold listings on eBay.</p></section>';
+      out += '<section class="block sunk"><h2>Sold on eBay</h2><p class="note">We have no eBay sales on record for this one. The button at the bottom opens its recent sales on eBay.</p></section>';
     }
     var tk = keys(tcg);
     if (tk.length) {
-      out += '<section class="block sunk"><h2>TCGplayer sales' + (p.kind === 'sealed' ? '' : ' by condition') + ' <span>latest day, 30-day average</span></h2><table class="cond"><tr><th>' + (p.kind === 'sealed' ? 'Product' : 'Condition') + '</th><th>Latest</th><th>30-day avg</th><th>Sales</th></tr>' + tk.map(function (k) {
+      out += '<section class="block sunk"><h2>Sold on TCGplayer' + (p.kind === 'sealed' ? '' : ', by condition') + '</h2><table class="cond"><tr><th>' + (p.kind === 'sealed' ? 'Product' : 'Condition') + '</th><th>Latest price</th><th>30-day average</th><th>Sales</th></tr>' + tk.map(function (k) {
         return '<tr><td>' + esc(tierName(k)) + '</td><td>' + money(tcg[k].avg) + '</td><td class="muted">' + (tcg[k].avg30d != null ? money(tcg[k].avg30d) : '') + '</td><td class="muted">' + (tcg[k].saleCount != null ? Number(tcg[k].saleCount).toLocaleString('en-US') : '') + '</td></tr>';
       }).join('') + '</table></section>';
     }
     return out;
   }
 
-  function buyLinks(name, number, abbr, url) {
-    var ebay = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent([shortName(name), number ? String(number).split('/')[0] : '', abbr || ''].join(' ').trim()) + '&LH_Sold=1&LH_Complete=1';
-    return '<div class="buy"><a href="' + esc(url) + '" target="_blank" rel="noopener">View on TCGplayer</a><a class="alt" href="' + esc(ebay) + '" target="_blank" rel="noopener">eBay sold listings</a></div>';
+  function buyLinks(o) {
+    var ebay = 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent([shortName(o.name), o.number ? String(o.number).split('/')[0] : '', o.abbr || ''].join(' ').trim()) + '&LH_Sold=1&LH_Complete=1';
+    return '<div class="buy"><a class="main" href="' + esc(lowUrl(o.url, o.productId, o.printing, o.sealed)) + '" target="_blank" rel="noopener">See the cheapest copy on TCGplayer' + (o.low != null ? ', ' + money(o.low) : '') + '</a>' +
+      (o.sealed ? '' : '<a class="alt" href="' + esc(lowUrl(o.url, o.productId, o.printing, false, true)) + '" target="_blank" rel="noopener">Cheapest Near Mint copy</a>') +
+      '<a class="alt" href="' + esc(ebay) + '" target="_blank" rel="noopener">Recent eBay sales</a></div>';
   }
 
   function cardView(ctx, listId, rank) {
@@ -399,16 +427,17 @@
     if (p.graded) {
       var slabs = [['psa10', 'PSA 10'], ['psa9', 'PSA 9'], ['psa8', 'PSA 8']].filter(function (g) { return p.graded[g[0]]; }).map(function (g) {
         var d = p.graded[g[0]];
-        return '<div><small>' + g[1] + '</small><b>' + money(d.price, true) + '</b><span>' + (d.confidence ? esc(d.confidence) + ' confidence' : '') + '</span></div>';
+        var basis = d.sales ? d.sales + (d.sales === 1 ? ' sale' : ' sales') : ({ high: 'many sales', medium: 'some sales', low: 'few sales' }[String(d.confidence || '').toLowerCase()] || '');
+        return '<div><small>' + g[1] + '</small><b>' + money(d.price, true) + '</b><span>' + (basis ? 'based on ' + basis : '') + '</span></div>';
       });
-      if (slabs.length) graded = '<section class="block tint"><h2>Graded, eBay sold <span>PSA</span></h2><div class="figs' + (slabs.length === 2 ? ' two' : '') + '">' + slabs.join('') + '</div></section>';
+      if (slabs.length) graded = '<section class="block tint"><h2>Graded copies, sold on eBay <span>PSA</span></h2><div class="figs' + (slabs.length === 2 ? ' two' : '') + '">' + slabs.join('') + '</div></section>';
     }
     var prev = cat.picks[p.rank - 2], next = cat.picks[p.rank];
     var listHref = b + '/list/' + cat.id;
     var hrefOf = function (x) { return b + '/card/' + cat.id + '/' + x.rank; };
     swipe.prev = prev ? hrefOf(prev) : listHref;
     swipe.next = next ? hrefOf(next) : listHref;
-    var confText = { High: 'it trades often, has a full price history and its listings match the market price', Medium: 'its history is partial or its listings sit a little off the market price', Low: 'its history is thin or its listings sit far from the market price' }[p.confidence];
+    var confText = { High: 'it sells often, we have a long price history, and sellers are asking close to the market price', Medium: 'we have only part of its price history, or sellers are asking a bit more or less than the market price', Low: 'we have little price history for it, or sellers are asking far more or less than the market price' }[p.confidence];
     var price = money(p.price);
 
     return '<div class="' + tone(cat) + '"><header class="entry-head band"><a class="back" href="' + listHref + '">' + esc(cat.short || cat.title) + '</a>' +
@@ -417,17 +446,19 @@
       tags(p) + '</header>' +
       '<div class="entry-main">' + img(p, 'card-img', true) +
       '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
-      '<p class="sub">Lowest listing ' + money(p.low) + '</p>' +
-      '<span class="conf ' + p.confidence.toLowerCase() + '">' + esc(p.confidence) + ' confidence</span></div></div>' +
-      '<section class="verdict"><div class="num"><b>' + p.score + '</b><small>' + esc(p.scoreLabel) + ' score</small><em>' + verdict(p) + '</em></div>' +
-      '<dl>' + breakdown(p, days) + '</dl></section>' +
-      '<section class="block tint"><h2>Why it made the issue</h2><p class="why">' + esc(p.reason) + '</p></section>' +
+      '<p class="sub">What it has recently sold for.</p>' +
+      '<span class="conf ' + p.confidence.toLowerCase() + '">Price reliability: ' + esc(p.confidence) + '</span></div></div>' +
+      lowLink(p, 'under') +
+      '<section class="verdict"><div class="num"><b>' + p.score + '</b><small>Score</small><em>' + verdict(p) + '</em></div>' +
+      '<dl>' + breakdown(p, days) + '</dl>' +
+      '<p class="verdict-note">In this list the score shows ' + scoreMeans(cat, p) + '. It runs from 1 to 99; higher is stronger.</p></section>' +
+      '<section class="block tint"><h2>Why it is here</h2><p class="why">' + esc(p.reason) + '</p></section>' +
       soldBlocks(p) + graded + chartBlock(p.series) +
-      '<p class="note fine">Raw price: TCGplayer market price for the ' + esc(p.printing) + ' printing, via <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, pulled ' + niceDate(issue.date) + '. ' +
-      (p.sold ? 'eBay sold and by-condition figures: <a href="https://poketrace.com/" rel="noopener">PokeTrace</a>, pulled ' + niceDate(p.sold.date) + '; eBay sale counts are approximate. ' : '') +
-      (p.graded ? 'Graded prices: completed eBay sales via <a href="https://www.pokemonpricetracker.com/" rel="noopener">PokemonPriceTracker</a>, pulled ' + niceDate(p.graded.date) + '; they may mix printings, so check the slab matches this one. ' : '') +
-      esc(p.confidence) + ' confidence means ' + confText + '. Not financial advice.</p>' +
-      buyLinks(p.name, p.number, p.setAbbr, p.url) +
+      '<p class="note fine">The market price is what the ' + esc(p.printing) + ' printing has recently sold for on TCGplayer, from <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(issue.date) + '. The cheapest copy can be in any condition, and its price is from the same day; the link opens what is for sale right now. ' +
+      (p.sold ? 'eBay and by-condition prices are from <a href="https://poketrace.com/" rel="noopener">PokeTrace</a>, as of ' + niceDate(p.sold.date) + '; eBay sale numbers are approximate. ' : '') +
+      (p.graded ? 'Graded prices are from completed eBay sales, from <a href="https://www.pokemonpricetracker.com/" rel="noopener">PokemonPriceTracker</a>, as of ' + niceDate(p.graded.date) + '; they can mix printings, so check the graded card matches this one. ' : '') +
+      'Price reliability is ' + esc(p.confidence) + ' because ' + confText + '. <a href="#/how">What the numbers mean</a>. Not financial advice.</p>' +
+      buyLinks({ name: p.name, number: p.number, abbr: p.setAbbr, url: p.url, productId: p.productId, printing: p.printing, sealed: p.kind === 'sealed', low: p.low }) +
       '<nav class="pager" aria-label="Picks">' +
       '<a class="prev" href="' + (prev ? hrefOf(prev) : listHref) + '"><small>' + (prev ? 'Previous pick' : 'Back to') + '</small><b>' + esc(prev ? shortName(prev.name) : (cat.short || cat.title)) + '</b></a>' +
       '<a class="next" href="' + (next ? hrefOf(next) : listHref) + '"><small>' + (next ? 'Next pick' : 'Back to') + '</small><b>' + esc(next ? shortName(next.name) : (cat.short || cat.title)) + '</b></a></nav>' +
@@ -620,8 +651,8 @@
       }).join('') + '</div>' : '';
       var pick = { name: it[1], image: productImage(it[0]), kind: it[4] ? 'sealed' : 'single' };
       var rows = [];
-      if (pr[3] != null) rows.push('<div><small>Short term</small><b>' + move(pr[3]) + '</b></div>');
-      if (pr[4] != null) rows.push('<div><small>30 days</small><b>' + move(pr[4]) + '</b></div>');
+      if (pr[3] != null) rows.push('<div><small>Recent change</small><b>' + move(pr[3]) + '</b></div>');
+      if (pr[4] != null) rows.push('<div><small>Last 30 days</small><b>' + move(pr[4]) + '</b></div>');
       if (q != null) rows.push('<div><small>Since ' + niceDate(first[0], false) + '</small><b>' + move(q) + '</b></div>');
       swipe.prev = swipe.next = null;
       return '<div class="' + (eraTone(era) || 't-steady') + '"><header class="entry-head band"><a class="back" href="#/search">Search</a>' +
@@ -630,11 +661,12 @@
         (era ? '<div class="tags">' + eraChip(era) + '</div>' : '') + '</header>' +
         '<div class="entry-main">' + img(pick, 'card-img', true) +
         '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
-        '<p class="sub">' + (pr[2] != null ? 'Lowest listing ' + money(pr[2]) : 'Nothing listed right now') + '</p>' + chips + '</div></div>' +
-        (rows.length ? '<section class="block tint"><h2>Price moves</h2><div class="figs' + (rows.length === 2 ? ' two' : '') + '">' + rows.join('') + '</div></section>' : '') +
+        '<p class="sub">' + (pr[2] != null ? 'What it has recently sold for.' : 'What it has recently sold for. None were for sale when prices were last checked.') + '</p>' + chips + '</div></div>' +
+        (pr[2] != null ? lowLink({ url: null, productId: it[0], printing: pr[0], kind: pick.kind, low: pr[2] }, 'under') : '') +
+        (rows.length ? '<section class="block tint"><h2>Price changes</h2><div class="figs' + (rows.length === 2 ? ' two' : '') + '">' + rows.join('') + '</div></section>' : '') +
         chartBlock(series) +
-        '<p class="note fine">TCGplayer market price for the ' + esc(pr[0]) + ' printing, via <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(data.date) + '. eBay sold and graded prices are looked up only for the cards in the picks.</p>' +
-        buyLinks(it[1], it[3], s[2], 'https://www.tcgplayer.com/product/' + it[0]) + '</div>';
+        '<p class="note fine">The market price is what the ' + esc(pr[0]) + ' printing has recently sold for on TCGplayer, from <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(data.date) + '. eBay and graded prices are looked up only for the cards in the picks.</p>' +
+        buyLinks({ name: it[1], number: it[3], abbr: s[2], url: null, productId: it[0], printing: pr[0], sealed: !!it[4], low: pr[2] }) + '</div>';
     });
   }
 
@@ -653,21 +685,28 @@
     var sources = issue.sources.map(function (s) { return '<li><a href="' + esc(s.url) + '" rel="noopener">' + esc(s.name) + '</a>. ' + esc(s.note) + '</li>'; }).join('');
     return '<header class="page-head"><h1>How it works</h1>' +
       '<p class="deck">Every day a job copies the TCGplayer market price of every English Pokémon single and sealed product, about ' + Number(issue.stats.productsScanned).toLocaleString('en-US') +
-      ' products. Every morning it compares the latest prices with a week, 30 days and 90 days ago and re-runs the rules below, so the picks are fresh by 7 AM Eastern. Nothing is hand-picked.</p></header>' +
-      (days !== 7 ? '<section class="block tint t-sale article"><p>These picks measure their short-term move over ' + days + ' days instead of 7, because the saved price history has a gap in late September 2026. It returns to 7 days once a full week of daily prices is on file.</p></section>' : '') +
+      ' products. Every morning it compares the latest prices with a week, 30 days and 90 days ago and re-runs the rules below, so the picks are fresh by 7 AM Eastern. Nothing is picked by hand.</p></header>' +
+      (days !== 7 ? '<section class="block tint t-sale article"><p>These picks measure their recent price change over ' + days + ' days instead of 7, because the saved price history has a gap in late September 2026. It returns to 7 days once a full week of daily prices is on file.</p></section>' : '') +
+      '<section class="block dark article"><h2>What the numbers mean</h2><ul>' +
+      '<li><b>Market price.</b> TCGplayer\u2019s figure for what a card has recently sold for. It is the main price shown everywhere.</li>' +
+      '<li><b>Cheapest copy for sale.</b> The lowest-priced copy listed on TCGplayer when prices were last checked, in any condition. Its link opens the copies for sale right now, cheapest first.</li>' +
+      '<li><b>Price change.</b> How much the market price went up or down over the days shown.</li>' +
+      '<li><b>Usual price.</b> The middle price over the last 90 days: half the days were higher, half were lower. One odd day does not throw it off.</li>' +
+      '<li><b>Score.</b> One number from 1 to 99 on every pick; higher is stronger. What it measures depends on the list: how fast a price is rising, how big a discount is, how steady a price is, how big a move is, or how strong the signs of a comeback are. Each card page says which.</li>' +
+      '<li><b>Price reliability.</b> High when the card sells often, we have a long price history and sellers are asking close to the market price. Low when any of those is missing.</li>' +
+      '<li><b>Sells often, regularly or not often.</b> How frequently the market price changed from day to day. A price that never changes usually means nothing is selling.</li></ul></section>' +
       '<section class="block article"><h2>Where the numbers come from</h2><ul>' + sources + '</ul></section>' +
       '<section class="block article"><h2>The rule for each list</h2><ul style="list-style:none;padding-left:0">' + rules + '</ul></section>' +
       '<section class="block sunk article"><h2>Checks on every pick</h2><ul>' +
-      '<li>It must have a sales-based market price today and at least one copy listed for sale now.</li>' +
-      '<li>It must actually trade. The job checks how often the market price changed across the readings on file. A price that never moves usually means no sales, and those cards are left out.</li>' +
-      '<li>For rising picks, the lowest current listing must sit between 30% under and 25% over the market price, so the move is backed by what sellers are asking and you can buy near the quoted price.</li>' +
-      '<li>A short-term move above 300% is treated as a data error and dropped.</li>' +
-      '<li>At most three picks per set in a list, no card appears in two lists, and presale products are left out.</li></ul></section>' +
-      '<section class="block dark article"><h2>Scores and confidence</h2><p>The Heat score (1 to 99) blends the short-term and 30-day moves. Deal scores measure a discount, either to the 90-day median or, for sealed products without a history yet, to the market price. Steady scores measure how tight the price band is. Swing scores measure the size of a move in either direction. Rebound scores blend how far a card dipped, how well it held up before the dip and how often it trades; they describe a setup, not a forecast. Confidence is High when the card trades often, has a full price history and its listings match the market price.</p></section>' +
+      '<li>It must have a market price today and at least one copy for sale now.</li>' +
+      '<li>It must actually sell. A card whose price never changes is left out.</li>' +
+      '<li>For rising picks, the cheapest copy for sale must be between 30% below and 25% above the market price, so you can really buy near the price shown.</li>' +
+      '<li>A jump of more than 300% in the short period is treated as a data error and dropped.</li>' +
+      '<li>At most three picks per set in a list, no card appears in two lists, and products not released yet are left out.</li></ul></section>' +
       '<section class="block article"><h2>What this free version cannot see</h2><ul>' +
-      '<li>Individual eBay sales. eBay sold figures are the latest sold price, medians and counts for the cards in the issue, not a list of each sale. The "eBay sold listings" button on every card opens the live list on eBay.</li>' +
-      '<li>Whole-catalog sales counts. Picks are screened on price movement; sale counts are shown for the picks themselves.</li>' +
-      '<li>Sealed trends before October 2026. The history seed covers singles only, so the sealed list ranks by listing discount until a week of sealed prices exists.</li>' +
+      '<li>Each eBay sale one by one. For the picks we show the most recent sale price, the typical price and how many sold. The "Recent eBay sales" button on every card opens the actual sales on eBay.</li>' +
+      '<li>How many copies sold, for every card. We only have that for the picks themselves.</li>' +
+      '<li>Sealed price changes before October 2026. Our older price history covers single cards only, so the sealed list ranks by discount until a week of sealed prices is saved.</li>' +
       '<li>Reddit and X chatter. Not connected yet.</li></ul></section>' +
       '<section class="block sunk article"><h2>The fine print</h2><p>This is market information, not financial advice. A price that rose last week can fall next week. Not affiliated with or endorsed by Nintendo, The Pokémon Company, TCGplayer or eBay. Card images are shown only to identify the cards being priced.</p></section>';
   }

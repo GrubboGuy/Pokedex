@@ -78,6 +78,18 @@ def plan_cut(index, edition, today, mode):
     return True, new_number
 
 
+def _edition_day(stamp):
+    """The calendar day a timestamp falls on for readers (US Eastern), so a late-evening refresh still counts as that day."""
+    if not stamp:
+        return None
+    moment = dt.datetime.fromisoformat(stamp)
+    try:
+        from zoneinfo import ZoneInfo
+        return moment.astimezone(ZoneInfo(config.EDITION_TZ)).date().isoformat()
+    except Exception:
+        return moment.astimezone(dt.timezone.utc).date().isoformat()
+
+
 def _keys(issue):
     return sorted({p["key"] for c in issue["categories"] for p in c["picks"]})
 
@@ -122,7 +134,7 @@ def main(argv=None):
         # Picks that were not in the previous day's edition are marked as new. A second refresh
         # on the same day keeps comparing against the day before.
         now = dt.datetime.now(dt.timezone.utc)
-        if edition and (edition.get("generatedAt") or "")[:10] != now.date().isoformat():
+        if edition and _edition_day(edition.get("generatedAt")) != _edition_day(now.isoformat()):
             previous = _keys(edition)
         else:
             previous = (edition or {}).get("previousKeys")
