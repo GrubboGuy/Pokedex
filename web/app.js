@@ -930,6 +930,9 @@
       screen.classList.toggle('kept', ctx.kept);
       screen.classList.toggle('detail', view === 'card');
       show(html);
+      // Opening the details of a pick that scores 99 or more always gets a reaction.
+      clearTimeout(route.shock);
+      if (view === 'card' && screen.querySelector('.verdict [data-top-score]')) route.shock = setTimeout(shock, 500);
       document.title = ctx.issue.title + ' daily' + (ctx.kept ? ', issue ' + ctx.issue.number : '');
     }).catch(fail);
   }
@@ -1069,7 +1072,7 @@
     guide.addEventListener('click', hideGuide);
     document.body.appendChild(guide);
   }
-  function hideGuide() { clearTimeout(guideTimer); if (guide) guide.classList.remove('on'); }
+  function hideGuide() { clearTimeout(guideTimer); clearTimeout(route.shock); if (guide) guide.classList.remove('on'); }
   function speak() {
     if (!guide) buildGuide();
     var roll = Math.random(), who = 'guide';
