@@ -206,6 +206,27 @@ def number_in_title(title, number):
     return False
 
 
+_GENERIC_SET_WORDS = {"promo", "promos", "cards", "card", "black", "star", "and", "the", "pokemon"}
+
+
+def names_promo_series(title, pick):
+    """Promo cards are numbered on their own ("027"), and every promo series has a Pikachu 27.
+
+    So for a card from a promo set, the title has to name the series: a word of the set's name
+    ("Scarlet", "SWSH") or its code run into the number ("SVP027"). Other cards pass.
+    """
+    set_name = pick.get("set") or ""
+    if "promo" not in set_name.lower():
+        return True
+    plain = _plain(title)
+    for word in _plain(set_name).split():
+        if word in _GENERIC_SET_WORDS or len(word) < 2:
+            continue
+        if (len(word) >= 4 and word in plain) or re.search(rf"\b{re.escape(word)}p?\d*\b", plain):
+            return True
+    return False
+
+
 def fits(item, pick, printings):
     """Whether a search result is really this card, in this version, as a normal single listing."""
     title = item.get("title") or ""
@@ -229,6 +250,8 @@ def fits(item, pick, printings):
     if _JUMBO.search(title) and "jumbo" not in (pick.get("set") or "").lower():
         return False
     if pick.get("number") and not number_in_title(title, pick["number"]):
+        return False
+    if not names_promo_series(title, pick):
         return False
     return title_fits(title, pick["printing"], printings)
 
