@@ -177,6 +177,22 @@ def total_cost(item):
     return price, min(costs)
 
 
+def number_in_title(title, number):
+    """Whether a listing title carries this card number: "6/132" for 006/132, "SWSH103", or a bare "052".
+
+    "230 HP" is hit points, not a number, and "27/30" is not card 27 of a 198-card set or promo 027:
+    when the title gives a set size after the number, it has to be this card's.
+    """
+    first, _, total = str(number).strip().lower().partition("/")
+    first = (first.lstrip("0") or "0") if first.isdigit() else first
+    pattern = re.compile(rf"(?<![0-9])0*{re.escape(first)}(?![0-9])(?!\s*hp)(?:\s*/\s*([a-z]*\d+))?")
+    for found in pattern.finditer(title.lower()):
+        size = found.group(1)
+        if size is None or (total and size.lstrip("0") == total.lstrip("0")):
+            return True
+    return False
+
+
 def fits(item, pick, printings):
     """Whether a search result is really this card, in this version, as a normal single listing."""
     title = item.get("title") or ""
@@ -199,11 +215,8 @@ def fits(item, pick, printings):
         return not any(has(lowered, kind) and not has(name, kind) for kind in SEALED_TYPES)
     if _JUMBO.search(title) and "jumbo" not in (pick.get("set") or "").lower():
         return False
-    printed, _padded = _number(pick)
-    if printed:
-        number = re.escape(printed.lower())
-        if not re.search(rf"(?<![0-9])0*{number}(?![0-9])", title.lower()):
-            return False
+    if pick.get("number") and not number_in_title(title, pick["number"]):
+        return False
     return title_fits(title, pick["printing"], printings)
 
 
