@@ -620,6 +620,64 @@ def make_categories(rows, span=7, catalog=None):
     return categories, counts
 
 
+DEALS_ID = "ebay-deals"
+DEAL_POOL = 150
+
+
+def deal_pool(rows, catalog, size=DEAL_POOL):
+    """The cards the eBay deal scan looks at: singles of $20 and up whose price moves most days
+    (so they sell often), busiest first. Each comes with its product's other printings, which the
+    listing matcher needs to tell a reverse holo from a plain copy."""
+    printings = {item["id"]: [sub for sub, values in item["prices"].items() if values[0]]
+                 for item in catalog["items"]}
+    busy = [r for r in rows if r["kind"] == "single" and r["price"] >= 20 and r["points"] >= 12
+            and r["activity"] >= 0.5 and r.get("number")]
+    busy.sort(key=lambda r: (-r["activity"], -r["price"]))
+    return [{**r, "variants": [{"productId": r["productId"], "printing": sub}
+                               for sub in printings.get(r["productId"], []) if sub != r["printing"]]}
+            for r in busy[:size]]
+
+
+def ebay_deals_category(found, catalog, used, checked_at):
+    """The "Cheaper on eBay" list from the scan's finds, biggest saving first. None if fewer than three."""
+    index = variant_index(catalog)
+    picks, per_set, seen = [], {}, set()
+    for card, listing, share in sorted(found, key=lambda f: f[2]):
+        if card["productId"] in used or card["productId"] in seen or per_set.get(card["gid"], 0) >= config.MAX_PER_SET:
+            continue
+        seen.add(card["productId"])
+        per_set[card["gid"]] = per_set.get(card["gid"], 0) + 1
+        saving = 1 - share
+        reason = (f"A Near Mint copy is listed on eBay for {_money(listing['total'])} with shipping, "
+                  f"{round(saving * 100)}% under the {_money(card['price'])} TCGplayer market price. "
+                  f"It can sell at any time, so open the listing and check the photos before buying.")
+        pick = _public(card, _clamp_score(50 + 49 * (saving - 0.15) / 0.25), "Bargain", reason, len(picks) + 1)
+        pick["ebayLow"], pick["deal"] = listing, round(saving, 4)
+        others = variants_for(card, index, catalog["groups"])
+        if others:
+            pick["variants"] = others
+        picks.append(pick)
+        if len(picks) == config.PICKS_PER_LIST:
+            break
+    if len(picks) < 3:
+        return None
+    return {"id": DEALS_ID, "title": "Cheaper on eBay", "short": "eBay deals",
+            "blurb": "Near Mint copies listed under market price right now", "color": "green",
+            "rule": ("Singles of $20 and up that sell often, with a Buy It Now copy on eBay that the seller lists as "
+                     "Near Mint, priced 15% to 40% under the TCGplayer market price with shipping included. "
+                     "Checked again every few hours; biggest saving first."),
+            "eligible": len(found), "checkedAt": checked_at, "picks": picks}
+
+
+def place_deals(categories, deals):
+    """Swap in a fresh "Cheaper on eBay" list (or drop it, if None), after the On sale list."""
+    kept = [c for c in categories if c["id"] != DEALS_ID]
+    if not deals:
+        return kept
+    at = next((i + 1 for i, c in enumerate(kept) if c["id"] == "on-sale"), len(kept))
+    return kept[:at] + [deals] + kept[at:]
+
+
 def choose_cover(categories):
     best = None
     for cat in categories:

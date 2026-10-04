@@ -11,7 +11,7 @@
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var TIERS = { UNOPENED: 'Sealed', NEAR_MINT: 'Near Mint', LIGHTLY_PLAYED: 'Lightly Played', MODERATELY_PLAYED: 'Moderately Played', HEAVILY_PLAYED: 'Heavily Played', DAMAGED: 'Damaged' };
   // Color families: each list has one, and each era maps onto the family of its era list.
-  var TONE = { 'big-movers': 'movers', 'get-em-now': 'rebound', 'hot-vintage': 'vintage', 'hot-middle': 'mid', 'hot-sm-swsh': 'sunsword', 'hot-modern': 'modern', 'modern-sealed': 'sealed', 'hidden-gems': 'gems', 'on-sale': 'sale', 'holding': 'steady' };
+  var TONE = { 'big-movers': 'movers', 'get-em-now': 'rebound', 'hot-vintage': 'vintage', 'hot-middle': 'mid', 'hot-sm-swsh': 'sunsword', 'hot-modern': 'modern', 'modern-sealed': 'sealed', 'hidden-gems': 'gems', 'on-sale': 'sale', 'ebay-deals': 'ebay', 'holding': 'steady' };
   var ERAS = {
     wotc: ['Wizards era', 'vintage'], ex: ['EX era', 'vintage'],
     dp: ['Diamond & Pearl era', 'mid'], bwxy: ['BW and XY era', 'mid'],
@@ -41,6 +41,7 @@
   function move(x) { return '<span class="move ' + dir(x) + '">' + tri(x) + pct(x) + '</span>'; }
   // A pick's headline figure: its short-term move, or for picks without a trend, the listing gap.
   function headlineMove(p) {
+    if (p.deal != null) return '<span class="move gap">' + Math.round(p.deal * 100) + '% under market</span>';
     if (p.ch7 != null) return move(p.ch7);
     if (p.chSince != null) return move(p.chSince);
     var gap = Math.round((1 - p.low / p.price) * 100);
@@ -192,10 +193,12 @@
     if (kind === 'Rebound') return 'how strong the signs are that the price will come back';
     if (kind === 'Steady') return 'how little the price has moved';
     if (kind === 'Deal') return 'how far below its usual price it is';
+    if (kind === 'Bargain') return 'how far under the market price the eBay copy is';
     return 'how fast the price is rising';
   }
   function verdict(p) {
     if (p.scoreLabel === 'Deal') return p.score >= 80 ? 'Deep discount' : (p.score >= 70 ? 'Solid discount' : 'Mild discount');
+    if (p.scoreLabel === 'Bargain') return p.score >= 80 ? 'Big saving' : (p.score >= 62 ? 'Good saving' : 'Fair saving');
     if (p.scoreLabel === 'Swing') return p.ch7 > 0 ? 'Big jump' : 'Sharp drop';
     if (p.scoreLabel === 'Rebound') return p.score >= 72 ? 'Strong signs' : (p.score >= 64 ? 'Good signs' : 'Early signs');
     if (p.scoreLabel === 'Steady') return p.score >= 85 ? 'Rock steady' : 'Steady';
@@ -254,7 +257,8 @@
     if (e) return 'On eBay the cheapest matching ' + (p.kind === 'sealed' ? 'one' : 'copy') + ' is ' + money(e.total) + ' with shipping' + (e.condition ? ', listed as ' + e.condition : '') + '.';
     return p.low ? 'Sellers on TCGplayer are asking from ' + money(p.low) + '; that is the lowest listing in any condition, before shipping.' : '';
   }
-  function why(p) { return (String(p.reason || '').replace(OLD_ASKING, '').trim() + ' ' + askLine(p)).trim(); }
+  // A pick on the "Cheaper on eBay" list already says what the eBay copy costs.
+  function why(p) { return p.deal != null ? String(p.reason || '') : (String(p.reason || '').replace(OLD_ASKING, '').trim() + ' ' + askLine(p)).trim(); }
   function shopLinks(p, cls) {
     var o = { name: p.name, number: p.number, set: p.set, printing: p.printing, printings: p.printings || printingsOf(p), era: p.era, sealed: p.kind === 'sealed' };
     var e = ebayLow(p);
@@ -291,6 +295,14 @@
     if (!indexPromise) indexPromise = getJSON('data/index.json');
     return indexPromise;
   }
+  // A back issue is a snapshot from the day it was cut: its eBay listings are long gone, so they are left out.
+  function withoutLive(issue) {
+    if (issue._noLive) return issue;
+    issue.categories = issue.categories.filter(function (c) { return c.id !== 'ebay-deals'; });
+    issue.categories.forEach(function (c) { c.picks.forEach(function (p) { delete p.ebayLow; }); });
+    issue._noLive = true;
+    return issue;
+  }
   function getIssue(number) {
     return getIndex().then(function (index) {
       if (!index.length) throw new Error('empty');
@@ -301,7 +313,7 @@
         cache[n] = number ? getJSON('data/issue-' + number + '.json')
           : getJSON('data/today.json').catch(function () { return getJSON('data/issue-' + index[0].number + '.json'); });
       }
-      return cache[n].then(function (issue) { return { issue: issue, kept: !!number, latest: index[0].number, index: index }; });
+      return cache[n].then(function (issue) { return { issue: number ? withoutLive(issue) : issue, kept: !!number, latest: index[0].number, index: index }; });
     });
   }
   function getSearch() {
@@ -435,7 +447,7 @@
       : 'The big price is the TCGplayer market price: what the product has recently sold for. The % beside it is how much that price has changed since ' + (lead.since ? niceDate(lead.since, false) : 'we started tracking it') + '.') +
       ' Score: ' + scoreMeans(cat, lead) + ', from 1 to 99. Prices as of ' + niceDate(issue.date) + '. The TCGplayer and eBay links under each card open what is for sale right now, lowest price first.';
     return '<div class="' + tone(cat) + '"><header class="sec-head band"><span class="eyebrow"><i class="dot"></i>Section ' + (idx + 1) + ' of ' + issue.categories.length + '</span>' +
-      '<h1>' + esc(listTitle(cat)) + '</h1><p class="deck">' + esc(cat.blurb) + '</p></header>' +
+      '<h1>' + esc(listTitle(cat)) + '</h1><p class="deck">' + esc(cat.blurb) + (cat.checkedAt ? '. Checked ' + updated({ generatedAt: cat.checkedAt }, true) : '') + '</p></header>' +
       '<p class="tap-hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10m0 0V8.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.6a5 5 0 0 1-4-2l-3.1-4.2a1.5 1.5 0 0 1 2.3-1.9L9 14.5"/></svg>Tap any card for its sold prices, graded prices and price history.</p>' +
       '<a class="lead" href="' + b + '/card/' + cat.id + '/' + lead.rank + '">' +
         '<div class="lead-art"><span class="rank">1</span>' + img(lead, 'card-img', true) + '</div>' +
@@ -913,7 +925,7 @@
       '<section class="block dark article"><h2>What the numbers mean</h2><ul>' +
       '<li><b>Market price.</b> TCGplayer\u2019s figure for what a card has recently sold for. It is the main price shown everywhere.</li>' +
       '<li><b>Lowest asking price.</b> Shown only when we found no matching eBay listing. It is the cheapest TCGplayer listing when prices were last checked, in any condition and before shipping, so treat it as a starting point, not a quote.</li>' +
-      '<li><b>eBay price.</b> When the eBay button shows a price, it is the cheapest Buy It Now listing we could match to that exact card and version, shipping included, at the time shown on the card\u2019s page. eBay prices are checked again about every four hours through the day. The button opens that listing so you can check it. Graded cards, heavily played or damaged copies, lots, other languages and anything priced far below the market price are skipped. No price on the button means nothing matched, and it opens an eBay search instead.</li>' +
+      '<li><b>eBay price.</b> When the eBay button shows a price, it is the cheapest Buy It Now listing we could match to that exact card and version, shipping included, at the time shown on the card\u2019s page. eBay prices are checked again about every four hours through the day. The Cheaper on eBay list goes further and looks through about 150 often-traded cards for Near Mint copies listed at least 15% under the market price. The button opens that listing so you can check it. Graded cards, heavily played or damaged copies, lots, other languages and anything priced far below the market price are skipped. No price on the button means nothing matched, and it opens an eBay search instead.</li>' +
       '<li><b>Price change.</b> How much the market price went up or down over the days shown.</li>' +
       '<li><b>Usual price.</b> The middle price over the last 90 days: half the days were higher, half were lower. One odd day does not throw it off.</li>' +
       '<li><b>Score.</b> One number from 1 to 99 on every pick; higher is stronger. Its colour runs from red at the low end through yellow in the middle to green at the top. What it measures depends on the list: how fast a price is rising, how big a discount is, how steady a price is, how big a move is, or how strong the signs of a comeback are. Each card page says which.</li>' +

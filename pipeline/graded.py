@@ -169,6 +169,8 @@ def top_up(issue, cache, today, log=print, fetch=True, sample=None):
     today_d = dt.date.fromisoformat(today)
     made = 0
     singles = [p for c in issue["categories"] for p in c["picks"] if p["kind"] == "single"]
+    # The eBay deals list changes every few hours; looking each new card up would use the day's credits.
+    no_lookup = {id(p) for c in issue["categories"] if c["id"] == "ebay-deals" for p in c["picks"]}
     # Cards that come in more than one version first: they are the ones that need individual sales.
     singles.sort(key=lambda p: (len(_printings(p)) < 2, -p["price"]))
     shown = split = 0
@@ -177,7 +179,7 @@ def top_up(issue, cache, today, log=print, fetch=True, sample=None):
         cached = cache.get(pid)
         fresh = (cached and cached.get("v") == CACHE_VERSION
                  and (today_d - dt.date.fromisoformat(cached["date"])).days <= config.GRADED_MAX_AGE_DAYS)
-        if not fresh and api_key and made < config.GRADED_LOOKUPS_PER_RUN:
+        if not fresh and api_key and made < config.GRADED_LOOKUPS_PER_RUN and id(pick) not in no_lookup:
             try:
                 payload = _lookup(pick["productId"], api_key)
                 if sample is not None and not sample:

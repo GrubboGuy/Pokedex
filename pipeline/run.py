@@ -170,6 +170,16 @@ def main(argv=None):
     else:
         print(f"Picks not refreshed on this run; showing issue {edition['number']}, prices as of {edition['date']}")
 
+    # The "Cheaper on eBay" list is rebuilt on scheduled runs and re-picks, not on every code push.
+    ebay_budget = ebay.calls_left(args.data_dir)
+    ebay_made = 0
+    if os.environ.get("EBAY_SCAN") == "1":
+        found, ebay_made, checked = ebay.scan_deals(score.deal_pool(rows, catalog), ebay_budget - 400)
+        if checked:
+            used = {p["productId"] for c in edition["categories"] if c["id"] != score.DEALS_ID for p in c["picks"]}
+            edition["categories"] = score.place_deals(
+                edition["categories"], score.ebay_deals_category(found, catalog, used, checked))
+
     cache = store.graded_cache()
     ppt_sample = []
     made = graded.top_up(edition, cache, today, sample=ppt_sample)
@@ -184,7 +194,8 @@ def main(argv=None):
         with open(store_sample, "w", encoding="utf-8") as fh:
             json.dump(sample, fh, indent=1)
 
-    _made, ebay_sample = ebay.top_up(edition)
+    made_now, ebay_sample = ebay.top_up(edition, budget=ebay_budget - ebay_made)
+    ebay.record_calls(args.data_dir, ebay_made + made_now)
     if ebay_sample:  # one raw reply, with seller details removed, kept so the layout can be checked
         with open(os.path.join(args.data_dir, "ebay-sample.json"), "w", encoding="utf-8") as fh:
             json.dump(ebay_sample, fh, indent=1)

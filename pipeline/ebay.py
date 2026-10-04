@@ -35,6 +35,12 @@ DETAIL_TRIES = 6      # listings opened per card to read the stated condition, c
 MAX_DETAILS = 300     # per run, so a day of runs stays far inside the allowance
 PAGE = 50
 PAUSE = float(os.environ.get("EBAY_PAUSE", "0.25"))
+# The "Cheaper on eBay" scan: often-traded cards beyond the picks, looking for clean copies under market.
+DEAL_MAX_SHARE = 0.85   # a deal is at least 15% under the market price, shipping included
+DEAL_MIN_SHARE = 0.6    # and not so far under that it is probably something else
+DEAL_TRIES = 3          # listings opened per card
+DAILY_CALLS = 4200      # stay under eBay's default 5,000 calls a day
+
 MIN_SHARE = {"single": 0.4, "sealed": 0.8}  # a listing under this share of the market price is not counted
 # A clean copy far under the market price is nearly always something else (another language, a fake,
 # a mislabelled card), so the bar depends on the condition the seller declared.
@@ -263,7 +269,7 @@ def _scrub_item(detail):
     return {k: detail[k] for k in keep if k in detail}
 
 
-def top_up(issue, log=print):
+def top_up(issue, log=print, budget=MAX_SEARCHES * 3):
     """Attach the cheapest matching eBay listing to each pick.
 
     For single cards the cheapest few are opened to read the condition the seller declared, and
@@ -274,13 +280,14 @@ def top_up(issue, log=print):
     if not client_id or not client_secret:
         log("  no eBay keys set: skipping live eBay prices")
         return 0, None
-    picks = [p for c in issue["categories"] for p in c["picks"]]
+    # The "Cheaper on eBay" list is built from listings found by its own scan; those stay as found.
+    picks = [p for c in issue["categories"] if c["id"] != "ebay-deals" for p in c["picks"]]
     made, details, matched, stated, sample = 0, 0, 0, 0, {}
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     try:
         token = _token(client_id, client_secret)
         for pick in picks:
-            if made >= MAX_SEARCHES:
+            if made >= MAX_SEARCHES or made + details >= budget:
                 break
             single = pick["kind"] == "single"
             floor = (pick.get("price") or 0) * MIN_SHARE.get(pick["kind"], 0.4)
@@ -323,3 +330,74 @@ def top_up(issue, log=print):
     log(f"  eBay: {made} searches and {details} listing checks; a matching listing found for {matched} of "
         f"{len(picks)} picks ({stated} with the seller's condition stated)")
     return made + details, sample or None
+
+
+def calls_left(data_dir):
+    """How many more eBay calls today's budget allows, from the tally kept between runs."""
+    day = dt.datetime.now(dt.timezone.utc).date().isoformat()
+    try:
+        with open(os.path.join(data_dir, "ebay-usage.json"), encoding="utf-8") as fh:
+            tally = json.load(fh)
+    except (OSError, ValueError):
+        tally = {}
+    used = tally.get("calls", 0) if tally.get("day") == day else 0
+    return max(0, DAILY_CALLS - used)
+
+
+def record_calls(data_dir, made):
+    day = dt.datetime.now(dt.timezone.utc).date().isoformat()
+    used = DAILY_CALLS - calls_left(data_dir) + made
+    try:
+        with open(os.path.join(data_dir, "ebay-usage.json"), "w", encoding="utf-8") as fh:
+            json.dump({"day": day, "calls": used}, fh)
+    except OSError:
+        pass
+
+
+def scan_deals(pool, budget, log=print):
+    """Looks through often-traded cards for a Near Mint copy listed well under the market price.
+
+    `pool` holds picks-in-waiting (a row plus the card's other printings). Returns
+    (deals, calls made, time checked); time checked is None when the scan did not run, so the
+    caller keeps whatever list it already had. Each deal is (card, listing, share of market price).
+    """
+    client_id = os.environ.get("EBAY_CLIENT_ID", "").strip()
+    client_secret = os.environ.get("EBAY_CLIENT_SECRET", "").strip()
+    if not client_id or not client_secret:
+        return [], 0, None
+    need = len(pool) * 2
+    if budget < need:
+        log(f"  eBay deal scan skipped: {budget} calls left today, about {need} needed")
+        return [], 0, None
+    deals, made, complete = [], 0, False
+    now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+    try:
+        token = _token(client_id, client_secret)
+        for card in pool:
+            if made >= budget:
+                break
+            price = card["price"]
+            payload = _search(token, query_for(card), True, price * DEAL_MIN_SHARE * 0.85)
+            made += 1
+            time.sleep(PAUSE)
+            cheap = [c for c in candidates(payload.get("itemSummaries") or [], card)
+                     if price * DEAL_MIN_SHARE <= c["total"] <= price * DEAL_MAX_SHARE]
+            for choice in cheap[:DEAL_TRIES]:
+                if not choice.get("itemId"):
+                    continue
+                detail = _item(token, choice["itemId"])
+                made += 1
+                time.sleep(PAUSE)
+                condition = card_condition(detail) if detail else None
+                if condition and "near mint" in condition.lower():
+                    deals.append((card, {**choice, "condition": condition, "at": now, "matches": len(cheap)},
+                                  choice["total"] / price))
+                    break
+        complete = True
+    except Stop as stop:
+        log(f"  eBay deal scan stopped: {stop}")
+    except Exception as err:
+        log(f"  eBay deal scan failed: {err}")
+    log(f"  eBay deal scan: {len(pool)} often-traded cards, {made} calls, {len(deals)} Near Mint copies "
+        f"at least {round((1 - DEAL_MAX_SHARE) * 100)}% under market")
+    return deals, made, (now if complete else None)

@@ -40,6 +40,7 @@
 .t-steady { --tone: #3F4E73; }
 .t-movers { --tone: #C4246F; }
 .t-rebound { --tone: #6E8B0B; }
+.t-ebay { --tone: #8B5E34; }
 .t-vintage, .t-mid, .t-sunsword, .t-modern, .t-sealed, .t-gems, .t-sale, .t-steady, .t-movers, .t-rebound {
   --tint: #F3F4F7;
   --tint: color-mix(in srgb, var(--tone) 9%, #fff);

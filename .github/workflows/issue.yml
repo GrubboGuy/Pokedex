@@ -86,6 +86,10 @@ jobs:
             # [new issue] starts the next numbered issue, if prices are newer than the last one.
             if printf '%s' "$COMMIT_MESSAGE" | grep -q '\[new issue\]'; then CUT=new; fi
           fi
+          # The eBay deal scan (about 250 calls) runs on scheduled and manual runs and on re-picks, not on plain pushes.
+          EBAY_SCAN=1
+          if [ "${{ github.event_name }}" = "push" ] && [ "$CUT" = "never" ]; then EBAY_SCAN=0; fi
+          export EBAY_SCAN
           mkdir -p _site/data
           python -m pipeline.run --data-dir _data --site-dir _site/data --cut "$CUT" 2>&1 | tee _data/last-run.log
 
