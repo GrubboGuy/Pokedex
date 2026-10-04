@@ -41,8 +41,8 @@ MIN_SHARE = {"single": 0.4, "sealed": 0.8}  # a listing under this share of the 
 MIN_SHARE_BY_CONDITION = (("moderately", 0.4), ("lightly", 0.5), ("", 0.6))
 # Sealed product types: a listing naming a type the product is not (an Elite Trainer Box when we
 # want a Booster Box) is a different product, however many other words match.
-SEALED_TYPES = ("elite trainer box", "etb", "booster box", "booster bundle", "booster pack", "blister", "tin",
-                "collection", "build & battle", "build and battle", "half", "deck", "single pack", "1 pack")
+SEALED_TYPES = (("elite trainer box", "etb"), ("booster box",), ("booster bundle",), ("booster pack", "single pack", "1 pack"),
+                ("blister",), ("tin",), ("collection",), ("build & battle", "build and battle"), ("half",), ("deck",))
 
 _JUNK = re.compile(
     r"\b(proxy|custom|reprint|replica|fan\s*art|orica|digital|online code|code card|ptcg[ol]|tcg live"
@@ -186,8 +186,10 @@ def fits(item, pick, printings):
     if not all(token in plain for token in _name_tokens(pick)):
         return False
     if pick["kind"] != "single":
+        def has(text, words):
+            return any(re.search(rf"\b{re.escape(w)}\b", text) for w in words)
         lowered, name = title.lower(), (pick.get("name") or "").lower()
-        return not any(kind in lowered and kind not in name for kind in SEALED_TYPES)
+        return not any(has(lowered, kind) and not has(name, kind) for kind in SEALED_TYPES)
     if _JUMBO.search(title) and "jumbo" not in (pick.get("set") or "").lower():
         return False
     printed, _padded = _number(pick)
