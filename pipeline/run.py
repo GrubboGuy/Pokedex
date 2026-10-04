@@ -9,7 +9,7 @@ import json
 import os
 import sys
 
-from . import ebay, config, graded, poketrace, score, site, tcgcsv
+from . import config, ebay, graded, photo, poketrace, score, site, tcgcsv
 from .store import Store
 
 
@@ -199,6 +199,11 @@ def main(argv=None):
 
     made_now, ebay_sample = ebay.top_up(edition, budget=ebay_budget - ebay_made)
     ebay.record_calls(args.data_dir, ebay_made + made_now)
+    if photo.available():  # tuning data for the photo check; removed once the pass mark is set
+        with open(os.path.join(args.data_dir, "photo-scores.json"), "w", encoding="utf-8") as fh:
+            json.dump(photo.measure(edition), fh, indent=1)
+    else:
+        print("  photo check unavailable: OpenCV is not installed")
     if ebay_sample:  # one raw reply, with seller details removed, kept so the layout can be checked
         with open(os.path.join(args.data_dir, "ebay-sample.json"), "w", encoding="utf-8") as fh:
             json.dump(ebay_sample, fh, indent=1)

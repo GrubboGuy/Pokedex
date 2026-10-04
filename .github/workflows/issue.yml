@@ -50,6 +50,10 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Used to compare eBay listing photos with the catalogue picture of the card (pipeline/photo.py).
+      - name: Install the picture-matching library
+        run: pip install --quiet opencv-python-headless numpy || echo "OpenCV not installed; the photo check will be skipped"
+
       - name: Restore saved data
         run: |
           mkdir -p _data

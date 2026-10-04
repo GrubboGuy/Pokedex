@@ -276,7 +276,8 @@ def candidates(items, pick):
             continue
         out.append({"total": round(price + shipping, 2), "price": round(price, 2), "shipping": round(shipping, 2),
                     "title": (item.get("title") or "")[:100], "itemId": item.get("itemId"),
-                    "url": (item.get("itemWebUrl") or "").split("?")[0]})
+                    "url": (item.get("itemWebUrl") or "").split("?")[0],
+                    "img": (item.get("image") or {}).get("imageUrl")})
     out.sort(key=lambda c: c["total"])
     return out
 
