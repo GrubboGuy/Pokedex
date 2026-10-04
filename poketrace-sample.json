@@ -1,0 +1,173 @@
+{
+ "id": "019bff77-befc-77ae-b883-31c7d78ec6b4",
+ "name": "Slowking",
+ "cardNumber": "14/18",
+ "set": {
+  "slug": "southern-islands",
+  "name": "Southern Islands"
+ },
+ "variant": "Reverse_Holofoil",
+ "rarity": "Promo",
+ "productType": "single",
+ "productFamily": "card",
+ "image": "https://cdn.poketrace.com/cards/2cb9b349d144d467.webp",
+ "game": "pokemon",
+ "market": "US",
+ "currency": "USD",
+ "refs": {
+  "tcgplayerId": "46471",
+  "cardmarketId": null
+ },
+ "marketplaceUrls": {
+  "tcgplayer": "https://www.tcgplayer.com/product/46471",
+  "cardmarket": null,
+  "ebay": "https://www.ebay.com/sch/i.html?_nkw=Slowking+Southern+Islands+14%2F18+Reverse_Holofoil&_sacat=0&_from=R40"
+ },
+ "prices": {
+  "ebay": {
+   "DAMAGED": {
+    "avg": 124.99,
+    "low": 124.99,
+    "high": 124.99,
+    "lastUpdated": "2026-08-31T00:00:00.000Z",
+    "avg1d": 75,
+    "avg7d": 99.995,
+    "avg30d": 99.995,
+    "median3d": 124.99,
+    "median7d": 124.99,
+    "median30d": 124.99,
+    "saleCount": 4,
+    "approxSaleCount": true
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 120,
+    "low": 120,
+    "high": 120,
+    "lastUpdated": "2026-08-28T00:00:00.000Z",
+    "avg1d": null,
+    "avg7d": null,
+    "avg30d": null,
+    "median3d": 120,
+    "median7d": 120,
+    "median30d": 120,
+    "saleCount": 1,
+    "approxSaleCount": true
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 238.705,
+    "low": 237.41,
+    "high": 240,
+    "lastUpdated": "2026-09-30T00:00:00.000Z",
+    "avg1d": 220,
+    "avg7d": 239.90167,
+    "avg30d": 239.90167,
+    "median3d": 237.41,
+    "median7d": 238.455,
+    "median30d": 239.5,
+    "saleCount": 47,
+    "approxSaleCount": true
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 166.945,
+    "low": 149.99,
+    "high": 183.9,
+    "lastUpdated": "2026-09-23T00:00:00.000Z",
+    "avg1d": 120,
+    "avg7d": 157.7475,
+    "avg30d": 157.7475,
+    "median3d": 149.99,
+    "median7d": 149.99,
+    "median30d": 160,
+    "saleCount": 10,
+    "approxSaleCount": true
+   },
+   "NEAR_MINT": {
+    "avg": 250,
+    "low": 250,
+    "high": 250,
+    "lastUpdated": "2026-09-02T00:00:00.000Z",
+    "avg1d": 250,
+    "avg7d": 251.082,
+    "avg30d": 251.082,
+    "median3d": 250,
+    "median7d": 250,
+    "median30d": 250,
+    "saleCount": 28,
+    "approxSaleCount": true
+   }
+  },
+  "tcgplayer": {
+   "DAMAGED": {
+    "avg": 68.46,
+    "low": 68.46,
+    "high": 68.46,
+    "lastUpdated": "2026-10-03T00:00:00.000Z",
+    "avg1d": 68.46,
+    "avg7d": 68.46,
+    "avg30d": 68.05484,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 86,
+    "approxSaleCount": false
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 99.24,
+    "low": 99.24,
+    "high": 99.24,
+    "lastUpdated": "2026-10-03T00:00:00.000Z",
+    "avg1d": 99.24,
+    "avg7d": 98.96286,
+    "avg30d": 93.75613,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 114,
+    "approxSaleCount": false
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 178.6,
+    "low": 178.6,
+    "high": 178.6,
+    "lastUpdated": "2026-10-03T00:00:00.000Z",
+    "avg1d": 178.6,
+    "avg7d": 178.5,
+    "avg30d": 177.82129,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 135,
+    "approxSaleCount": false
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 132.72,
+    "low": 132.72,
+    "high": 132.72,
+    "lastUpdated": "2026-10-03T00:00:00.000Z",
+    "avg1d": 132.72,
+    "avg7d": 130.36285,
+    "avg30d": 123.09129,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 149,
+    "approxSaleCount": false
+   },
+   "NEAR_MINT": {
+    "avg": 349.08,
+    "low": 349.08,
+    "high": 349.08,
+    "lastUpdated": "2026-10-03T00:00:00.000Z",
+    "avg1d": 349.08,
+    "avg7d": 346.4814,
+    "avg30d": 322.50192,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 105,
+    "approxSaleCount": false
+   }
+  }
+ },
+ "lastUpdated": "2026-10-03T23:30:35.747Z"
+}
