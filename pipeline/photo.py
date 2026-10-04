@@ -123,6 +123,38 @@ def for_listing(pick, listing):
     return score(catalogue_picture(pick["image"]), listing_picture(listing["img"]))
 
 
+def _sweep(catalogue_url, listing_url, side, features):
+    """Tuning only: agreement counts at a given picture size, overall and inside two artwork bands."""
+    def describe(url, n):
+        key = (url, side, n)
+        if key not in _features:
+            try:
+                req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; PokedexDaily/1.0)"})
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    image = cv2.imdecode(np.frombuffer(resp.read(), np.uint8), cv2.IMREAD_GRAYSCALE)
+                scale = side / max(image.shape[:2])
+                if scale < 1:
+                    image = cv2.resize(image, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
+                _features[key] = cv2.SIFT_create(nfeatures=n).detectAndCompute(image, None) + (image.shape[0],)
+            except Exception:
+                _features[key] = None
+        return _features[key]
+    first, second = describe(catalogue_url, 2500), describe(listing_url, features)
+    if not first or not second or first[1] is None or second[1] is None or len(first[0]) < 8 or len(second[0]) < 8:
+        return None
+    pairs = cv2.BFMatcher(cv2.NORM_L2).knnMatch(first[1], second[1], k=2)
+    good = [p[0] for p in pairs if len(p) == 2 and p[0].distance < 0.75 * p[1].distance]
+    if len(good) < 8:
+        return [0, 0, 0]
+    src = np.float32([first[0][m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
+    dst = np.float32([second[0][m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+    _h, mask = cv2.findHomography(src, dst, cv2.RANSAC, 5.0)
+    if mask is None:
+        return [0, 0, 0]
+    ys = [src[i][0][1] / first[2] for i in range(len(good)) if mask[i][0]]
+    return [len(ys), sum(1 for y in ys if 0.10 <= y <= 0.62), sum(1 for y in ys if 0.16 <= y <= 0.50)]
+
+
 def measure(issue):
     """For tuning: every pick's listing photo scored against its own catalogue picture ("same"),
     and against the next pick's in the same list ("other"), which is a card it certainly is not."""
@@ -131,9 +163,12 @@ def measure(issue):
         picks = [p for p in category["picks"] if p.get("kind") == "single" and (p.get("ebayLow") or {}).get("img")]
         for i, pick in enumerate(picks):
             other = picks[(i + 1) % len(picks)] if len(picks) > 1 else None
-            def both(card):
-                return scores(catalogue_picture(card["image"]), listing_picture(pick["ebayLow"]["img"])) if card else None
-            rows.append({"list": category["id"], "name": pick["name"], "title": pick["ebayLow"].get("title"),
-                         "url": pick["ebayLow"].get("url"), "img": pick["ebayLow"]["img"], "cat": pick["image"],
-                         "same": both(pick), "other": both(other), "otherName": other["name"] if other else None})
+            small = re.sub(r"s-l\d+\.", "s-l800.", pick["ebayLow"]["img"])
+            large = re.sub(r"s-l\d+\.", "s-l1600.", pick["ebayLow"]["img"])
+            row = {"list": category["id"], "name": pick["name"], "title": pick["ebayLow"].get("title"),
+                   "url": pick["ebayLow"].get("url"), "otherName": other["name"] if other else None}
+            for label, listing_url, side, n in (("s", small, 720, 2500), ("l", large, 1400, 6000)):
+                row["same_" + label] = _sweep(catalogue_picture(pick["image"]), listing_url, side, n)
+                row["other_" + label] = _sweep(catalogue_picture(other["image"]), listing_url, side, n) if other else None
+            rows.append(row)
     return rows
