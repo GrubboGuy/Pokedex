@@ -21,9 +21,10 @@ on:
         type: choice
         options: [auto, force, new, never]
         default: auto
+  # Every push to main runs the job, including an empty commit: that is how the picks are refreshed by hand
+  # (a commit message containing [cut issue]) when GitHub's scheduler misses a morning.
   push:
     branches: [main]
-    paths: ["web/**", "pipeline/**", ".github/workflows/**"]
 
 permissions:
   contents: write
