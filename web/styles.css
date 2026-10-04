@@ -423,6 +423,8 @@ details.points td:last-child { text-align: right; font-weight: 600; }
 .var-name { display: block; margin-top: 7px; font-size: 11.5px; font-weight: 600; line-height: 1.2; color: var(--ink-2); overflow-wrap: anywhere; }
 .var-name small { display: block; margin-top: 1px; font-size: 11px; font-weight: 500; color: var(--muted); }
 .variants .note { margin-top: 12px; }
+.var-h { margin: 0 0 10px; font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.var-grid + .var-h { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule); }
 @media (prefers-reduced-motion: reduce) { .var-card { transition: none; } }
 
 /* ---------- showing that cards open, and giving card pages their own look ---------- */

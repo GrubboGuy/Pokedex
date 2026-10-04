@@ -68,11 +68,22 @@
   var today = '';  // ' today' while the picks on screen were made today, otherwise empty; set on each page load
   // Which printing of the card this is, said only when it matters: any special printing
   // (reverse holo, 1st Edition and so on), or a plain one when the same card also comes in another.
+  // Every version this card's TCGplayer product comes in: its own printing plus the others.
+  function printingsOf(p) {
+    var out = [p.printing];
+    (p.variants || []).forEach(function (v) { if (String(v.productId) === String(p.productId) && out.indexOf(v.printing) < 0) out.push(v.printing); });
+    return out;
+  }
+  // Rarities that do not say whether the card is foil, so a holo copy gets a "Holo" label.
+  var PLAIN_RARITY = { 'Common': 1, 'Uncommon': 1, 'Rare': 1, 'Promo': 1 };
   function printLabel(p) {
     if (p.kind === 'sealed' || !p.printing) return '';
-    var plain = p.printing === 'Normal' || p.printing === 'Holofoil';
-    var hasOther = (p.variants || []).some(function (v) { return String(v.productId) === String(p.productId) && v.printing !== p.printing; });
-    return plain && !hasOther ? '' : (PRINTS[p.printing] || p.printing);
+    var hasOther = (p.printings || printingsOf(p)).length > 1;
+    // A plain printing needs no label unless it could be mistaken for another version:
+    // a non-holo copy of a Holo Rare, or a holo copy of a card whose rarity does not say it is foil.
+    if (p.printing === 'Normal' && !hasOther && !/holo/i.test(p.rarity || '')) return '';
+    if (p.printing === 'Holofoil' && !hasOther && !PLAIN_RARITY[p.rarity]) return '';
+    return PRINTS[p.printing] || p.printing;
   }
   function printChip(p) {
     var label = printLabel(p);
@@ -205,19 +216,36 @@
   // An eBay search for this exact card. sold=false: copies for sale now, cheapest first with shipping counted.
   // sold=true: what has recently sold.
   function ebayUrl(o, sold) {
-    var words = [shortName(o.name)];
+    var words;
     if (!o.sealed) {
-      if (o.number) words.push(String(o.number).split('/')[0]);
-      if (o.set) words.push(String(o.set).replace(/^[A-Z0-9]+\s*[:\-]\s*/, ''));
-      if (/reverse/i.test(o.printing || '')) words.push('reverse holo');
-      if (/1st/i.test(o.printing || '')) words.push('1st edition');
-    } else words.push('pokemon');
+      // TCGplayer's catalogue name carries notes sellers on eBay do not write, so tidy it: drop "(6)",
+      // "(Full Art)", "(Secret)" and a trailing " - 101/086"; keep stamps and patterns as plain words.
+      var name = String(o.name || '');
+      if (o.number) name = name.split(' - ' + o.number).join(' ');
+      name = shortName(name).replace(/[(\[]\s*(\d+|full art|secret|alternate full art|alternate art secret|alpha|omega|delta)\s*[)\]]/gi, ' ')
+        .replace(/[()\[\]]/g, ' ').replace(/\bpattern\b/gi, ' ').replace(/\s+/g, ' ').trim();
+      words = [name];
+      var mine = o.printing || '', all = o.printings || [mine];
+      var some = function (re) { return all.some(function (x) { return x !== mine && re.test(x); }); };
+      if (o.number) {
+        // Cards before Sword & Shield print "6/132", not "006/132", and eBay only matches the number as printed.
+        var num = String(o.number).split('/')[0];
+        var asPrinted = o.era ? !/^(swsh|sv|mega)$/.test(o.era) : String(o.number).indexOf('/') > 0;
+        words.push(asPrinted ? num.replace(/^0+(?=\d)/, '') : num);
+      }
+      if (o.set && !/promo/i.test(o.set)) words.push(String(o.set).replace(/^[A-Z0-9]+\s*[:\-]\s*/, ''));
+      // Name this version, and leave out the other versions the same card comes in.
+      if (/reverse/i.test(mine)) words.push('reverse holo'); else if (some(/reverse/i)) words.push('-reverse');
+      if (/1st/i.test(mine)) words.push('1st edition'); else if (some(/1st/i)) words.push('-1st');
+      if (mine === 'Normal' && some(/^Holofoil$/)) words.push('-holo');
+      if (mine === 'Holofoil' && some(/^Normal$/)) words.push('holo');
+    } else words = [shortName(o.name), 'pokemon'];
     return 'https://www.ebay.com/sch/i.html?_nkw=' + encodeURIComponent(words.join(' ')).replace(/%20/g, '+') +
       (sold ? '&LH_Sold=1&LH_Complete=1' : '&_sop=15&LH_BIN=1');
   }
   // Links to where the card is for sale right now, lowest price first. No price is promised on the link itself.
   function shopLinks(p, cls) {
-    var o = { name: p.name, number: p.number, set: p.set, printing: p.printing, sealed: p.kind === 'sealed' };
+    var o = { name: p.name, number: p.number, set: p.set, printing: p.printing, printings: p.printings || printingsOf(p), era: p.era, sealed: p.kind === 'sealed' };
     return '<div class="shop' + (cls ? ' ' + cls : '') + '"><span>' + (cls ? 'Lowest prices now' : 'Lowest prices') + '</span>' +
       '<a href="' + esc(lowUrl(p.url, p.productId, p.printing, o.sealed)) + '" target="_blank" rel="noopener">TCGplayer' + OUT + '</a>' +
       '<a href="' + esc(ebayUrl(o, false)) + '" target="_blank" rel="noopener">eBay' + OUT + '</a></div>';
@@ -507,14 +535,25 @@
   // ---------- other versions of a card ----------
   var PRINTS = { 'Normal': 'Non-holo', 'Holofoil': 'Holo', 'Reverse Holofoil': 'Reverse holo', '1st Edition': '1st Edition', '1st Edition Holofoil': '1st Edition holo', 'Unlimited': 'Unlimited', 'Unlimited Holofoil': 'Unlimited holo' };
   function baseName(n) { return String(n || '').split(/\s+-\s+|\s*[(\[]/)[0].trim().toLowerCase(); }
-  // What sets a version apart: its printing, or for a separately sold copy its stamp or pattern.
-  function variantLabel(main, v) {
+  // What sets a version apart, as [title, small print].
+  // Same product: its printing. Same card sold separately: its stamp or pattern, or the set it is filed under.
+  // Same name on another number in the set: its rarity and number.
+  function variantLabel(main, v, list) {
     var print = PRINTS[v.printing] || v.printing;
     if (String(v.productId) === String(main.productId)) return [print, ''];
     var tags = [];
-    String(v.name).replace(/[(\[]([^)\]]+)[)\]]/g, function (_, t) { if (String(main.name).indexOf(t) < 0) tags.push(t); });
-    var tag = tags.join(', ') || 'Other version';
-    return [tag, tag.toLowerCase() === print.toLowerCase() ? '' : print];
+    String(v.name).replace(/[(\[]([^)\]]+)[)\]]/g, function (_, t) { if (String(main.name).indexOf(t) < 0 && !/^\d+$/.test(t)) tags.push(t); });
+    var tag = tags.join(', ');
+    var siblings = (list || []).filter(function (x) { return String(x.productId) === String(v.productId); }).length;
+    var needsPrint = siblings > 1 || !(v.printing === 'Normal' || v.printing === 'Holofoil');
+    if (v.rel === 'set') {
+      var rarity = v.rarity && v.rarity !== 'None' && v.rarity !== 'Unconfirmed' ? v.rarity : '';
+      var num = v.number ? '#' + String(v.number).split('/')[0] : '';
+      return [tag || rarity || 'Other card', [num, tag && rarity && siblings < 2 ? rarity : '', needsPrint ? print : ''].filter(Boolean).join(', ')];
+    }
+    var elsewhere = v.set && main.set && v.set !== main.set ? v.set : '';
+    var title = tag || elsewhere || 'Other version';
+    return [title, [title.toLowerCase() === print.toLowerCase() || !needsPrint && tag ? '' : print, tag ? elsewhere : ''].filter(Boolean).join(', ')];
   }
   function variantSlotButton(list) {
     return list && list.length ? '<button type="button" class="var-btn" aria-expanded="false" aria-controls="variants">Variants<b>' + list.length + '</b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>' : '';
@@ -523,14 +562,21 @@
   var CARD_BACK = 'https://tcg.pokemon.com/assets/img/global/tcg-card-back.jpg';
   function variantPanel(main, list, setName) {
     if (!list || !list.length) return '';
-    return '<section class="variants" id="variants" hidden><div class="var-grid">' + list.map(function (v) {
-      var label = variantLabel(main, v), other = v.set && v.set !== setName ? v.set : '';
-      var say = [label[0], label[1], other].filter(Boolean).join(', ');
+    main = { productId: main.productId, name: main.name, set: setName };
+    var tile = function (v) {
+      var label = variantLabel(main, v, list);
+      var say = [label[0], label[1]].filter(Boolean).join(', ');
       return '<button type="button" class="var" aria-pressed="false" aria-label="' + esc(say) + ': market price ' + money(v.price) + '. Tap to flip.">' +
         '<span class="var-card"><span class="var-face var-front">' + foilWrap(v, '<img src="' + esc(productImage(v.productId)) + '" alt="" loading="lazy">') + '</span>' +
         '<span class="var-face var-back"><img src="' + CARD_BACK + '" data-small="img/card-back.svg" referrerpolicy="no-referrer" alt=""><b>' + esc(label[0]) + '</b><strong>' + money(v.price, true) + '</strong><small>market price</small></span></span>' +
         '<span class="var-name">' + esc(label[0]) + (label[1] ? '<small>' + esc(label[1]) + '</small>' : '') + '</span></button>';
-    }).join('') + '</div><p class="note">Tap a card to flip it and see what that version sells for.</p></section>';
+    };
+    var same = list.filter(function (v) { return v.rel !== 'set'; }), inSet = list.filter(function (v) { return v.rel === 'set'; });
+    var group = function (title, items) { return items.length ? (title ? '<h3 class="var-h">' + title + '</h3>' : '') + '<div class="var-grid">' + items.map(tile).join('') + '</div>' : ''; };
+    return '<section class="variants" id="variants" hidden>' +
+      group(inSet.length ? 'This card, other versions' : '', same) +
+      group('Same name, other cards in this set', inSet) +
+      '<p class="note">Tap a card to flip it and see what that version sells for.</p></section>';
   }
 
   function buyLinks(o) {
@@ -546,14 +592,19 @@
     var p = cat && cat.picks.filter(function (x) { return String(x.rank) === String(rank); })[0];
     if (!p) return notFound();
 
-    var graded = '';
+    var graded = '', versions = printingsOf(p).length > 1, mine = PRINTS[p.printing] || p.printing;
     if (p.graded) {
       var slabs = [['psa10', 'PSA 10'], ['psa9', 'PSA 9'], ['psa8', 'PSA 8']].filter(function (g) { return p.graded[g[0]]; }).map(function (g) {
         var d = p.graded[g[0]];
-        var basis = d.sales ? d.sales + (d.sales === 1 ? ' sale' : ' sales') : ({ high: 'many sales', medium: 'some sales', low: 'few sales' }[String(d.confidence || '').toLowerCase()] || '');
-        return '<div><small>' + g[1] + '</small><b>' + money(d.price, true) + '</b><span>' + (basis ? 'based on ' + basis : '') + '</span></div>';
+        var basis = d.basis === 'sales' ? 'middle of ' + d.sales + ' recent sales'
+          : d.sales ? 'based on ' + d.sales + (d.sales === 1 ? ' sale' : ' sales')
+          : ({ high: 'based on many sales', medium: 'based on some sales', low: 'based on few sales' }[String(d.confidence || '').toLowerCase()] || '');
+        return '<div><small>' + g[1] + '</small><b>' + money(d.price, true) + '</b><span>' + basis + '</span></div>';
       });
-      if (slabs.length) graded = '<section class="block tint"><h2>Graded copies, sold on eBay <span>PSA</span></h2><div class="figs' + (slabs.length === 2 ? ' two' : '') + '">' + slabs.join('') + '</div></section>';
+      if (slabs.length) graded = '<section class="block tint"><h2>Graded copies, sold on eBay <span>PSA' + (versions ? ', ' + esc(mine) + ' only' : '') + '</span></h2><div class="figs' + (slabs.length === 2 ? ' two' : '') + '">' + slabs.join('') + '</div></section>';
+    }
+    if (!graded && versions && p.kind !== 'sealed') {
+      graded = '<section class="block sunk"><h2>Graded copies</h2><p class="note">No PSA price is shown: this card comes in more than one version, and we could not find enough graded sales that are clearly the ' + esc(mine) + ' one. A mixed figure would be misleading.</p></section>';
     }
     var prev = cat.picks[p.rank - 2], next = cat.picks[p.rank];
     var listHref = b + '/list/' + cat.id;
@@ -579,9 +630,9 @@
       soldBlocks(p) + graded + chartBlock(p.series) +
       '<p class="note fine">The market price is what the ' + esc(p.printing) + ' printing has recently sold for on TCGplayer, from <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(issue.date) + '. The lowest asking price is the cheapest TCGplayer listing on that day, in any condition and before shipping, so a clean copy delivered will usually cost more and that listing may be gone. The TCGplayer and eBay links open what is for sale right now. ' +
       (p.sold ? 'eBay and by-condition prices are from <a href="https://poketrace.com/" rel="noopener">PokeTrace</a>, as of ' + niceDate(p.sold.date) + '; eBay sale numbers are approximate. ' : '') +
-      (p.graded ? 'Graded prices are from completed eBay sales, from <a href="https://www.pokemonpricetracker.com/" rel="noopener">PokemonPriceTracker</a>, as of ' + niceDate(p.graded.date) + '; they can mix printings, so check the graded card matches this one. ' : '') +
+      (p.graded ? 'Graded prices are from completed eBay sales, from <a href="https://www.pokemonpricetracker.com/" rel="noopener">PokemonPriceTracker</a>, as of ' + niceDate(p.graded.date) + '. ' + (versions ? 'Only sales whose listing titles match this version are counted. ' : '') : '') +
       'Price reliability is ' + esc(p.confidence) + ' because ' + confText + '. <a href="#/how">What the numbers mean</a>. Not financial advice.</p>' +
-      buyLinks({ name: p.name, number: p.number, set: p.set, url: p.url, productId: p.productId, printing: p.printing, sealed: p.kind === 'sealed' }) +
+      buyLinks({ name: p.name, number: p.number, set: p.set, url: p.url, productId: p.productId, printing: p.printing, printings: printingsOf(p), era: p.era, sealed: p.kind === 'sealed' }) +
       '<nav class="pager" aria-label="Picks">' +
       '<a class="prev" href="' + (prev ? hrefOf(prev) : listHref) + '"><small>' + (prev ? 'Previous pick' : 'Back to') + '</small><b>' + esc(prev ? shortName(prev.name) : (cat.short || cat.title)) + '</b></a>' +
       '<a class="next" href="' + (next ? hrefOf(next) : listHref) + '"><small>' + (next ? 'Next pick' : 'Back to') + '</small><b>' + esc(next ? shortName(next.name) : (cat.short || cat.title)) + '</b></a></nav></div>';
@@ -713,7 +764,8 @@
       more.hidden = hits.length <= shown;
       list.innerHTML = hits.slice(0, shown).map(function (hit) {
         var it = data.items[hit[0]], s = data.sets[it[2]], pr = hit[1], era = data.setEra[it[2]];
-        var meta = [s[1], it[3] ? '#' + it[3] : '', pr[0] !== 'Normal' ? pr[0] : '', !S.printing && it[6].length > 1 ? '+' + (it[6].length - 1) + ' more' : ''].filter(Boolean).join(', ');
+        var print = printLabel({ printing: pr[0], rarity: it[5], kind: it[4] ? 'sealed' : 'single', printings: it[6].map(function (x) { return x[0]; }) });
+        var meta = [s[1], it[3] ? '#' + it[3] : '', print, !S.printing && it[6].length > 1 ? '+' + (it[6].length - 1) + ' more' : ''].filter(Boolean).join(', ');
         return '<li class="' + eraTone(era) + '"><a href="#/p/' + s[0] + '/' + it[0] + '/' + encodeURIComponent(pr[0]) + '">' + foilWrap({ art: it[7], printing: pr[0], rarity: it[5], name: it[1] }, '<img src="' + productImage(it[0]) + '" alt="" loading="lazy">') +
           '<span><b>' + esc(it[1]) + '</b><small>' + esc(meta) + '</small><span class="tags">' + eraChip(era) + (it[5] && !it[4] ? '<span class="rar">' + esc(it[5]) + '</span>' : '') + '</span></span>' +
           '<span class="r"><span class="price">' + money(pr[1]) + '</span>' + (pr[4] != null ? move(pr[4]) : '') + '</span></a></li>';
@@ -773,19 +825,27 @@
         return '<a href="#/p/' + gid + '/' + pid + '/' + encodeURIComponent(x[0]) + '"' + (x[0] === pr[0] ? ' aria-current="true"' : '') + '>' + esc(x[0]) + '</a>';
       }).join('') + '</div>' : '';
       var pick = { name: it[1], image: productImage(it[0]), kind: it[4] ? 'sealed' : 'single', art: it[7], printing: pr[0], rarity: it[5] };
-      // Other versions: this product's other printings, then same-name, same-number copies sold separately.
-      var others = [];
+      var MIXED_SET = /promo|world championship|jumbo|league & championship|deck exclusives|trading card game classic|classic collection|miscellaneous|blister exclusives|celebrations/i;
+      // Other versions, by the same rules as the data job: the same card number and name (other printings,
+      // stamped or prize copies, in this set or another), then the same name on another number in this set.
+      var others = [], prints = it[6].map(function (x) { return x[0]; });
       if (!it[4] && it[3]) {
-        var mine = baseName(it[1]);
-        data.items.forEach(function (x) {
-          if (x[4] || x[3] !== it[3] || baseName(x[1]) !== mine) return;
-          if (x[2] !== it[2] && String(it[3]).indexOf('/') < 0) return;
+        var mine = baseName(it[1]), inSet = [], numbers = {};
+        var push = function (list, x, rel) {
           x[6].forEach(function (q) {
             if (x[0] === it[0] && q[0] === pr[0]) return;
-            others.push({ productId: x[0], name: x[1], printing: q[0], price: q[1], set: data.sets[x[2]][1], art: x[7], rarity: x[5] });
+            list.push({ productId: x[0], name: x[1], printing: q[0], price: q[1], set: data.sets[x[2]][1], number: x[3], art: x[7], rarity: x[5], rel: rel });
           });
+        };
+        data.items.forEach(function (x) {
+          if (x[4] || !x[3] || baseName(x[1]) !== mine) return;
+          if (x[3] === it[3]) push(others, x, 'same');
+          else if (x[2] === it[2]) { push(inSet, x, 'set'); numbers[x[3]] = 1; }
         });
-        others.sort(function (a, b) { return (a.productId !== it[0]) - (b.productId !== it[0]) || b.price - a.price; });
+        var byPrice = function (a, b) { return (a.productId !== it[0]) - (b.productId !== it[0]) || b.price - a.price; };
+        others.sort(byPrice);
+        // Promo and mixed-year sets hold many unrelated cards with one name, and so do Unown and basic Energy.
+        if (!MIXED_SET.test(s[1]) && Object.keys(numbers).length < 8) others = others.concat(inSet.sort(byPrice));
         others = others.slice(0, 12);
       }
       var rows = [];
@@ -800,11 +860,11 @@
         '<div class="entry-price"><span class="eyebrow">TCGplayer market price</span><div class="big' + (price.length > 7 ? ' long' : '') + '">' + price + '</div>' +
         '<p class="sub">' + (pr[2] != null ? 'What it has recently sold for.' : 'What it has recently sold for. None were for sale when prices were last checked.') + '</p>' + chips + '</div></div>' +
         variantPanel({ productId: it[0], name: it[1] }, others, s[1]) +
-        shopLinks({ url: null, productId: it[0], name: it[1], number: it[3], set: s[1], printing: pr[0], kind: pick.kind }, 'under') +
+        shopLinks({ url: null, productId: it[0], name: it[1], number: it[3], set: s[1], printing: pr[0], printings: prints, era: era, kind: pick.kind }, 'under') +
         (rows.length ? '<section class="block tint"><h2>Price changes</h2><div class="figs' + (rows.length === 2 ? ' two' : '') + '">' + rows.join('') + '</div></section>' : '') +
         chartBlock(series) +
         '<p class="note fine">The market price is what the ' + esc(pr[0]) + ' printing has recently sold for on TCGplayer, from <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(data.date) + '. eBay and graded prices are looked up only for the cards in the picks.</p>' +
-        buyLinks({ name: it[1], number: it[3], set: s[1], url: null, productId: it[0], printing: pr[0], sealed: !!it[4] }) + '</div>';
+        buyLinks({ name: it[1], number: it[3], set: s[1], url: null, productId: it[0], printing: pr[0], printings: prints, era: era, sealed: !!it[4] }) + '</div>';
     });
   }
 
@@ -833,6 +893,7 @@
       '<li><b>Score.</b> One number from 1 to 99 on every pick; higher is stronger. Its colour runs from red at the low end through yellow in the middle to green at the top. What it measures depends on the list: how fast a price is rising, how big a discount is, how steady a price is, how big a move is, or how strong the signs of a comeback are. Each card page says which.</li>' +
       '<li><b>Price reliability.</b> High when the card sells often, we have a long price history and sellers are asking close to the market price. Low when any of those is missing.</li>' +
       '<li><b>Sells often, regularly or not often.</b> How frequently the market price changed from day to day. A price that never changes usually means nothing is selling.</li>' +
+      '<li><b>Versions.</b> Every price is for one exact version of a card: non-holo, holo, reverse holo, 1st Edition or Unlimited, shown as a label beside the name. The Variants button lists the others, each with its own price: first the same card in other versions, then cards with the same name on a different number in the set, such as a holo and non-holo pair or a full-art version. Graded (PSA) prices are only shown when the sales can be tied to that version by their listing titles.</li>' +
       '<li><b>Foil on the pictures.</b> Sellers photograph one version of each card, so a reverse holo and a plain copy share the same photo. To tell them apart at a glance, a rainbow sheen is drawn over the part of the card that is foil: everything but the artwork on a reverse holo, the artwork only on a holo. It shows where the foil is, not the exact pattern, and it is left off cards whose layout we can\u2019t be sure of.</li></ul></section>' +
       '<section class="block article"><h2>Where the numbers come from</h2><ul>' + sources + '</ul></section>' +
       '<section class="block article"><h2>The rule for each list</h2><ul style="list-style:none;padding-left:0">' + rules + '</ul></section>' +

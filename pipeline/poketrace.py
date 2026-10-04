@@ -108,8 +108,13 @@ def top_up(issue, today, log=print):
     for pick in picks:
         cards = found.get(str(pick["productId"])) or []
         chosen = next((c for c in cards if _norm(c["variant"]) == _norm(pick["printing"])), None)
-        if not chosen and len(cards) == 1:
+        # A lone unnamed-match result is only trusted when this card comes in a single version;
+        # otherwise it may be another version's sales (a holo's prices on a non-holo card).
+        one_version = not any(str(v.get("productId")) == str(pick["productId"]) for v in pick.get("variants") or [])
+        if not chosen and len(cards) == 1 and one_version:
             chosen = cards[0]
+        if cards:  # fresh results for this product replace whatever an earlier run attached
+            pick.pop("sold", None)
         if chosen and (chosen["ebay"] or chosen["tcgplayer"]):
             pick["sold"] = {"date": today, "updated": chosen["updated"],
                             "ebay": chosen["ebay"], "tcgplayer": chosen["tcgplayer"]}

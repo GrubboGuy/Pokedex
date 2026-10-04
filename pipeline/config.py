@@ -89,6 +89,6 @@ SOURCES = [
         "id": "ppt",
         "name": "eBay graded sales, via PokemonPriceTracker",
         "url": "https://www.pokemonpricetracker.com/",
-        "note": "Prices of PSA-graded copies from completed eBay sales, looked up for the current picks only.",
+        "note": "Prices of PSA-graded copies from completed eBay sales, looked up for the current picks only. When a card comes in more than one version, only sales whose listing titles match the version are counted.",
     },
 ]

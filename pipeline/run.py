@@ -171,8 +171,12 @@ def main(argv=None):
         print(f"Picks not refreshed on this run; showing issue {edition['number']}, prices as of {edition['date']}")
 
     cache = store.graded_cache()
-    made = graded.top_up(edition, cache, today)
+    ppt_sample = []
+    made = graded.top_up(edition, cache, today, sample=ppt_sample)
     print(f"Graded lookups this run: {made}")
+    if ppt_sample:  # one raw reply, kept so the layout of the sales data can be checked
+        with open(os.path.join(args.data_dir, "ppt-sample.json"), "w", encoding="utf-8") as fh:
+            json.dump(ppt_sample[0], fh, indent=1)
 
     _made, sample = poketrace.top_up(edition, today)
     if sample:

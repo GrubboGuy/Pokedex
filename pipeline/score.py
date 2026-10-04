@@ -529,32 +529,50 @@ def _base_name(name):
 
 
 def variant_index(catalog):
-    """Single cards grouped by card number and name, so other versions of a card can be found."""
+    """Single cards grouped two ways, so every other version of a card can be found:
+    by card number and name (the same card), and by set and name (the same name on another number)."""
     index = {}
     for item in catalog["items"]:
         if item["kind"] == "single" and item.get("number"):
-            index.setdefault((item["number"], _base_name(item["name"])), []).append(item)
+            name = _base_name(item["name"])
+            index.setdefault((item["number"], name), []).append(item)
+            index.setdefault(("set", item["gid"], name), []).append(item)
     return index
 
 
-def variants_for(row, index, groups, limit=12):
-    """Other versions of the same card: its other printings, and stamped or patterned copies sold as separate products.
+SAME_SET_MAX = 8   # a name on more numbers than this in one set (Unown, basic Energy) is not a set of versions
 
-    A match needs the same name and card number. Copies filed under another set (prerelease and
-    other stamped promos) only count when the number carries the set size, like 096/182.
+
+def variants_for(row, index, groups, limit=12):
+    """Other versions of a card, each with its own market price.
+
+    "same": the same card number and name. Its other printings (reverse holo, 1st Edition), and
+    stamped, patterned or prize copies sold as separate products, in this set or another.
+    "set": the same name on a different number in this set. A holo and a non-holo printed as two
+    cards in older sets, and the full-art, illustration and secret versions in newer ones.
     """
-    out = []
-    for item in index.get((row["number"], _base_name(row["name"])), []):
-        if item["gid"] != row["gid"] and "/" not in row["number"]:
-            continue
+    name, out, seen = _base_name(row["name"]), [], set()
+
+    def add(item, rel):
         for sub, (market, low, _mid) in item["prices"].items():
-            if not market or (item["id"] == row["productId"] and sub == row["printing"]):
+            if not market or (item["id"] == row["productId"] and sub == row["printing"]) or (item["id"], sub) in seen:
                 continue
-            out.append({"productId": item["id"], "name": item["name"], "printing": sub,
-                        "set": (groups.get(str(item["gid"])) or {}).get("name"),
+            seen.add((item["id"], sub))
+            out.append({"productId": item["id"], "name": item["name"], "printing": sub, "rel": rel,
+                        "set": (groups.get(str(item["gid"])) or {}).get("name"), "number": item.get("number"),
                         "rarity": item.get("rarity"), "art": item.get("art"),
                         "price": round(market, 2), "low": round(low, 2) if low else None})
-    out.sort(key=lambda v: (v["productId"] != row["productId"], -v["price"]))
+
+    for item in index.get((row["number"], name), []):
+        add(item, "same")
+    others = [i for i in index.get(("set", row["gid"], name), []) if i.get("number") != row["number"]]
+    set_name = ((groups.get(str(row["gid"])) or {}).get("name") or "").lower()
+    # Promo and mixed-year sets hold many unrelated cards with one name (every Pikachu promo), so skip them.
+    one_release = "promo" not in set_name and not any(w in set_name for w in config.FRAME_SKIP_WORDS)
+    if one_release and len({i["number"] for i in others}) < SAME_SET_MAX:
+        for item in others:
+            add(item, "set")
+    out.sort(key=lambda v: (v["rel"] != "same", v["productId"] != row["productId"], -v["price"]))
     return out[:limit]
 
 
