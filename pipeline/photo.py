@@ -84,6 +84,38 @@ def score(catalogue_url, listing_url):
     return int(mask.sum()) if mask is not None else 0
 
 
+ART_ZONE = (0.10, 0.62)   # the band of a card, top to bottom, that holds its artwork on every frame design
+
+
+def scores(catalogue_url, listing_url):
+    """(points agreeing anywhere on the card, points agreeing inside the artwork band), or None.
+
+    Cards of one design share their frame, symbols and rules text, so two different cards agree
+    on a few dozen points there. The artwork is what tells them apart.
+    """
+    if cv2 is None or not catalogue_url or not listing_url:
+        return None
+    first, second = _describe(catalogue_url), _describe(listing_url)
+    if not first or not second or first[1] is None or second[1] is None:
+        return None
+    (points_a, desc_a), (points_b, desc_b) = first, second
+    if len(points_a) < 8 or len(points_b) < 8:
+        return 0, 0
+    pairs = cv2.BFMatcher(cv2.NORM_L2).knnMatch(desc_a, desc_b, k=2)
+    good = [p[0] for p in pairs if len(p) == 2 and p[0].distance < 0.75 * p[1].distance]
+    if len(good) < 8:
+        return 0, 0
+    src = np.float32([points_a[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
+    dst = np.float32([points_b[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+    _homography, mask = cv2.findHomography(src, dst, cv2.RANSAC, 5.0)
+    if mask is None:
+        return 0, 0
+    height = max(pt.pt[1] for pt in points_a) or 1.0
+    kept = [src[i][0] for i in range(len(good)) if mask[i][0]]
+    in_art = sum(1 for _x, y in kept if ART_ZONE[0] <= y / height <= ART_ZONE[1])
+    return len(kept), in_art
+
+
 def for_listing(pick, listing):
     """Score of a pick's catalogue picture against a listing's photo (None if either is missing)."""
     if not pick.get("image") or not listing.get("img"):
@@ -99,8 +131,9 @@ def measure(issue):
         picks = [p for p in category["picks"] if p.get("kind") == "single" and (p.get("ebayLow") or {}).get("img")]
         for i, pick in enumerate(picks):
             other = picks[(i + 1) % len(picks)] if len(picks) > 1 else None
+            def both(card):
+                return scores(catalogue_picture(card["image"]), listing_picture(pick["ebayLow"]["img"])) if card else None
             rows.append({"list": category["id"], "name": pick["name"], "title": pick["ebayLow"].get("title"),
-                         "url": pick["ebayLow"].get("url"), "same": for_listing(pick, pick["ebayLow"]),
-                         "other": for_listing(other, pick["ebayLow"]) if other else None,
-                         "otherName": other["name"] if other else None})
+                         "url": pick["ebayLow"].get("url"), "img": pick["ebayLow"]["img"], "cat": pick["image"],
+                         "same": both(pick), "other": both(other), "otherName": other["name"] if other else None})
     return rows
