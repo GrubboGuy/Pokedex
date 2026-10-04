@@ -59,6 +59,8 @@ jobs:
         env:
           PPT_API_KEY: ${{ secrets.PPT_API_KEY }}
           POKETRACE_API_KEY: ${{ secrets.POKETRACE_API_KEY }}
+          EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
+          EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           set -o pipefail

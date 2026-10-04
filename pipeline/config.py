@@ -86,6 +86,12 @@ SOURCES = [
         "note": "eBay sold prices for ungraded cards, and TCGplayer prices by condition, each with the number of sales. Looked up for the current picks only. eBay sale counts are approximate.",
     },
     {
+        "id": "ebay",
+        "name": "eBay listings for sale now, from eBay",
+        "url": "https://www.ebay.com/",
+        "note": "The cheapest Buy It Now listing we could match to each pick, with shipping, at the time shown. Graded cards, lots, other languages and other versions of the card are left out, and so is anything priced far under the market price. Listings sell, so the link may show it as ended.",
+    },
+    {
         "id": "ppt",
         "name": "eBay graded sales, via PokemonPriceTracker",
         "url": "https://www.pokemonpricetracker.com/",

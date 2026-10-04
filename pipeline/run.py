@@ -9,7 +9,7 @@ import json
 import os
 import sys
 
-from . import config, graded, poketrace, score, site, tcgcsv
+from . import ebay, config, graded, poketrace, score, site, tcgcsv
 from .store import Store
 
 
@@ -183,6 +183,11 @@ def main(argv=None):
         store_sample = os.path.join(args.data_dir, "poketrace-sample.json")
         with open(store_sample, "w", encoding="utf-8") as fh:
             json.dump(sample, fh, indent=1)
+
+    _made, ebay_sample = ebay.top_up(edition)
+    if ebay_sample:  # one raw reply, with seller details removed, kept so the layout can be checked
+        with open(os.path.join(args.data_dir, "ebay-sample.json"), "w", encoding="utf-8") as fh:
+            json.dump(ebay_sample, fh, indent=1)
 
     store.save_today(edition)
     if edition["date"] == edition.get("issueDate", edition["date"]):
