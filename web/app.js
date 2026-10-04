@@ -246,6 +246,15 @@
   // Links to where the card is for sale right now, lowest price first. No price is promised on the link itself.
   // The cheapest eBay listing matched to this pick when prices were last checked, if there is one.
   function ebayLow(p) { var e = p && p.ebayLow; return e && e.url && e.total ? e : null; }
+  // The sentence about what a copy costs right now, added to a pick's write-up. With a matched eBay listing
+  // it is that listing (it can be opened and checked); otherwise it is TCGplayer's lowest asking price.
+  var OLD_ASKING = /\s*Sellers on TCGplayer are asking from \$[\d,.]+; that is the lowest listing in any condition, before shipping\./;
+  function askLine(p) {
+    var e = ebayLow(p);
+    if (e) return 'On eBay the cheapest matching ' + (p.kind === 'sealed' ? 'one' : 'copy') + ' is ' + money(e.total) + ' with shipping' + (e.condition ? ', listed as ' + e.condition : '') + '.';
+    return p.low ? 'Sellers on TCGplayer are asking from ' + money(p.low) + '; that is the lowest listing in any condition, before shipping.' : '';
+  }
+  function why(p) { return (String(p.reason || '').replace(OLD_ASKING, '').trim() + ' ' + askLine(p)).trim(); }
   function shopLinks(p, cls) {
     var o = { name: p.name, number: p.number, set: p.set, printing: p.printing, printings: p.printings || printingsOf(p), era: p.era, sealed: p.kind === 'sealed' };
     var e = ebayLow(p);
@@ -397,7 +406,7 @@
         '<span><span class="eyebrow"><i class="dot"></i>Top pick, ' + esc(coverCat.short || coverCat.title) + '</span>' +
         '<h2>' + esc(shortName(coverPick.name)) + '</h2><p class="where">' + esc(where(coverPick)) + '</p>' + tags(coverPick, 'span') +
         '<span class="figures"><span class="price">' + money(coverPick.price) + '</span>' + headlineMove(coverPick) + '</span><span class="foot">' + score(coverPick) + GO + '</span></span>' +
-        '<span class="hero-why deck">' + esc(coverPick.reason) + '</span></a>' + shopLinks(coverPick, 'under') + '</div>' +
+        '<span class="hero-why deck">' + esc(why(coverPick)) + '</span></a>' + shopLinks(coverPick, 'under') + '</div>' +
       '<h2 class="strip">Sections <span>' + issue.categories.length + ' lists, ' + total + ' picks' + (fresh && !ctx.kept ? ', ' + fresh + ' new' + today : '') + '</span></h2>' +
       '<ol class="sections">' + sections + '</ol>' +
       '<div class="block dark stats"><div><b>' + Number(s.productsScanned).toLocaleString('en-US') + '</b><span>products checked</span></div>' +
@@ -433,7 +442,7 @@
         '<div><h2>' + esc(shortName(lead.name)) + '</h2><p class="where">' + esc(where(lead)) + '</p>' +
         tags(lead) +
         '<div class="figures"><span class="price">' + money(lead.price) + '</span>' + headlineMove(lead) + '</div><div class="foot">' + score(lead) + GO + '</div></div>' +
-        '<p class="lead-why deck">' + esc(lead.reason) + '</p></a>' + shopLinks(lead, 'under') +
+        '<p class="lead-why deck">' + esc(why(lead)) + '</p></a>' + shopLinks(lead, 'under') +
       '<div class="picks">' + rest + '</div>' +
       '<div class="block tint aside"><b>How this list is picked</b><p>' + esc(cat.rule) + ' ' + cat.eligible + ' met this rule' + today + '; these are the top ' + cat.picks.length + '.</p></div>' +
       '<p class="note fine">' + trendNote + '</p>' + sectionPager(ctx, cat.id) + '</div>';
@@ -503,8 +512,9 @@
     else if (p.chSince != null) rows.push(row('Since ' + niceDate(p.since, false), move(p.chSince)));
     if (p.ch30 != null) rows.push(row('Last 30 days', move(p.ch30)));
     if (p.ch90 != null) rows.push(row('Last 90 days', move(p.ch90)));
-    var gap = p.low / p.price - 1, g = Math.round(Math.abs(gap) * 100);
-    rows.push(row('Lowest asking price', money(p.low)));
+    var e = ebayLow(p);
+    if (e) rows.push(row('Cheapest on eBay, shipped', money(e.total)));
+    else rows.push(row('Lowest asking price', money(p.low)));
     if (p.activity != null && p.ch7 != null) rows.push(row('Sells', p.activity >= 0.6 ? 'Often' : (p.activity >= 0.34 ? 'Regularly' : 'Not often')));
     return rows.join('');
   }
@@ -641,7 +651,7 @@
       '<span class="meter" aria-hidden="true"><i style="left:' + Math.max(3, Math.min(97, p.score)) + '%"></i></span></div>' +
       '<dl>' + breakdown(p, days) + '</dl>' +
       '<p class="verdict-note">In this list the score shows ' + scoreMeans(cat, p) + '. It runs from 1 to 99; higher is stronger.</p></section>' +
-      '<section class="block tint"><h2>Why it is here</h2><p class="why">' + esc(p.reason) + '</p></section>' +
+      '<section class="block tint"><h2>Why it is here</h2><p class="why">' + esc(why(p)) + '</p></section>' +
       soldBlocks(p) + graded + chartBlock(p.series) +
       '<p class="note fine">The market price is what the ' + esc(p.printing) + ' printing has recently sold for on TCGplayer, from <a href="https://tcgcsv.com/" rel="noopener">TCGCSV</a>, as of ' + niceDate(issue.date) + '. The lowest asking price is the cheapest TCGplayer listing on that day, in any condition and before shipping, so a clean copy delivered will usually cost more and that listing may be gone. The TCGplayer and eBay links open what is for sale right now. ' +
       (p.sold ? 'eBay and by-condition prices are from <a href="https://poketrace.com/" rel="noopener">PokeTrace</a>, as of ' + niceDate(p.sold.date) + '; eBay sale numbers are approximate. ' : '') +
@@ -902,8 +912,8 @@
       (days !== 7 ? '<section class="block tint t-sale article"><p>These picks measure their recent price change over ' + days + ' days instead of 7, because the saved price history has a gap in late September 2026. It returns to 7 days once a full week of daily prices is on file.</p></section>' : '') +
       '<section class="block dark article"><h2>What the numbers mean</h2><ul>' +
       '<li><b>Market price.</b> TCGplayer\u2019s figure for what a card has recently sold for. It is the main price shown everywhere.</li>' +
-      '<li><b>Lowest asking price.</b> The cheapest TCGplayer listing when prices were last checked, in any condition and before shipping. Treat it as a starting point, not a quote: that copy may be played, may have sold since, and shipping is extra. The TCGplayer and eBay links on every card open what is for sale right now, lowest price first.</li>' +
-      '<li><b>eBay price.</b> When the eBay button shows a price, it is the cheapest Buy It Now listing we could match to that exact card and version, shipping included, at the time shown on the card\u2019s page. The button opens that listing so you can check it. Graded cards, heavily played or damaged copies, lots, other languages and anything priced far below the market price are skipped. No price on the button means nothing matched, and it opens an eBay search instead.</li>' +
+      '<li><b>Lowest asking price.</b> Shown only when we found no matching eBay listing. It is the cheapest TCGplayer listing when prices were last checked, in any condition and before shipping, so treat it as a starting point, not a quote.</li>' +
+      '<li><b>eBay price.</b> When the eBay button shows a price, it is the cheapest Buy It Now listing we could match to that exact card and version, shipping included, at the time shown on the card\u2019s page. eBay prices are checked again about every four hours through the day. The button opens that listing so you can check it. Graded cards, heavily played or damaged copies, lots, other languages and anything priced far below the market price are skipped. No price on the button means nothing matched, and it opens an eBay search instead.</li>' +
       '<li><b>Price change.</b> How much the market price went up or down over the days shown.</li>' +
       '<li><b>Usual price.</b> The middle price over the last 90 days: half the days were higher, half were lower. One odd day does not throw it off.</li>' +
       '<li><b>Score.</b> One number from 1 to 99 on every pick; higher is stronger. Its colour runs from red at the low end through yellow in the middle to green at the top. What it measures depends on the list: how fast a price is rising, how big a discount is, how steady a price is, how big a move is, or how strong the signs of a comeback are. Each card page says which.</li>' +

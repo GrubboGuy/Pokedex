@@ -14,6 +14,11 @@ on:
     - cron: "5 8 * * *"
     # Evening run: saves the day's prices soon after TCGCSV's refresh at about 20:00 UTC. Does not change the picks.
     - cron: "30 21 * * *"
+    # Through the day: refresh the eBay prices on the picks (listings sell), about every four hours.
+    # 11:20 AM, 3:20 PM and 9:20 PM Eastern daylight time; with the evening run that makes four. Does not change the picks.
+    - cron: "20 15 * * *"
+    - cron: "20 19 * * *"
+    - cron: "20 1 * * *"
   workflow_dispatch:
     inputs:
       cut:
@@ -66,9 +71,15 @@ jobs:
         run: |
           set -o pipefail
           CUT="${{ inputs.cut || 'auto' }}"
-          # Only the morning runs and manual runs change the picks. The evening run and code pushes leave them alone,
-          # unless a push's commit message contains [cut issue], which re-picks the lists now.
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" = "30 21 * * *" ]; then CUT=never; fi
+          # Only the three morning runs and manual runs change the picks. Every other scheduled run (evening and the
+          # eBay refreshes) and code pushes leave them alone, unless a push's commit message contains [cut issue],
+          # which re-picks the lists now.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            case "${{ github.event.schedule }}" in
+              "5 5 * * *"|"35 6 * * *"|"5 8 * * *") CUT=auto ;;
+              *) CUT=never ;;
+            esac
+          fi
           if [ "${{ github.event_name }}" = "push" ]; then
             CUT=never
             if printf '%s' "$COMMIT_MESSAGE" | grep -q '\[cut issue\]'; then CUT=force; fi

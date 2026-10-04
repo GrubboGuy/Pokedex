@@ -240,12 +240,6 @@ def _dir(x):
     return "up" if x >= 0 else "down"
 
 
-def _asking(row):
-    """One honest sentence about the lowest asking price: it is not a quote for a clean copy delivered."""
-    return (f"Sellers on TCGplayer are asking from {_money(row['low'])}; that is the lowest listing in any condition, "
-            f"before shipping.")
-
-
 def _listed_near(row, floor=0.7, ceiling=None):
     ratio = row["low"] / row["price"]
     return ratio >= floor and (ceiling is None or ratio <= ceiling)
@@ -284,7 +278,7 @@ def _hot(eras, min_price, activity=0.28):
 
     def reason(r):
         month = f" and {_p(r['ch30'])} over 30 days" if r["ch30"] is not None else ""
-        return f"Up {_p(r['ch7'])} {_in_span()}{month}. {_asking(r)}"
+        return f"Up {_p(r['ch7'])} {_in_span()}{month}."
 
     return test, _heat, _heat, reason
 
@@ -390,10 +384,9 @@ def _big_movers():
     def reason(r):
         month = f" Over 30 days it is {_dir(r['ch30'])} {_p(r['ch30'])}." if r["ch30"] is not None else ""
         if r["ch7"] > 0:
-            return (f"Up {_p(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month} "
-                    f"{_asking(r)}")
+            return f"Up {_p(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month}"
         return (f"Down {_p(r['ch7'])} {_in_span()}, from {_money(r['p7'])} to {_money(r['price'])}.{month} "
-                f"{_asking(r)} A drop this size can come from one low sale, "
+                f"A drop this size can come from one low sale, "
                 f"a reprint or a real change, so check recent sales.")
 
     return test, lambda r: abs(r["ch7"]), score, reason
