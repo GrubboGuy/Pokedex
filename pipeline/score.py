@@ -670,6 +670,14 @@ def ebay_deals_category(found, catalog, used, checked_at):
             "eligible": len(found), "checkedAt": checked_at, "picks": picks}
 
 
+def carry_deals(old, used):
+    """An earlier "Cheaper on eBay" list, minus cards now picked elsewhere; None if too few are left."""
+    if not old:
+        return None
+    picks = [dict(p, rank=i + 1) for i, p in enumerate(p for p in old["picks"] if p["productId"] not in used)]
+    return {**old, "picks": picks} if len(picks) >= 3 else None
+
+
 def place_deals(categories, deals):
     """Swap in a fresh "Cheaper on eBay" list (or drop it, if None), after the On sale list."""
     kept = [c for c in categories if c["id"] != DEALS_ID]

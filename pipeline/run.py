@@ -122,6 +122,8 @@ def main(argv=None):
     # The edition is what the site shows today. The numbered issue is the copy kept in back issues.
     edition = store.load_today() or (store.load_issue(index[0]["number"]) if index else None)
     cut, new_number = plan_cut(index, edition, today, args.cut)
+    # The eBay deals list is not part of a re-pick; it carries over until its own scan replaces it.
+    old_deals = next((c for c in (edition or {}).get("categories", []) if c["id"] == score.DEALS_ID), None)
     if cut:
         categories, counts = score.make_categories(rows, span or 7, catalog)
         print("Eligible per list: " + ", ".join(f"{k}={v}" for k, v in counts.items()))
@@ -173,12 +175,13 @@ def main(argv=None):
     # The "Cheaper on eBay" list is rebuilt on scheduled runs and re-picks, not on every code push.
     ebay_budget = ebay.calls_left(args.data_dir)
     ebay_made = 0
+    used = {p["productId"] for c in edition["categories"] if c["id"] != score.DEALS_ID for p in c["picks"]}
+    deals = score.carry_deals(old_deals, used)
     if os.environ.get("EBAY_SCAN") == "1":
         found, ebay_made, checked = ebay.scan_deals(score.deal_pool(rows, catalog), ebay_budget - 400)
         if checked:
-            used = {p["productId"] for c in edition["categories"] if c["id"] != score.DEALS_ID for p in c["picks"]}
-            edition["categories"] = score.place_deals(
-                edition["categories"], score.ebay_deals_category(found, catalog, used, checked))
+            deals = score.ebay_deals_category(found, catalog, used, checked)
+    edition["categories"] = score.place_deals(edition["categories"], deals)
 
     cache = store.graded_cache()
     ppt_sample = []

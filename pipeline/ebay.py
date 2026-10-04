@@ -71,14 +71,28 @@ class Stop(Exception):
     pass
 
 
+def _open(req, tries=3):
+    """Reads a reply, trying again after a dropped connection or a server hiccup. HTTP errors other than 5xx pass through."""
+    for attempt in range(tries):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as err:
+            if err.code < 500 or attempt == tries - 1:
+                raise
+        except (urllib.error.URLError, ConnectionError, TimeoutError):
+            if attempt == tries - 1:
+                raise
+        time.sleep(2 + 3 * attempt)
+
+
 def _token(client_id, client_secret):
     basic = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
     body = urllib.parse.urlencode({"grant_type": "client_credentials", "scope": SCOPE}).encode()
     req = urllib.request.Request(TOKEN_URL, data=body, headers={
         "Authorization": f"Basic {basic}", "Content-Type": "application/x-www-form-urlencoded"})
     try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            return json.loads(resp.read())["access_token"]
+        return json.loads(_open(req))["access_token"]
     except urllib.error.HTTPError as err:
         raise Stop(f"eBay would not issue an access token (HTTP {err.code}): check the two secrets, and that the "
                    f"production keyset is enabled") from err
@@ -97,8 +111,7 @@ def _search(token, query, single, min_price=0):
         "Authorization": f"Bearer {token}", "X-EBAY-C-MARKETPLACE-ID": "EBAY_US",
         "X-EBAY-C-ENDUSERCTX": "contextualLocation=" + urllib.parse.quote(SHIP_TO)})
     try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            return json.loads(resp.read())
+        return json.loads(_open(req))
     except urllib.error.HTTPError as err:
         detail = err.read()[:300].decode("utf-8", "replace")
         if err.code in (401, 403, 429):
@@ -250,8 +263,7 @@ def _item(token, item_id):
         "Authorization": f"Bearer {token}", "X-EBAY-C-MARKETPLACE-ID": "EBAY_US",
         "X-EBAY-C-ENDUSERCTX": "contextualLocation=" + urllib.parse.quote(SHIP_TO)})
     try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            return json.loads(resp.read())
+        return json.loads(_open(req))
     except urllib.error.HTTPError as err:
         if err.code in (401, 403, 429):
             raise Stop(f"HTTP {err.code}") from err
@@ -403,7 +415,7 @@ def scan_deals(pool, budget, log=print):
     if budget < need:
         log(f"  eBay deal scan skipped: {budget} calls left today, about {need} needed")
         return [], 0, None
-    deals, made, complete = [], 0, False
+    deals, made, complete, looked = [], 0, False, 0
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     try:
         token = _token(client_id, client_secret)
@@ -411,6 +423,7 @@ def scan_deals(pool, budget, log=print):
             if made >= budget:
                 break
             price = card["price"]
+            looked += 1
             payload = _search(token, query_for(card), True, price * DEAL_MIN_SHARE * 0.85)
             made += 1
             time.sleep(PAUSE)
@@ -435,6 +448,7 @@ def scan_deals(pool, budget, log=print):
         log(f"  eBay deal scan stopped: {stop}")
     except Exception as err:
         log(f"  eBay deal scan failed: {err}")
-    log(f"  eBay deal scan: {len(pool)} often-traded cards, {made} calls, {len(deals)} Near Mint English copies "
+    complete = complete or looked >= len(pool) * 0.6   # cut short late on: what was found still stands
+    log(f"  eBay deal scan: {looked} of {len(pool)} often-traded cards, {made} calls, {len(deals)} Near Mint English copies "
         f"from established sellers at least {round((1 - DEAL_MAX_SHARE) * 100)}% under market")
     return deals, made, (now if complete else None)
