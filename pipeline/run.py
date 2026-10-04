@@ -201,7 +201,7 @@ def main(argv=None):
     ebay.record_calls(args.data_dir, ebay_made + made_now)
     if photo.available():  # tuning data for the photo check; removed once the pass mark is set
         with open(os.path.join(args.data_dir, "photo-scores.json"), "w", encoding="utf-8") as fh:
-            json.dump(photo.measure(edition), fh, indent=1)
+            json.dump(photo.measure(edition, catalog), fh, indent=1)
     else:
         print("  photo check unavailable: OpenCV is not installed")
     if ebay_sample:  # one raw reply, with seller details removed, kept so the layout can be checked
