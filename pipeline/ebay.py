@@ -26,10 +26,13 @@ from .graded import title_fits
 
 TOKEN_URL = os.environ.get("EBAY_TOKEN_URL", "https://api.ebay.com/identity/v1/oauth2/token")
 SEARCH_URL = os.environ.get("EBAY_SEARCH_URL", "https://api.ebay.com/buy/browse/v1/item_summary/search")
+ITEM_URL = os.environ.get("EBAY_ITEM_URL", "https://api.ebay.com/buy/browse/v1/item")
 SCOPE = "https://api.ebay.com/oauth/api_scope"
 SINGLES_CATEGORY = "183454"   # Collectible Card Games > Individual Cards
 SHIP_TO = "country=US,zip=60601"  # only used so eBay can work out shipping; any US address does
 MAX_SEARCHES = 150
+DETAIL_TRIES = 4      # listings opened per card to read the stated condition, cheapest first
+MAX_DETAILS = 320     # per run, so a day of runs stays far inside the allowance
 PAGE = 50
 PAUSE = float(os.environ.get("EBAY_PAUSE", "0.25"))
 MIN_SHARE = {"single": 0.4, "sealed": 0.65}  # a listing under this share of the market price is not counted
@@ -37,10 +40,15 @@ MIN_SHARE = {"single": 0.4, "sealed": 0.65}  # a listing under this share of the
 _JUNK = re.compile(
     r"\b(proxy|custom|reprint|replica|fan\s*art|orica|digital|online code|code card|ptcg[ol]|tcg live"
     r"|lot|bundle|playset|choose|pick your|you pick|u pick|complete your|select your|singles"
-    r"|psa|cgc|bgs|sgc|tag \d|ace \d|graded|slab"
-    r"|damaged|creased|crease|heavily played|poor"
-    r"|japanese|japan|korean|chinese|german|french|italian|spanish|portuguese|thai|indonesian"
+    r"|japanese|japan|jpn|jp|korean|kor|chinese|chn|german|french|italian|spanish|portuguese|thai|indonesian"
+    r"|sv\d+[a-z]|s\d+[a-z]|sm\d+[a-z]"            # Japanese set codes such as SV2a, s12a
     r"|empty|no cards|box only|opened|case of|sleeve|sleeves|binder|playmat|coin|pin|sticker|keychain)\b", re.I)
+# For single cards only: graded slabs, beaten-up copies, and accessories sold under the card's name.
+_JUNK_SINGLE = re.compile(
+    r"\b(psa|cgc|bgs|sgc|tag \d|ace \d|graded|slab"
+    r"|damaged|dmg|dm|creased|crease|heavily played|poor|water damage"
+    r"|case|cases|insert|display|magnetic|acrylic|stand|holder|toploader|gold metal|metal card|gold plated)\b"
+    r"|(?<![0-9])(?<![0-9] )\bhp\b", re.I)      # "HP" as a condition, not "150 HP"
 _JUMBO = re.compile(r"\b(jumbo|oversized?)\b", re.I)
 _NOTES = re.compile(r"[(\[]\s*(\d+|full art|secret|alternate full art|alternate art secret|alpha|omega|delta)\s*[)\]]", re.I)
 _STOP = {"the", "and", "pokemon", "card", "with"}
@@ -121,6 +129,11 @@ def query_for(pick):
         words.append(printed if printed == padded else f"({printed},{padded})")
     if _set_words(pick):
         words.append(_set_words(pick))
+    # The cheapest results are otherwise all the plain version, and this one never reaches the first page.
+    if "1st Edition" in pick["printing"]:
+        words.append("1st")
+    if pick["printing"] == "Reverse Holofoil":
+        words.append("reverse")
     return " ".join(words)
 
 
@@ -159,7 +172,8 @@ def fits(item, pick, printings):
     if (item.get("price") or {}).get("currency") not in (None, "USD"):
         return False
     own = _plain(pick.get("name"))
-    if any(_plain(hit.group(0)) not in own for hit in _JUNK.finditer(title)):
+    hits = list(_JUNK.finditer(title)) + (list(_JUNK_SINGLE.finditer(title)) if pick["kind"] == "single" else [])
+    if any(_plain(hit.group(0)) not in own for hit in hits):
         return False  # a junk word counts unless it is part of the product's own name ("Pin Collection")
     plain = _plain(title)
     if not all(token in plain for token in _name_tokens(pick)):
@@ -171,7 +185,7 @@ def fits(item, pick, printings):
     printed, _padded = _number(pick)
     if printed:
         number = re.escape(printed.lower())
-        if not re.search(rf"(?<![a-z0-9])0*{number}(?![0-9])", title.lower()):
+        if not re.search(rf"(?<![0-9])0*{number}(?![0-9])", title.lower()):
             return False
     return title_fits(title, pick["printing"], printings)
 
@@ -184,22 +198,45 @@ def _printings(pick):
     return own
 
 
-def cheapest(items, pick):
-    """The lowest-cost listing that fits, as stored on the pick, plus how many fitted."""
+def candidates(items, pick):
+    """Every listing that fits, cheapest first, in the shape stored on the pick."""
     printings, floor = _printings(pick), (pick.get("price") or 0) * MIN_SHARE.get(pick["kind"], 0.4)
-    best, count = None, 0
+    out = []
     for item in items:
         if not fits(item, pick, printings):
             continue
         price, shipping = total_cost(item)
         if price is None or price + shipping < floor:
             continue
-        count += 1
-        if best is None or price + shipping < best["total"]:
-            best = {"total": round(price + shipping, 2), "price": round(price, 2), "shipping": round(shipping, 2),
+        out.append({"total": round(price + shipping, 2), "price": round(price, 2), "shipping": round(shipping, 2),
                     "title": (item.get("title") or "")[:100], "itemId": item.get("itemId"),
-                    "url": (item.get("itemWebUrl") or "").split("?")[0]}
-    return best, count
+                    "url": (item.get("itemWebUrl") or "").split("?")[0]})
+    out.sort(key=lambda c: c["total"])
+    return out
+
+
+def _item(token, item_id):
+    req = urllib.request.Request(f"{ITEM_URL}/{urllib.parse.quote(item_id, safe='')}", headers={
+        "Authorization": f"Bearer {token}", "X-EBAY-C-MARKETPLACE-ID": "EBAY_US",
+        "X-EBAY-C-ENDUSERCTX": "contextualLocation=" + urllib.parse.quote(SHIP_TO)})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            return json.loads(resp.read())
+    except urllib.error.HTTPError as err:
+        if err.code in (401, 403, 429):
+            raise Stop(f"HTTP {err.code}") from err
+        return {}  # the listing ended between the search and this call
+
+
+def card_condition(detail):
+    """The seller's stated card condition ("Near Mint or Better", "Lightly Played (Excellent)"), or None."""
+    for block in detail.get("conditionDescriptors") or []:
+        if "condition" in str(block.get("name") or "").lower():
+            for value in block.get("values") or []:
+                text = value.get("content") if isinstance(value, dict) else value
+                if text:
+                    return re.sub(r"\s*\(.*?\)\s*$", "", str(text)).strip()
+    return None
 
 
 def _scrub(payload):
@@ -210,36 +247,65 @@ def _scrub(payload):
     return out
 
 
+def _scrub_item(detail):
+    keep = ("itemId", "title", "price", "condition", "conditionId", "conditionDescriptors", "shippingOptions",
+            "itemWebUrl", "categoryPath", "estimatedAvailabilities")
+    return {k: detail[k] for k in keep if k in detail}
+
+
 def top_up(issue, log=print):
-    """Attach the cheapest matching eBay listing to each pick. Returns (searches made, a scrubbed raw reply)."""
+    """Attach the cheapest matching eBay listing to each pick.
+
+    For single cards the cheapest few are opened to read the condition the seller declared, and
+    heavily played copies are passed over. Returns (calls made, scrubbed raw replies to inspect).
+    """
     client_id = os.environ.get("EBAY_CLIENT_ID", "").strip()
     client_secret = os.environ.get("EBAY_CLIENT_SECRET", "").strip()
     if not client_id or not client_secret:
         log("  no eBay keys set: skipping live eBay prices")
         return 0, None
     picks = [p for c in issue["categories"] for p in c["picks"]]
-    made, matched, sample = 0, 0, None
+    made, details, matched, stated, sample = 0, 0, 0, 0, {}
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     try:
         token = _token(client_id, client_secret)
         for pick in picks:
             if made >= MAX_SEARCHES:
                 break
+            single = pick["kind"] == "single"
             floor = (pick.get("price") or 0) * MIN_SHARE.get(pick["kind"], 0.4)
-            payload = _search(token, query_for(pick), pick["kind"] == "single", floor * 0.6)
+            # The range is on the item price alone; leave room for shipping on cheap cards only.
+            payload = _search(token, query_for(pick), single, floor * (0.6 if floor < 20 else 0.85))
             made += 1
             time.sleep(PAUSE)
-            if sample is None and payload.get("itemSummaries"):
-                sample = _scrub(payload)
-                sample["_query"] = query_for(pick)
-            best, count = cheapest(payload.get("itemSummaries") or [], pick)
+            if "search" not in sample and payload.get("itemSummaries"):
+                sample["search"] = {**_scrub(payload), "_query": query_for(pick)}
+            found = candidates(payload.get("itemSummaries") or [], pick)
             pick.pop("ebayLow", None)
+            best = None
+            for choice in found[:DETAIL_TRIES] if single else found[:1]:
+                condition = None
+                if single and details < MAX_DETAILS and choice.get("itemId"):
+                    detail = _item(token, choice["itemId"])
+                    details += 1
+                    time.sleep(PAUSE)
+                    if "item" not in sample and detail:
+                        sample["item"] = _scrub_item(detail)
+                    if not detail:
+                        continue
+                    condition = card_condition(detail)
+                    if condition and re.search(r"heavily|poor|damaged", condition, re.I):
+                        continue
+                best = {**choice, "condition": condition}
+                break
             if best:
-                pick["ebayLow"] = {**best, "at": now, "matches": count}
+                pick["ebayLow"] = {**best, "at": now, "matches": len(found)}
                 matched += 1
+                stated += bool(best.get("condition"))
     except Stop as stop:
         log(f"  eBay lookups stopped: {stop}")
     except Exception as err:
         log(f"  eBay lookup failed: {err}")
-    log(f"  eBay: {made} searches, a matching listing found for {matched} of {len(picks)} picks")
-    return made, sample
+    log(f"  eBay: {made} searches and {details} listing checks; a matching listing found for {matched} of "
+        f"{len(picks)} picks ({stated} with the seller's condition stated)")
+    return made + details, sample or None

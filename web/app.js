@@ -260,7 +260,9 @@
     if (!e) return '';
     var cost = e.shipping ? money(e.price) + ' plus ' + money(e.shipping) + ' shipping' : money(e.total) + ' with free shipping';
     return '<p class="shop-note"><b>eBay ' + money(e.total) + '.</b> The cheapest Buy It Now copy we could match to this exact ' + (p.kind === 'sealed' ? 'product' : 'version') + ' (' + cost + '), checked ' +
-      updated({ generatedAt: e.at }, true) + '. It can sell at any time, and its condition is whatever the seller says, so read the listing. ' +
+      updated({ generatedAt: e.at }, true) + '. ' +
+      (p.kind === 'sealed' ? '' : e.condition ? 'The seller lists it as ' + esc(e.condition) + '. ' : 'The seller gave no condition, so read the listing. ') +
+      'It can sell at any time. ' +
       '<a href="' + esc(searchUrl) + '" target="_blank" rel="noopener">See everything on eBay</a>.</p>';
   }
   function where(p) {
@@ -901,7 +903,7 @@
       '<section class="block dark article"><h2>What the numbers mean</h2><ul>' +
       '<li><b>Market price.</b> TCGplayer\u2019s figure for what a card has recently sold for. It is the main price shown everywhere.</li>' +
       '<li><b>Lowest asking price.</b> The cheapest TCGplayer listing when prices were last checked, in any condition and before shipping. Treat it as a starting point, not a quote: that copy may be played, may have sold since, and shipping is extra. The TCGplayer and eBay links on every card open what is for sale right now, lowest price first.</li>' +
-      '<li><b>eBay price.</b> When the eBay button shows a price, it is the cheapest Buy It Now listing we could match to that exact card and version, shipping included, at the time shown on the card\u2019s page. The button opens that listing so you can check it. Graded cards, lots, other languages and anything priced far below the market price are skipped. No price on the button means nothing matched, and it opens an eBay search instead.</li>' +
+      '<li><b>eBay price.</b> When the eBay button shows a price, it is the cheapest Buy It Now listing we could match to that exact card and version, shipping included, at the time shown on the card\u2019s page. The button opens that listing so you can check it. Graded cards, heavily played or damaged copies, lots, other languages and anything priced far below the market price are skipped. No price on the button means nothing matched, and it opens an eBay search instead.</li>' +
       '<li><b>Price change.</b> How much the market price went up or down over the days shown.</li>' +
       '<li><b>Usual price.</b> The middle price over the last 90 days: half the days were higher, half were lower. One odd day does not throw it off.</li>' +
       '<li><b>Score.</b> One number from 1 to 99 on every pick; higher is stronger. Its colour runs from red at the low end through yellow in the middle to green at the top. What it measures depends on the list: how fast a price is rising, how big a discount is, how steady a price is, how big a move is, or how strong the signs of a comeback are. Each card page says which.</li>' +

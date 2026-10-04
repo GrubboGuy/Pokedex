@@ -89,7 +89,7 @@ SOURCES = [
         "id": "ebay",
         "name": "eBay listings for sale now, from eBay",
         "url": "https://www.ebay.com/",
-        "note": "The cheapest Buy It Now listing we could match to each pick, with shipping, at the time shown. Graded cards, lots, other languages and other versions of the card are left out, and so is anything priced far under the market price. Listings sell, so the link may show it as ended.",
+        "note": "The cheapest Buy It Now listing we could match to each pick, with shipping, at the time shown. Graded cards, heavily played or damaged copies, lots, other languages and other versions of the card are left out, and so is anything priced far under the market price. For single cards the condition the seller declared is shown. Listings sell, so the link may show it as ended.",
     },
     {
         "id": "ppt",
