@@ -118,12 +118,20 @@ def title_fits(title, printing, printings):
     return True
 
 
+def _trusted(figure):
+    """A card-wide summary figure is used unless the source marks it an outlier or it rests on a handful of sales."""
+    if figure.get("outlier"):
+        return False
+    few = (figure.get("sales") or 0) < 10
+    return not (few and str(figure.get("confidence")).lower() == "low")
+
+
 def for_version(cached, printing, printings):
     """PSA prices for one version of a card, or {} when its sales cannot be told apart.
 
     With individual sales on hand, the price is the middle (median) of the sales whose titles
     match this version. Without them, the card-wide summary is used only for a card that comes
-    in a single version, and a figure the source itself marks as an outlier is left out.
+    in a single version, and only when it looks sound.
     """
     out = {}
     sales, grades = cached.get("sold") or {}, cached.get("grades") or {}
@@ -132,13 +140,14 @@ def for_version(cached, printing, printings):
         if len(rows) >= MIN_SALES:
             out[grade] = {"price": round(statistics.median(r[1] for r in rows), 2), "sales": len(rows),
                           "last": max(r[2] for r in rows) or None, "basis": "sales"}
-        elif len(printings) < 2 and grade in grades and not grades[grade].get("outlier"):
+        elif len(printings) < 2 and grade in grades and _trusted(grades[grade]):
             out[grade] = {**grades[grade], "basis": "summary"}
-    # A summary PSA 10 far above everything else, on few sales, is nearly always a mislabelled listing.
-    top, nine = out.get("psa10"), out.get("psa9")
-    if (top and nine and top.get("basis") == "summary" and str(top.get("confidence")).lower() == "low"
-            and top["price"] > 8 * nine["price"]):
-        del out["psa10"]
+    # A summary PSA 10 far above the grade below it is nearly always a mislabelled or mismatched listing.
+    top = out.get("psa10")
+    if top and top.get("basis") == "summary":
+        below = [(out[g]["price"], limit) for g, limit in (("psa9", 8), ("psa8", 20)) if g in out]
+        if below and top["price"] > below[0][0] * below[0][1]:
+            del out["psa10"]
     return out
 
 
@@ -171,7 +180,7 @@ def top_up(issue, cache, today, log=print, fetch=True, sample=None):
         if not fresh and api_key and made < config.GRADED_LOOKUPS_PER_RUN:
             try:
                 payload = _lookup(pick["productId"], api_key)
-                if sample is not None and not sample and parse_sales(payload):
+                if sample is not None and not sample:
                     sample.append(payload)
                 cache[pid] = cached = {"date": today, "v": CACHE_VERSION,
                                        "grades": parse(payload), "sold": parse_sales(payload)}
