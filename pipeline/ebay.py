@@ -38,7 +38,7 @@ PAUSE = float(os.environ.get("EBAY_PAUSE", "0.25"))
 # The "Cheaper on eBay" scan: often-traded cards beyond the picks, looking for clean copies under market.
 DEAL_MAX_SHARE = 0.85   # a deal is at least 15% under the market price, shipping included
 DEAL_MIN_SHARE = 0.6    # and not so far under that it is probably something else
-DEAL_TRIES = 3          # listings opened per card
+DEAL_TRIES = 4          # listings opened per card
 DAILY_CALLS = 4200      # stay under eBay's default 5,000 calls a day
 
 MIN_SHARE = {"single": 0.4, "sealed": 0.8}  # a listing under this share of the market price is not counted
@@ -60,7 +60,7 @@ _JUNK = re.compile(
 _JUNK_SINGLE = re.compile(
     r"\b(psa|cgc|bgs|sgc|tag \d|ace \d|graded|slab"
     r"|damaged|dmg|dm|creased|crease|heavily played|poor|water damage"
-    r"|case|cases|insert|display|magnetic|acrylic|stand|holder|toploader|gold metal|metal card|gold plated)\b"
+    r"|case|cases|insert|display|magnetic|acrylic|stand|holder|toploader|metal|gold plated)\b"
     r"|(?<![0-9])(?<![0-9] )\bhp\b", re.I)      # "HP" as a condition, not "150 HP"
 _JUMBO = re.compile(r"\b(jumbo|oversized?)\b", re.I)
 _NOTES = re.compile(r"[(\[]\s*(\d+|full art|secret|alternate full art|alternate art secret|alpha|omega|delta)\s*[)\]]", re.I)
@@ -180,8 +180,9 @@ def total_cost(item):
 def fits(item, pick, printings):
     """Whether a search result is really this card, in this version, as a normal single listing."""
     title = item.get("title") or ""
-    if item.get("itemGroupType") or "FIXED_PRICE" not in (item.get("buyingOptions") or ["FIXED_PRICE"]):
-        return False  # choose-your-card listings quote the cheapest option, not this card
+    options = item.get("buyingOptions") or ["FIXED_PRICE"]
+    if item.get("itemGroupType") or "FIXED_PRICE" not in options or "AUCTION" in options:
+        return False  # choose-your-card listings quote the cheapest option; an auction's Buy It Now goes once bidding starts
     if (item.get("price") or {}).get("currency") not in (None, "USD"):
         return False
     own = _plain(pick.get("name"))
@@ -244,6 +245,23 @@ def _item(token, item_id):
         return {}  # the listing ended between the search and this call
 
 
+def listing_language(detail):
+    """The language the seller filed the card under ("English", "Japanese"), or None if not given."""
+    for aspect in detail.get("localizedAspects") or []:
+        if str(aspect.get("name") or "").strip().lower() == "language" and aspect.get("value"):
+            return str(aspect["value"]).strip()
+    return None
+
+
+def established_seller(detail):
+    """Whether the seller has a track record. Read to judge the listing; never stored."""
+    seller = detail.get("seller") or {}
+    try:
+        return int(seller.get("feedbackScore") or 0) >= 25 and float(seller.get("feedbackPercentage") or 0) >= 97
+    except (TypeError, ValueError):
+        return False
+
+
 def card_condition(detail):
     """The seller's stated card condition ("Near Mint or Better", "Lightly Played (Excellent)"), or None."""
     for block in detail.get("conditionDescriptors") or []:
@@ -264,7 +282,7 @@ def _scrub(payload):
 
 
 def _scrub_item(detail):
-    keep = ("itemId", "title", "price", "condition", "conditionId", "conditionDescriptors", "shippingOptions",
+    keep = ("itemId", "title", "price", "condition", "conditionId", "conditionDescriptors", "localizedAspects", "shippingOptions",
             "itemWebUrl", "categoryPath", "estimatedAvailabilities")
     return {k: detail[k] for k in keep if k in detail}
 
@@ -312,6 +330,9 @@ def top_up(issue, log=print, budget=MAX_SEARCHES * 3):
                         continue
                     condition = card_condition(detail)
                     if condition and re.search(r"heavily|poor|damaged", condition, re.I):
+                        continue
+                    language = listing_language(detail)
+                    if language and not language.lower().startswith("english"):
                         continue
                 if single:
                     share = next(s for word, s in MIN_SHARE_BY_CONDITION if word in (condition or "").lower())
@@ -389,7 +410,10 @@ def scan_deals(pool, budget, log=print):
                 made += 1
                 time.sleep(PAUSE)
                 condition = card_condition(detail) if detail else None
-                if condition and "near mint" in condition.lower():
+                language = (listing_language(detail) or "") if detail else ""
+                # A deal has to be stated plainly: Near Mint, filed as English, from a seller with a record.
+                if (condition and "near mint" in condition.lower() and language.lower().startswith("english")
+                        and established_seller(detail)):
                     deals.append((card, {**choice, "condition": condition, "at": now, "matches": len(cheap)},
                                   choice["total"] / price))
                     break
@@ -398,6 +422,6 @@ def scan_deals(pool, budget, log=print):
         log(f"  eBay deal scan stopped: {stop}")
     except Exception as err:
         log(f"  eBay deal scan failed: {err}")
-    log(f"  eBay deal scan: {len(pool)} often-traded cards, {made} calls, {len(deals)} Near Mint copies "
-        f"at least {round((1 - DEAL_MAX_SHARE) * 100)}% under market")
+    log(f"  eBay deal scan: {len(pool)} often-traded cards, {made} calls, {len(deals)} Near Mint English copies "
+        f"from established sellers at least {round((1 - DEAL_MAX_SHARE) * 100)}% under market")
     return deals, made, (now if complete else None)

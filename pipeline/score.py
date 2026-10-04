@@ -664,7 +664,8 @@ def ebay_deals_category(found, catalog, used, checked_at):
     return {"id": DEALS_ID, "title": "Cheaper on eBay", "short": "eBay deals",
             "blurb": "Near Mint copies listed under market price right now", "color": "green",
             "rule": ("Singles of $20 and up that sell often, with a Buy It Now copy on eBay that the seller lists as "
-                     "Near Mint, priced 15% to 40% under the TCGplayer market price with shipping included. "
+                     "Near Mint and English, priced 15% to 40% under the TCGplayer market price with shipping included. "
+                     "Auctions and sellers with little or poor feedback are left out. "
                      "Checked again every few hours; biggest saving first."),
             "eligible": len(found), "checkedAt": checked_at, "picks": picks}
 
