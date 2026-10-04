@@ -31,11 +31,18 @@ SCOPE = "https://api.ebay.com/oauth/api_scope"
 SINGLES_CATEGORY = "183454"   # Collectible Card Games > Individual Cards
 SHIP_TO = "country=US,zip=60601"  # only used so eBay can work out shipping; any US address does
 MAX_SEARCHES = 150
-DETAIL_TRIES = 4      # listings opened per card to read the stated condition, cheapest first
-MAX_DETAILS = 320     # per run, so a day of runs stays far inside the allowance
+DETAIL_TRIES = 6      # listings opened per card to read the stated condition, cheapest first
+MAX_DETAILS = 300     # per run, so a day of runs stays far inside the allowance
 PAGE = 50
 PAUSE = float(os.environ.get("EBAY_PAUSE", "0.25"))
-MIN_SHARE = {"single": 0.4, "sealed": 0.65}  # a listing under this share of the market price is not counted
+MIN_SHARE = {"single": 0.4, "sealed": 0.8}  # a listing under this share of the market price is not counted
+# A clean copy far under the market price is nearly always something else (another language, a fake,
+# a mislabelled card), so the bar depends on the condition the seller declared.
+MIN_SHARE_BY_CONDITION = (("moderately", 0.4), ("lightly", 0.5), ("", 0.6))
+# Sealed product types: a listing naming a type the product is not (an Elite Trainer Box when we
+# want a Booster Box) is a different product, however many other words match.
+SEALED_TYPES = ("elite trainer box", "etb", "booster box", "booster bundle", "booster pack", "blister", "tin",
+                "collection", "build & battle", "build and battle", "half", "deck", "single pack", "1 pack")
 
 _JUNK = re.compile(
     r"\b(proxy|custom|reprint|replica|fan\s*art|orica|digital|online code|code card|ptcg[ol]|tcg live"
@@ -179,7 +186,8 @@ def fits(item, pick, printings):
     if not all(token in plain for token in _name_tokens(pick)):
         return False
     if pick["kind"] != "single":
-        return True
+        lowered, name = title.lower(), (pick.get("name") or "").lower()
+        return not any(kind in lowered and kind not in name for kind in SEALED_TYPES)
     if _JUMBO.search(title) and "jumbo" not in (pick.get("set") or "").lower():
         return False
     printed, _padded = _number(pick)
@@ -275,7 +283,7 @@ def top_up(issue, log=print):
             single = pick["kind"] == "single"
             floor = (pick.get("price") or 0) * MIN_SHARE.get(pick["kind"], 0.4)
             # The range is on the item price alone; leave room for shipping on cheap cards only.
-            payload = _search(token, query_for(pick), single, floor * (0.6 if floor < 20 else 0.85))
+            payload = _search(token, query_for(pick), single, floor * (0.6 if floor < 20 else 0.85 if single else 0.95))
             made += 1
             time.sleep(PAUSE)
             if "search" not in sample and payload.get("itemSummaries"):
@@ -295,6 +303,10 @@ def top_up(issue, log=print):
                         continue
                     condition = card_condition(detail)
                     if condition and re.search(r"heavily|poor|damaged", condition, re.I):
+                        continue
+                if single:
+                    share = next(s for word, s in MIN_SHARE_BY_CONDITION if word in (condition or "").lower())
+                    if choice["total"] < share * (pick.get("price") or 0):
                         continue
                 best = {**choice, "condition": condition}
                 break
