@@ -124,6 +124,9 @@ def main(argv=None):
     cut, new_number = plan_cut(index, edition, today, args.cut)
     # The eBay deals list is not part of a re-pick; it carries over until its own scan replaces it.
     old_deals = next((c for c in (edition or {}).get("categories", []) if c["id"] == score.DEALS_ID), None)
+    # eBay listings found earlier stay with their cards through a re-pick, until a fresh lookup replaces them.
+    old_listings = {p["key"]: p["ebayLow"] for c in (edition or {}).get("categories", []) if c["id"] != score.DEALS_ID
+                    for p in c["picks"] if p.get("ebayLow")}
     if cut:
         categories, counts = score.make_categories(rows, span or 7, catalog)
         print("Eligible per list: " + ", ".join(f"{k}={v}" for k, v in counts.items()))
@@ -167,6 +170,10 @@ def main(argv=None):
         if previous is not None:
             edition["previousKeys"] = previous
         edition["cover"] = score.choose_cover(categories)
+        for cat in categories:
+            for pick in cat["picks"]:
+                if pick["key"] in old_listings:
+                    pick["ebayLow"] = old_listings[pick["key"]]
         kind = f"new issue {number}" if new_number else f"daily update of issue {number}"
         print(f"Picks refreshed ({kind}): " + ", ".join(f"{c['id']}={len(c['picks'])}" for c in categories))
     else:
@@ -181,6 +188,15 @@ def main(argv=None):
         print("  photo check unavailable (OpenCV is not installed): eBay listings are matched on their text only")
     used = {p["productId"] for c in edition["categories"] if c["id"] != score.DEALS_ID for p in c["picks"]}
     deals = score.carry_deals(old_deals, used)
+    if deals:  # a kept list is looked at again: old listings go, and so do photos the current check rejects
+        gone = ebay.reconfirm(deals["picks"], verify)
+        kept = [dict(p, rank=i + 1) for i, p in enumerate(p for p in deals["picks"] if p.get("ebayLow"))]
+        deals = {**deals, "picks": kept} if len(kept) >= 3 else None
+        if gone:
+            print(f"  Cheaper on eBay: {gone} kept listings dropped (too old, or the photo no longer passes); {len(kept)} left")
+    gone = ebay.reconfirm([p for c in edition["categories"] if c["id"] != score.DEALS_ID for p in c["picks"]], verify)
+    if gone:
+        print(f"  eBay: {gone} kept listings dropped (too old, or the photo no longer passes)")
     if os.environ.get("EBAY_SCAN") == "1":
         found, ebay_made, checked = ebay.scan_deals(score.deal_pool(rows, catalog), ebay_budget - 400, verify=verify)
         if checked:

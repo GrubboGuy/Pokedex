@@ -394,7 +394,7 @@ def top_up(issue, log=print, budget=MAX_SEARCHES * 3, verify=None):
                     if confirmed is False:
                         wrong_photo += 1
                         continue
-                    choice = {**choice, "photo": points}
+                    choice = {**choice, "photo": points, "photoV": getattr(verify, "version", None)}
                 if single and details < MAX_DETAILS and choice.get("itemId"):
                     detail = _item(token, choice["itemId"])
                     details += 1
@@ -429,26 +429,74 @@ def top_up(issue, log=print, budget=MAX_SEARCHES * 3, verify=None):
     return made + details, sample or None
 
 
-def calls_left(data_dir):
-    """How many more eBay calls today's budget allows, from the tally kept between runs."""
-    day = dt.datetime.now(dt.timezone.utc).date().isoformat()
+def _usage(data_dir):
+    """The calls made in the last two days, as [time, calls] pairs."""
     try:
         with open(os.path.join(data_dir, "ebay-usage.json"), encoding="utf-8") as fh:
             tally = json.load(fh)
     except (OSError, ValueError):
-        tally = {}
-    used = tally.get("calls", 0) if tally.get("day") == day else 0
+        return []
+    now = dt.datetime.now(dt.timezone.utc)
+    if "log" not in tally:  # the earlier one-number-a-day layout
+        return [[now.isoformat(timespec="seconds"), tally.get("calls", 0)]] if tally.get("calls") else []
+    recent = []
+    for stamp, calls in tally["log"]:
+        try:
+            if now - dt.datetime.fromisoformat(stamp) < dt.timedelta(hours=48):
+                recent.append([stamp, calls])
+        except (TypeError, ValueError):
+            pass
+    return recent
+
+
+def calls_left(data_dir):
+    """How many more eBay calls the budget allows, counting everything made in the last 24 hours.
+
+    eBay's own day does not start at midnight UTC, so a tally per calendar day can run over its
+    limit; a rolling day cannot, whenever eBay's day happens to start.
+    """
+    now = dt.datetime.now(dt.timezone.utc)
+    used = sum(calls for stamp, calls in _usage(data_dir)
+               if now - dt.datetime.fromisoformat(stamp) < dt.timedelta(hours=24))
     return max(0, DAILY_CALLS - used)
 
 
 def record_calls(data_dir, made):
-    day = dt.datetime.now(dt.timezone.utc).date().isoformat()
-    used = DAILY_CALLS - calls_left(data_dir) + made
+    log = _usage(data_dir)
+    if made:
+        log.append([dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), made])
     try:
         with open(os.path.join(data_dir, "ebay-usage.json"), "w", encoding="utf-8") as fh:
-            json.dump({"day": day, "calls": used}, fh)
+            json.dump({"log": log}, fh)
     except OSError:
         pass
+
+
+def reconfirm(picks, verify, log=print, max_age_hours=36):
+    """Looks again at listings kept from an earlier run.
+
+    A listing stays only if it is recent and its photo passes the current photo check; one that
+    an older version of the check let through is compared again. Returns how many were dropped.
+    """
+    now, dropped = dt.datetime.now(dt.timezone.utc), 0
+    version = getattr(verify, "version", None)
+    for pick in picks:
+        low = pick.get("ebayLow")
+        if not low:
+            continue
+        try:
+            stale = now - dt.datetime.fromisoformat(low.get("at")) > dt.timedelta(hours=max_age_hours)
+        except (TypeError, ValueError):
+            stale = True
+        confirmed = None
+        if not stale and verify and pick.get("kind") != "sealed" and low.get("photoV") != version:
+            confirmed, points = verify(pick, low)
+            if confirmed is not False:
+                low["photo"], low["photoV"] = points, version
+        if stale or confirmed is False:
+            pick.pop("ebayLow")
+            dropped += 1
+    return dropped
 
 
 def scan_deals(pool, budget, log=print, verify=None):
@@ -497,7 +545,7 @@ def scan_deals(pool, budget, log=print, verify=None):
                         if confirmed is False:
                             wrong_photo += 1
                             continue
-                        choice = {**choice, "photo": points}
+                        choice = {**choice, "photo": points, "photoV": getattr(verify, "version", None)}
                     deals.append((card, {**choice, "condition": condition, "at": now, "matches": len(cheap)},
                                   choice["total"] / price))
                     break

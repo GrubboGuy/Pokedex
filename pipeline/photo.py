@@ -39,6 +39,7 @@ try:
 except Exception:  # not installed: the photo check is skipped
     cv2 = None
 
+VERSION = 2              # raised when the rule changes, so listings kept from earlier runs are looked at again
 WHOLE_MARK = 0.30        # a quarter of the card's patches may disagree (glare), no more
 NAME_MARK = 0.50         # agreement needed on the printed name
 MIN_ANCHORS = 10         # paired points needed before the card's outline is trusted
@@ -180,3 +181,6 @@ def check(card, listing):
         return False, 0
     whole, name = agreement(*pair)
     return (whole >= WHOLE_MARK and name >= NAME_MARK), round(whole * 100)
+
+
+check.version = VERSION
