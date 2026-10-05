@@ -207,6 +207,10 @@ def main(argv=None):
     if photo.TRACE["listings"]:  # temporary: the tuning record for the photo check
         with open(os.path.join(args.data_dir, "photo-trace.json"), "w", encoding="utf-8") as fh:
             json.dump(photo.TRACE, fh, separators=(",", ":"))
+        import zipfile
+        with zipfile.ZipFile(os.path.join(args.data_dir, "photo-tune.zip"), "w", zipfile.ZIP_STORED) as bundle:
+            for name, data in photo.SHOTS.items():
+                bundle.writestr(name, data)
         print(f"  photo tuning record: {len(photo.TRACE['listings'])} comparisons of {len(photo.TRACE['cards'])} cards")
     stale = os.path.join(args.data_dir, "photo-scores.json")  # left by the runs that tuned the photo check
     if os.path.exists(stale):

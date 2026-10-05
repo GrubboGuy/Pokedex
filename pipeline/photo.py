@@ -53,17 +53,30 @@ def listing_picture(image_url):
     return re.sub(r"s-l\d+\.", "s-l1600.", image_url or "")
 
 
+_pictures = {}           # the last few pictures loaded
+
+
+def _picture(url, side):
+    """A picture in grey, scaled so its longer side is at most `side` pixels."""
+    if (url, side) not in _pictures:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; PokedexDaily/1.0)"})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            image = cv2.imdecode(np.frombuffer(resp.read(), np.uint8), cv2.IMREAD_GRAYSCALE)
+        scale = side / max(image.shape[:2])
+        if scale < 1:
+            image = cv2.resize(image, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
+        while len(_pictures) >= 6:
+            _pictures.pop(next(iter(_pictures)))
+        _pictures[(url, side)] = image
+    return _pictures[(url, side)]
+
+
 def _points(url, side, count):
     """(keypoints, descriptors, width, height) of a picture, or None if it cannot be loaded."""
     key = (url, side, count)
     if key not in _cache:
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; PokedexDaily/1.0)"})
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                image = cv2.imdecode(np.frombuffer(resp.read(), np.uint8), cv2.IMREAD_GRAYSCALE)
-            scale = side / max(image.shape[:2])
-            if scale < 1:
-                image = cv2.resize(image, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
+            image = _picture(url, side)
             points, desc = cv2.SIFT_create(nfeatures=count).detectAndCompute(image, None)
             usable = desc is not None and len(points) >= 8
             _cache[key] = (points, desc, image.shape[1], image.shape[0]) if usable else None
@@ -165,6 +178,8 @@ def check(card, listing, catalog):
 # ---- worked out from real listings. Holds pictures' addresses and item numbers, nothing on sellers.
 
 TRACE = {"cards": {}, "listings": []}
+SHOTS = {}               # file name -> JPEG: each card, and each listing photo flattened onto the card's outline
+FLAT = (432, 605)
 _seen = set()
 _by_name = None
 
@@ -225,6 +240,11 @@ def record(card, listing, catalog, where):
             anywhere, in_place = _shared_with(points, desc, width, height, catalogue_picture(item["image"]))
             flags |= anywhere.astype(np.int32) << (2 + n)
             flags |= in_place.astype(np.int32) << (5 + n)
+        try:
+            flat = cv2.resize(_picture(catalogue_picture(card["image"]), CATALOGUE_SIDE), FLAT, interpolation=cv2.INTER_AREA)
+            SHOTS[f"card-{pid}.jpg"] = cv2.imencode(".jpg", flat, [cv2.IMWRITE_JPEG_QUALITY, 80])[1].tobytes()
+        except Exception:
+            pass
         TRACE["cards"][str(pid)] = {
             "name": card.get("name"), "number": card.get("number"), "rarity": card.get("rarity"),
             "setDecoys": set_decoys, "nameDecoys": [[i["id"], i["name"], i.get("number"), i["gid"] == card.get("gid")] for i in named],
@@ -242,6 +262,14 @@ def record(card, listing, catalog, where):
         if homography is not None:
             corners = np.float32([[0, 0], [width, 0], [width, height], [0, height]]).reshape(-1, 1, 2)
             entry["quad"] = [[round(float(x)), round(float(y))] for x, y in cv2.perspectiveTransform(corners, homography).reshape(-1, 2)]
+            try:
+                grow = np.diag([FLAT[0] / width, FLAT[1] / height, 1.0])
+                flat = cv2.warpPerspective(_picture(listing_picture(listing["img"]), LISTING_SIDE),
+                                           grow @ np.linalg.inv(homography), FLAT, flags=cv2.INTER_AREA)
+                entry["shot"] = f"shot-{len(TRACE['listings'])}.jpg"
+                SHOTS[entry["shot"]] = cv2.imencode(".jpg", flat, [cv2.IMWRITE_JPEG_QUALITY, 80])[1].tobytes()
+            except Exception:
+                pass
     entry["good"] = [[m.queryIdx, round(photo[0][m.trainIdx].pt[0]), round(photo[0][m.trainIdx].pt[1]), i]
                      for m, i in zip(good, inside)]
     entry["score"] = own_score(catalogue_picture(card["image"]), decoys_for(card, catalog), listing_picture(listing["img"]))
