@@ -53,7 +53,11 @@
 html { background: var(--ground); }
 body { margin: 0; font-family: var(--sans); font-size: 16px; line-height: 1.45; color: var(--ink); -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; }
 a { color: inherit; touch-action: manipulation; }
-img { max-width: 100%; display: block; }
+/* Pictures are opened by our own press-and-hold viewer (.zoom), so the phone's image menu, link preview
+   and selection of the text printed on a card are turned off for them. */
+img { max-width: 100%; display: block; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
+.screen a, .var, .pic { -webkit-touch-callout: none; }
+.pic, .sec-art, .pick-art, .lead-art, .slot, .shop-photo { -webkit-user-select: none; user-select: none; }
 h1, h2, h3, p, ol, ul, dl, dd, figure { margin: 0; padding: 0; }
 button, input { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -488,3 +492,15 @@ span.tags { display: flex; }
   .verdict { grid-template-columns: 220px 1fr; }
 }
 .lead > div, .hero > span { min-width: 0; }
+
+
+/* ---------- a picture, full screen: press and hold any card picture ---------- */
+.zoom { position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center; padding: calc(18px + env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom)); background: rgba(15,17,21,.92); touch-action: none; overscroll-behavior: contain; cursor: zoom-out; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+.zoom.on { display: flex; }
+.zoom img { width: 100%; height: 100%; object-fit: contain; }
+.zoom img.card { width: min(100%, (100vh - 36px) * 5 / 7); width: min(100%, (100dvh - 36px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * 5 / 7); height: auto; aspect-ratio: 5 / 7; border-radius: 4.6% / 3.3%; box-shadow: 0 24px 60px -18px #000; }
+.zoom.on img { animation: zoom-in .16s cubic-bezier(.2,.8,.2,1); }
+.zoom span { position: absolute; top: calc(10px + env(safe-area-inset-top)); right: 10px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.16); color: #fff; }
+.zoom span svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+@keyframes zoom-in { from { opacity: 0; transform: scale(.9); } }
+@media (prefers-reduced-motion: reduce) { .zoom.on img { animation: none; } }

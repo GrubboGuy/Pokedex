@@ -176,6 +176,68 @@
     if (el.src !== PLACEHOLDER) { el.src = PLACEHOLDER; el.classList.add('missing'); }
   }, true);
 
+  // ---------- a closer look ----------
+  // Press and hold any picture to see it full screen; tap to put it away. This is our own viewer, so
+  // the phone's image menu, link preview and text selection stay out of the way (see styles.css).
+  var zoom = null, holdTimer = null, holdAt = null, holdTouch = false, swallowClick = false;
+  function bigOf(src) { return String(src).replace('_200w.', '_in_1000x1000.').replace(/s-l\d+\./, 's-l1600.'); }
+  function closeZoom() { if (zoom) zoom.classList.remove('on'); }
+  function openZoom(el) {
+    if (!zoom) {
+      zoom = document.createElement('div');
+      zoom.className = 'zoom';
+      zoom.setAttribute('role', 'dialog');
+      zoom.setAttribute('aria-label', 'Picture, full screen. Tap to close.');
+      zoom.innerHTML = '<img alt="" referrerpolicy="no-referrer"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></span>';
+      zoom.addEventListener('click', closeZoom);
+      document.body.appendChild(zoom);
+    }
+    var pic = zoom.firstChild, now = el.currentSrc || el.src, big = bigOf(now);
+    var shape = el.naturalWidth / (el.naturalHeight || 1);
+    pic.className = shape > 0.66 && shape < 0.76 ? 'card' : '';   // a trading card gets its rounded corners
+    pic.alt = el.alt || '';
+    pic.removeAttribute('data-small');
+    pic.src = now;                // what is already on screen shows at once; the large picture replaces it when it arrives
+    zoom.setAttribute('data-for', big);
+    if (big !== now) {
+      var pre = new Image();
+      pre.referrerPolicy = 'no-referrer';
+      pre.onload = function () { if (zoom.classList.contains('on') && zoom.getAttribute('data-for') === big) pic.src = big; };
+      pre.src = big;
+    }
+    zoom.classList.add('on');
+  }
+  function cancelHold() { clearTimeout(holdTimer); holdAt = null; }
+  document.addEventListener('pointerdown', function (e) {
+    swallowClick = false;
+    cancelHold();
+    holdTouch = e.pointerType !== 'mouse';
+    var el = e.target;
+    if (!el || el.tagName !== 'IMG' || !el.closest('#screen') || el.closest('.var-back') || el.classList.contains('missing') || /^data:/.test(el.src)) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    holdAt = [e.clientX, e.clientY];
+    holdTimer = setTimeout(function () {
+      holdAt = null;
+      swallowClick = true;        // letting go must not also open the card or follow the link
+      openZoom(el);
+    }, 380);
+  });
+  document.addEventListener('pointermove', function (e) {
+    if (holdAt && Math.abs(e.clientX - holdAt[0]) + Math.abs(e.clientY - holdAt[1]) > 12) cancelHold();
+  });
+  document.addEventListener('pointerup', cancelHold);
+  document.addEventListener('pointercancel', cancelHold);   // the browser took the touch over, to scroll
+  window.addEventListener('scroll', cancelHold, { passive: true });
+  document.addEventListener('click', function (e) {
+    if (swallowClick) { swallowClick = false; e.preventDefault(); e.stopPropagation(); }
+  }, true);
+  // On a touch screen the browser's own long-press menu for pictures would cover ours.
+  document.addEventListener('contextmenu', function (e) {
+    if (holdTouch && e.target && e.target.tagName === 'IMG' && (e.target.closest('#screen') || e.target.closest('.zoom'))) e.preventDefault();
+  });
+  document.addEventListener('dragstart', function (e) { if (e.target && e.target.tagName === 'IMG') e.preventDefault(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeZoom(); });
+
   // One score for every pick, 1 to 99. What it measures depends on the list the pick is in.
   // Score colour: red at 0, yellow at 50, green at 100. Tuned to stay readable on the dark score chip.
   function scoreColor(n) {
@@ -926,7 +988,7 @@
       '<details class="term"><summary>Price reliability</summary><p>High when the card sells often, we have a long price history and sellers are asking close to the market price. Low when any of those is missing.</p></details>' +
       '<details class="term"><summary>Sells often, regularly or not often</summary><p>How frequently the market price changed from day to day. A price that never changes usually means nothing is selling.</p></details>' +
       '<details class="term"><summary>Versions</summary><p>Every price is for one exact version of a card: non-holo, holo, reverse holo, 1st Edition or Unlimited, shown as a label beside the name. The Variants button lists the others, each with its own price: first the same card in other versions, then cards with the same name on a different number in the set, such as a holo and non-holo pair or a full-art version. Graded (PSA) prices are only shown when the sales can be tied to that version by their listing titles.</p></details>' +
-      '<details class="term"><summary>Foil on the pictures</summary><p>Sellers photograph one version of each card, so a reverse holo and a plain copy share the same photo. To tell them apart at a glance, a rainbow sheen is drawn over the part of the card that is foil: everything but the artwork on a reverse holo, the artwork only on a holo. It shows where the foil is, not the exact pattern, and it is left off cards whose layout we can\u2019t be sure of.</p></details></div></section>' +
+      '<details class="term"><summary>The pictures</summary><p>Press and hold any card picture to see it full screen; tap to put it away. Sellers photograph one version of each card, so a reverse holo and a plain copy share the same photo. To tell them apart at a glance, a rainbow sheen is drawn over the part of the card that is foil: everything but the artwork on a reverse holo, the artwork only on a holo. It shows where the foil is, not the exact pattern, and it is left off cards whose layout we can\u2019t be sure of.</p></details></div></section>' +
       '<section class="block article"><h2>The rule for each list</h2><div class="terms">' + rules + '</div></section>' +
       '<section class="block article"><h2>Where the numbers come from</h2><div class="terms">' + sources + '</div></section>' +
       '<section class="block sunk article"><h2>Checks on every pick</h2><ul>' +
@@ -1241,7 +1303,7 @@
     if (card) card.setAttribute('aria-pressed', card.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
   });
 
-  window.addEventListener('hashchange', function () { hideGuide(); leaving(location.hash); route(); });
+  window.addEventListener('hashchange', function () { hideGuide(); closeZoom(); leaving(location.hash); route(); });
   route();
 
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
