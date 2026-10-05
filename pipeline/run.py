@@ -176,14 +176,13 @@ def main(argv=None):
     ebay_budget = ebay.calls_left(args.data_dir)
     ebay_made = 0
     # Every eBay listing's photo is compared with the catalogue picture of the card it claims to be.
-    verify = (lambda card, listing: photo.check(card, listing, catalog)) if photo.available() else None
-    tuning = (lambda card, listing, where: photo.record(card, listing, catalog, where)) if verify else None
+    verify = photo.check if photo.available() else None
     if not verify:
         print("  photo check unavailable (OpenCV is not installed): eBay listings are matched on their text only")
     used = {p["productId"] for c in edition["categories"] if c["id"] != score.DEALS_ID for p in c["picks"]}
     deals = score.carry_deals(old_deals, used)
     if os.environ.get("EBAY_SCAN") == "1":
-        found, ebay_made, checked = ebay.scan_deals(score.deal_pool(rows, catalog), ebay_budget - 400, verify=verify, tuning=tuning)
+        found, ebay_made, checked = ebay.scan_deals(score.deal_pool(rows, catalog), ebay_budget - 400, verify=verify)
         if checked:
             deals = score.ebay_deals_category(found, catalog, used, checked)
     edition["categories"] = score.place_deals(edition["categories"], deals)
@@ -202,19 +201,12 @@ def main(argv=None):
         with open(store_sample, "w", encoding="utf-8") as fh:
             json.dump(sample, fh, indent=1)
 
-    made_now, ebay_sample = ebay.top_up(edition, budget=ebay_budget - ebay_made, verify=verify, tuning=tuning)
+    made_now, ebay_sample = ebay.top_up(edition, budget=ebay_budget - ebay_made, verify=verify)
     ebay.record_calls(args.data_dir, ebay_made + made_now)
-    if photo.TRACE["listings"]:  # temporary: the tuning record for the photo check
-        with open(os.path.join(args.data_dir, "photo-trace.json"), "w", encoding="utf-8") as fh:
-            json.dump(photo.TRACE, fh, separators=(",", ":"))
-        import zipfile
-        with zipfile.ZipFile(os.path.join(args.data_dir, "photo-tune.zip"), "w", zipfile.ZIP_STORED) as bundle:
-            for name, data in photo.SHOTS.items():
-                bundle.writestr(name, data)
-        print(f"  photo tuning record: {len(photo.TRACE['listings'])} comparisons of {len(photo.TRACE['cards'])} cards")
-    stale = os.path.join(args.data_dir, "photo-scores.json")  # left by the runs that tuned the photo check
-    if os.path.exists(stale):
-        os.remove(stale)
+    for leftover in ("photo-scores.json", "photo-trace.json", "photo-tune.zip"):  # from tuning the photo check
+        stale = os.path.join(args.data_dir, leftover)
+        if os.path.exists(stale):
+            os.remove(stale)
     if ebay_sample:  # one raw reply, with seller details removed, kept so the layout can be checked
         with open(os.path.join(args.data_dir, "ebay-sample.json"), "w", encoding="utf-8") as fh:
             json.dump(ebay_sample, fh, indent=1)
