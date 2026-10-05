@@ -352,7 +352,7 @@ def _scrub_item(detail):
     return {k: detail[k] for k in keep if k in detail}
 
 
-def top_up(issue, log=print, budget=MAX_SEARCHES * 3, verify=None):
+def top_up(issue, log=print, budget=MAX_SEARCHES * 3, verify=None, tuning=None):
     """Attach the cheapest matching eBay listing to each pick.
 
     For single cards the cheapest few are looked at one by one: the photo has to show this card
@@ -385,6 +385,9 @@ def top_up(issue, log=print, budget=MAX_SEARCHES * 3, verify=None):
             found = candidates(payload.get("itemSummaries") or [], pick)
             pick.pop("ebayLow", None)
             best = None
+            if single and verify and tuning:
+                for choice in found[:DETAIL_TRIES]:
+                    tuning(pick, choice, "pick")
             for choice in found[:DETAIL_TRIES] if single else found[:1]:
                 condition = None
                 if _is_blocked(choice, blocked):
@@ -451,7 +454,7 @@ def record_calls(data_dir, made):
         pass
 
 
-def scan_deals(pool, budget, log=print, verify=None):
+def scan_deals(pool, budget, log=print, verify=None, tuning=None):
     """Looks through often-traded cards for a Near Mint copy listed well under the market price.
 
     `pool` holds picks-in-waiting (a row plus the card's other printings). Returns
@@ -481,6 +484,9 @@ def scan_deals(pool, budget, log=print, verify=None):
             time.sleep(PAUSE)
             cheap = [c for c in candidates(payload.get("itemSummaries") or [], card)
                      if price * DEAL_MIN_SHARE <= c["total"] <= price * DEAL_MAX_SHARE]
+            if verify and tuning:
+                for choice in cheap[:DEAL_TRIES]:
+                    tuning(card, choice, "deal")
             for choice in cheap[:DEAL_TRIES]:
                 if not choice.get("itemId") or _is_blocked(choice, blocked):
                     continue
