@@ -272,11 +272,14 @@
     var e = ebayLow(p);
     if (!e) return '';
     var cost = e.shipping ? money(e.price) + ' plus ' + money(e.shipping) + ' shipping' : money(e.total) + ' with free shipping';
-    return '<p class="shop-note"><b>eBay ' + money(e.total) + '.</b> The cheapest Buy It Now copy we could match to this exact ' + (p.kind === 'sealed' ? 'product' : 'version') + ' (' + cost + '), checked ' +
+    // The seller's own photo, small, so the copy on offer can be seen before opening the listing.
+    var photo = e.img && p.kind !== 'sealed' ? '<a class="shop-photo" href="' + esc(e.url) + '" target="_blank" rel="noopener"><img src="' + esc(String(e.img).replace(/s-l\d+\./, 's-l300.')) + '" alt="The seller\u2019s photo of this copy" loading="lazy" referrerpolicy="no-referrer"></a>' : '';
+    return '<div class="shop-note">' + photo + '<p><b>eBay ' + money(e.total) + '.</b> The cheapest Buy It Now copy we could match to this exact ' + (p.kind === 'sealed' ? 'product' : 'version') + ' (' + cost + '), checked ' +
       updated({ generatedAt: e.at }, true) + '. ' +
       (p.kind === 'sealed' ? '' : e.condition ? 'The seller lists it as ' + esc(e.condition) + '. ' : 'The seller gave no condition, so read the listing. ') +
+      (e.photo != null ? 'Its photo matches the card. ' : '') +
       'It can sell at any time. ' +
-      '<a href="' + esc(searchUrl) + '" target="_blank" rel="noopener">See everything on eBay</a>.</p>';
+      '<a href="' + esc(searchUrl) + '" target="_blank" rel="noopener">See everything on eBay</a>.</p></div>';
   }
   function where(p) {
     var bits = [p.set];
@@ -925,7 +928,7 @@
       '<section class="block dark article"><h2>What the numbers mean</h2><ul>' +
       '<li><b>Market price.</b> TCGplayer\u2019s figure for what a card has recently sold for. It is the main price shown everywhere.</li>' +
       '<li><b>Lowest asking price.</b> Shown only when we found no matching eBay listing. It is the cheapest TCGplayer listing when prices were last checked, in any condition and before shipping, so treat it as a starting point, not a quote.</li>' +
-      '<li><b>eBay price.</b> When the eBay button shows a price, it is the cheapest Buy It Now listing we could match to that exact card and version, shipping included, at the time shown on the card\u2019s page. eBay prices are checked again about every four hours through the day. The Cheaper on eBay list goes further and looks through about 150 often-traded cards for Near Mint copies listed at least 15% under the market price. The button opens that listing so you can check it. Graded cards, heavily played or damaged copies, lots, other languages and anything priced far below the market price are skipped. No price on the button means nothing matched, and it opens an eBay search instead.</li>' +
+      '<li><b>eBay price.</b> When the eBay button shows a price, it is the cheapest Buy It Now listing we could match to that exact card and version, shipping included, at the time shown on the card\u2019s page. eBay prices are checked again about every four hours through the day. The Cheaper on eBay list goes further and looks through about 150 often-traded cards for Near Mint copies listed at least 15% under the market price. The button opens that listing so you can check it. Graded cards, heavily played or damaged copies, lots, other languages and anything priced far below the market price are skipped. The seller\u2019s photo also has to match the picture of the card, so a card listed under the wrong name is passed over; a blurry photo can fail that check too. No price on the button means nothing matched, and it opens an eBay search instead.</li>' +
       '<li><b>Price change.</b> How much the market price went up or down over the days shown.</li>' +
       '<li><b>Usual price.</b> The middle price over the last 90 days: half the days were higher, half were lower. One odd day does not throw it off.</li>' +
       '<li><b>Score.</b> One number from 1 to 99 on every pick; higher is stronger. Its colour runs from red at the low end through yellow in the middle to green at the top. What it measures depends on the list: how fast a price is rising, how big a discount is, how steady a price is, how big a move is, or how strong the signs of a comeback are. Each card page says which.</li>' +

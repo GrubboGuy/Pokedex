@@ -67,6 +67,22 @@ _NOTES = re.compile(r"[(\[]\s*(\d+|full art|secret|alternate full art|alternate 
 _STOP = {"the", "and", "pokemon", "card", "with"}
 
 
+# Listings a person has looked at and found to be the wrong card. Add an eBay item number per line.
+BLOCKED_FILE = os.path.join(os.path.dirname(__file__), "ebay_blocked.txt")
+
+
+def blocked_items():
+    try:
+        with open(BLOCKED_FILE, encoding="utf-8") as fh:
+            return {line.split("#")[0].strip() for line in fh if line.split("#")[0].strip()}
+    except OSError:
+        return set()
+
+
+def _is_blocked(choice, blocked):
+    return any(number and number in blocked for number in re.findall(r"\d{9,}", (choice.get("url") or "") + " " + (choice.get("itemId") or "")))
+
+
 class Stop(Exception):
     pass
 
@@ -336,10 +352,11 @@ def _scrub_item(detail):
     return {k: detail[k] for k in keep if k in detail}
 
 
-def top_up(issue, log=print, budget=MAX_SEARCHES * 3):
+def top_up(issue, log=print, budget=MAX_SEARCHES * 3, verify=None):
     """Attach the cheapest matching eBay listing to each pick.
 
-    For single cards the cheapest few are opened to read the condition the seller declared, and
+    For single cards the cheapest few are looked at one by one: the photo has to show this card
+    (`verify`, see photo.py), and the listing is opened to read the condition the seller declared;
     heavily played copies are passed over. Returns (calls made, scrubbed raw replies to inspect).
     """
     client_id = os.environ.get("EBAY_CLIENT_ID", "").strip()
@@ -350,6 +367,7 @@ def top_up(issue, log=print, budget=MAX_SEARCHES * 3):
     # The "Cheaper on eBay" list is built from listings found by its own scan; those stay as found.
     picks = [p for c in issue["categories"] if c["id"] != "ebay-deals" for p in c["picks"]]
     made, details, matched, stated, sample = 0, 0, 0, 0, {}
+    wrong_photo, blocked = 0, blocked_items()
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     try:
         token = _token(client_id, client_secret)
@@ -369,6 +387,14 @@ def top_up(issue, log=print, budget=MAX_SEARCHES * 3):
             best = None
             for choice in found[:DETAIL_TRIES] if single else found[:1]:
                 condition = None
+                if _is_blocked(choice, blocked):
+                    continue
+                if single and verify:
+                    confirmed, points = verify(pick, choice)
+                    if confirmed is False:
+                        wrong_photo += 1
+                        continue
+                    choice = {**choice, "photo": points}
                 if single and details < MAX_DETAILS and choice.get("itemId"):
                     detail = _item(token, choice["itemId"])
                     details += 1
@@ -398,7 +424,8 @@ def top_up(issue, log=print, budget=MAX_SEARCHES * 3):
     except Exception as err:
         log(f"  eBay lookup failed: {err}")
     log(f"  eBay: {made} searches and {details} listing checks; a matching listing found for {matched} of "
-        f"{len(picks)} picks ({stated} with the seller's condition stated)")
+        f"{len(picks)} picks ({stated} with the seller's condition stated); {wrong_photo} listings passed over "
+        f"because the photo did not show the card")
     return made + details, sample or None
 
 
@@ -424,7 +451,7 @@ def record_calls(data_dir, made):
         pass
 
 
-def scan_deals(pool, budget, log=print):
+def scan_deals(pool, budget, log=print, verify=None):
     """Looks through often-traded cards for a Near Mint copy listed well under the market price.
 
     `pool` holds picks-in-waiting (a row plus the card's other printings). Returns
@@ -440,6 +467,7 @@ def scan_deals(pool, budget, log=print):
         log(f"  eBay deal scan skipped: {budget} calls left today, about {need} needed")
         return [], 0, None
     deals, made, complete, looked = [], 0, False, 0
+    wrong_photo, blocked = 0, blocked_items()
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     try:
         token = _token(client_id, client_secret)
@@ -454,7 +482,7 @@ def scan_deals(pool, budget, log=print):
             cheap = [c for c in candidates(payload.get("itemSummaries") or [], card)
                      if price * DEAL_MIN_SHARE <= c["total"] <= price * DEAL_MAX_SHARE]
             for choice in cheap[:DEAL_TRIES]:
-                if not choice.get("itemId"):
+                if not choice.get("itemId") or _is_blocked(choice, blocked):
                     continue
                 detail = _item(token, choice["itemId"])
                 made += 1
@@ -464,6 +492,12 @@ def scan_deals(pool, budget, log=print):
                 # A deal has to be stated plainly: Near Mint, filed as English, from a seller with a record.
                 if (condition and "near mint" in condition.lower() and language.lower().startswith("english")
                         and established_seller(detail)):
+                    if verify:  # last, because it is the slowest check: the photo has to show this card
+                        confirmed, points = verify(card, choice)
+                        if confirmed is False:
+                            wrong_photo += 1
+                            continue
+                        choice = {**choice, "photo": points}
                     deals.append((card, {**choice, "condition": condition, "at": now, "matches": len(cheap)},
                                   choice["total"] / price))
                     break
@@ -474,5 +508,6 @@ def scan_deals(pool, budget, log=print):
         log(f"  eBay deal scan failed: {err}")
     complete = complete or looked >= len(pool) * 0.6   # cut short late on: what was found still stands
     log(f"  eBay deal scan: {looked} of {len(pool)} often-traded cards, {made} calls, {len(deals)} Near Mint English copies "
-        f"from established sellers at least {round((1 - DEAL_MAX_SHARE) * 100)}% under market")
+        f"from established sellers at least {round((1 - DEAL_MAX_SHARE) * 100)}% under market; {wrong_photo} passed over "
+        f"because the photo did not show the card")
     return deals, made, (now if complete else None)

@@ -1,0 +1,3 @@
+# eBay listings a person looked at and found to be the wrong card, one item number per line.
+# The photo check (photo.py) catches most of these by itself; this is for the ones it misses.
+318876370388  # filed as Lillie's Clefairy ex 184/159, photo shows Mega Clefable ex 119/088

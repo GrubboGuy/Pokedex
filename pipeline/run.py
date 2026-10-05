@@ -175,10 +175,14 @@ def main(argv=None):
     # The "Cheaper on eBay" list is rebuilt on scheduled runs and re-picks, not on every code push.
     ebay_budget = ebay.calls_left(args.data_dir)
     ebay_made = 0
+    # Every eBay listing's photo is compared with the catalogue picture of the card it claims to be.
+    verify = (lambda card, listing: photo.check(card, listing, catalog)) if photo.available() else None
+    if not verify:
+        print("  photo check unavailable (OpenCV is not installed): eBay listings are matched on their text only")
     used = {p["productId"] for c in edition["categories"] if c["id"] != score.DEALS_ID for p in c["picks"]}
     deals = score.carry_deals(old_deals, used)
     if os.environ.get("EBAY_SCAN") == "1":
-        found, ebay_made, checked = ebay.scan_deals(score.deal_pool(rows, catalog), ebay_budget - 400)
+        found, ebay_made, checked = ebay.scan_deals(score.deal_pool(rows, catalog), ebay_budget - 400, verify=verify)
         if checked:
             deals = score.ebay_deals_category(found, catalog, used, checked)
     edition["categories"] = score.place_deals(edition["categories"], deals)
@@ -197,13 +201,11 @@ def main(argv=None):
         with open(store_sample, "w", encoding="utf-8") as fh:
             json.dump(sample, fh, indent=1)
 
-    made_now, ebay_sample = ebay.top_up(edition, budget=ebay_budget - ebay_made)
+    made_now, ebay_sample = ebay.top_up(edition, budget=ebay_budget - ebay_made, verify=verify)
     ebay.record_calls(args.data_dir, ebay_made + made_now)
-    if photo.available():  # tuning data for the photo check; removed once the pass mark is set
-        with open(os.path.join(args.data_dir, "photo-scores.json"), "w", encoding="utf-8") as fh:
-            json.dump(photo.measure(edition, catalog), fh, indent=1)
-    else:
-        print("  photo check unavailable: OpenCV is not installed")
+    stale = os.path.join(args.data_dir, "photo-scores.json")  # left by the runs that tuned the photo check
+    if os.path.exists(stale):
+        os.remove(stale)
     if ebay_sample:  # one raw reply, with seller details removed, kept so the layout can be checked
         with open(os.path.join(args.data_dir, "ebay-sample.json"), "w", encoding="utf-8") as fh:
             json.dump(ebay_sample, fh, indent=1)
