@@ -1,0 +1,300 @@
+{
+ "data": {
+  "id": "696f679467063f37df823000",
+  "tcgPlayerId": "84836",
+  "setId": 1429,
+  "setName": "EX Delta Species",
+  "name": "Ditto - 039/113 (Pikachu)",
+  "cardNumber": "39/113",
+  "totalSetNumber": null,
+  "rarity": "Uncommon",
+  "cardType": "Pokemon",
+  "pokedexNumbers": [
+   132
+  ],
+  "hp": "60",
+  "stage": "Basic",
+  "attacks": [
+   "[1L] Thunderbolt (40) Discard all Energy cards attached to Ditto."
+  ],
+  "weakness": "F",
+  "resistance": null,
+  "retreatCost": "1",
+  "artist": null,
+  "pokemonType": "Lightning",
+  "energyType": [
+   "Lightning"
+  ],
+  "flavorText": null,
+  "tcgPlayerUrl": "https://www.tcgplayer.com/product/84836",
+  "prices": {
+   "market": 114.65,
+   "low": 38,
+   "sellers": 27,
+   "listings": 31,
+   "recentSales": 0,
+   "primaryPrinting": "Normal",
+   "lastUpdated": "2026-10-09T12:10:10.519Z",
+   "variants": {
+    "Normal": {
+     "Near Mint": {
+      "price": 114.65,
+      "listings": null,
+      "priceString": "$114.65",
+      "lastUpdated": "2026-10-09T12:10:10.519Z"
+     }
+    },
+    "Reverse Holofoil": {
+     "Lightly Played Reverse Holofoil": {
+      "price": 322.5,
+      "listings": null,
+      "priceString": "$322.50",
+      "lastUpdated": "2026-10-09T12:10:10.519Z"
+     }
+    }
+   }
+  },
+  "imageCdnUrl": "https://tcgplayer-cdn.tcgplayer.com/product/84836_in_800x800.jpg",
+  "imageCdnUrl200": "https://tcgplayer-cdn.tcgplayer.com/product/84836_in_200x200.jpg",
+  "imageCdnUrl400": "https://tcgplayer-cdn.tcgplayer.com/product/84836_in_400x400.jpg",
+  "imageCdnUrl800": "https://tcgplayer-cdn.tcgplayer.com/product/84836_in_800x800.jpg",
+  "imageUrl": "https://tcgplayer-cdn.tcgplayer.com/product/84836_in_200x200.jpg",
+  "needsDetailedScrape": false,
+  "dataCompleteness": "complete",
+  "lastScrapedAt": "2026-10-09T12:10:10.519Z",
+  "createdAt": "2026-01-20T11:31:32.882Z",
+  "updatedAt": "2026-10-09T12:16:00.208Z",
+  "variants": {
+   "Normal": {
+    "printing": "Normal",
+    "marketPrice": 114.65,
+    "lowPrice": 38,
+    "conditionUsed": "Near Mint"
+   },
+   "Reverse Holofoil": {
+    "printing": "Reverse Holofoil",
+    "marketPrice": 322.5,
+    "lowPrice": 38,
+    "conditionUsed": "Lightly Played Reverse Holofoil"
+   }
+  },
+  "printingsAvailable": [
+   "Normal",
+   "Reverse Holofoil"
+  ],
+  "externalCatalogId": "ex11-39",
+  "ebay": {
+   "updatedAt": "2026-10-07T07:02:15.481Z",
+   "lastScrapedDate": "2026-10-07T07:02:15.481Z",
+   "lastEbayCheck": "2026-10-07T07:02:15.481Z",
+   "salesByGrade": {
+    "psa10": {
+     "count": 1,
+     "totalValue": 5280,
+     "averagePrice": 5280,
+     "medianPrice": 5280,
+     "minPrice": 5280,
+     "maxPrice": 5280,
+     "marketPrice7Day": null,
+     "marketPriceMedian7Day": null,
+     "dailyVolume7Day": 0,
+     "marketTrend": null,
+     "lastMarketUpdate": "2026-10-07T07:02:15.480Z",
+     "lastSaleDate": "2026-09-28T03:22:20.000Z",
+     "smartMarketPrice": {
+      "price": 5280,
+      "confidence": "low",
+      "method": "all_filtered_weighted",
+      "daysUsed": 9
+     },
+     "salesBySource": {
+      "fanatics": 1
+     }
+    },
+    "cgc9_5": {
+     "count": 2,
+     "totalValue": 284.4,
+     "averagePrice": 142.2,
+     "medianPrice": 142.2,
+     "minPrice": 110.4,
+     "maxPrice": 174,
+     "marketPrice7Day": 174,
+     "marketPriceMedian7Day": 174,
+     "dailyVolume7Day": 0.14285714285714285,
+     "marketTrend": null,
+     "lastMarketUpdate": "2026-10-07T07:02:15.480Z",
+     "lastSaleDate": "2026-10-05T03:44:41.000Z",
+     "smartMarketPrice": {
+      "price": 142.2,
+      "confidence": "low",
+      "method": "all_filtered_weighted",
+      "daysUsed": 247
+     },
+     "salesBySource": {
+      "fanatics": 2
+     }
+    },
+    "cgc10": {
+     "count": 6,
+     "totalValue": 2333,
+     "averagePrice": 388.8333333333333,
+     "medianPrice": 441,
+     "minPrice": 150,
+     "maxPrice": 595,
+     "marketPrice7Day": null,
+     "marketPriceMedian7Day": null,
+     "dailyVolume7Day": 0,
+     "marketTrend": "up",
+     "lastMarketUpdate": "2026-10-07T07:02:15.480Z",
+     "lastSaleDate": "2026-09-24T12:32:22.000Z",
+     "smartMarketPrice": {
+      "price": 500,
+      "confidence": "low",
+      "method": "90day_filtered_weighted",
+      "daysUsed": 90
+     },
+     "salesBySource": {
+      "fanatics": 6
+     }
+    },
+    "cgc9": {
+     "count": 3,
+     "totalValue": 354,
+     "averagePrice": 118,
+     "medianPrice": 110,
+     "minPrice": 99,
+     "maxPrice": 145,
+     "marketPrice7Day": null,
+     "marketPriceMedian7Day": null,
+     "dailyVolume7Day": 0,
+     "marketTrend": "up",
+     "lastMarketUpdate": "2026-10-07T07:02:15.480Z",
+     "lastSaleDate": "2026-08-11T17:13:50.000Z",
+     "smartMarketPrice": {
+      "price": 127.5,
+      "confidence": "low",
+      "method": "90day_filtered_weighted",
+      "daysUsed": 90
+     },
+     "salesBySource": {
+      "fanatics": 3
+     }
+    },
+    "cgc8_5": {
+     "count": 1,
+     "totalValue": 88.8,
+     "averagePrice": 88.8,
+     "medianPrice": 88.8,
+     "minPrice": 88.8,
+     "maxPrice": 88.8,
+     "marketPrice7Day": null,
+     "marketPriceMedian7Day": null,
+     "dailyVolume7Day": 0,
+     "marketTrend": null,
+     "lastMarketUpdate": "2026-10-07T07:02:15.481Z",
+     "lastSaleDate": "2026-07-06T03:37:42.000Z",
+     "smartMarketPrice": {
+      "price": 88.8,
+      "confidence": "low",
+      "method": "all_filtered_weighted",
+      "daysUsed": 93
+     },
+     "salesBySource": {
+      "fanatics": 1
+     }
+    },
+    "cgc6_5": {
+     "count": 1,
+     "totalValue": 74.4,
+     "averagePrice": 74.4,
+     "medianPrice": 74.4,
+     "minPrice": 74.4,
+     "maxPrice": 74.4,
+     "marketPrice7Day": null,
+     "marketPriceMedian7Day": null,
+     "dailyVolume7Day": 0,
+     "marketTrend": null,
+     "lastMarketUpdate": "2026-10-07T07:02:15.481Z",
+     "lastSaleDate": "2026-06-01T03:22:37.000Z",
+     "smartMarketPrice": {
+      "price": 74.4,
+      "confidence": "low",
+      "method": "all_filtered_weighted",
+      "daysUsed": 128
+     },
+     "salesBySource": {
+      "fanatics": 1
+     }
+    }
+   },
+   "smartPriceOutlierByGrade": {
+    "psa10": false,
+    "cgc9_5": false,
+    "cgc10": false,
+    "cgc9": false,
+    "cgc8_5": false,
+    "cgc6_5": false
+   },
+   "salesVelocity": {
+    "dailyAverage": 0,
+    "weeklyAverage": 0,
+    "monthlyTotal": 0
+   },
+   "priceHistory": {
+    "psa10": {},
+    "cgc9_5": {},
+    "cgc10": {},
+    "cgc9": {},
+    "cgc8_5": {},
+    "cgc6_5": {}
+   },
+   "totalSales": 14,
+   "totalValue": 8414.599999999999,
+   "gradesTracked": [
+    "psa10",
+    "cgc9_5",
+    "cgc10",
+    "cgc9",
+    "cgc8_5",
+    "cgc6_5"
+   ],
+   "dateRangeStart": "2025-12-15T00:00:00.000Z",
+   "dateRangeEnd": "2026-10-05T00:00:00.000Z"
+  }
+ },
+ "metadata": {
+  "total": 1,
+  "count": 1,
+  "limit": 1,
+  "offset": 0,
+  "hasMore": false,
+  "language": "english",
+  "includes": {
+   "priceHistory": false,
+   "ebayData": true,
+   "cardmarketData": false
+  },
+  "historyWindow": {
+   "days": 3,
+   "from": "2026-10-07",
+   "to": "2026-10-10",
+   "maxDataPoints": 30,
+   "granularityNote": "Data points limited to 30. Use ?maxDataPoints=N for higher granularity (plan limits apply)."
+  },
+  "apiCallsConsumed": {
+   "total": 2,
+   "breakdown": {
+    "cards": 1,
+    "history": 0,
+    "ebay": 1,
+    "cardmarket": 0
+   },
+   "costPerCard": 2
+  },
+  "planRestrictions": {
+   "message": "Free plan limited to 3 days of historical data. Upgrade to API plan for full history access.",
+   "limitedTo": "3 days",
+   "maxDataPoints": 30
+  }
+ }
+}

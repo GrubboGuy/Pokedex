@@ -1,0 +1,1135 @@
+{
+ "search": {
+  "href": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B92.81..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=0",
+  "total": 13,
+  "limit": 50,
+  "offset": 0,
+  "itemSummaries": [
+   {
+    "itemId": "v1|307018763207|0",
+    "title": "Pokemon Nintendo Promos KYOGRE EX EX Collector's Tins Black Star Promo #037",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/F58AAeSw10tqObDx/s-l225.jpg"
+    },
+    "price": {
+     "value": "99.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C307018763207%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/F58AAeSw10tqObDx/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "5.50",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-15T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-21T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "320"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/307018763207?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item477bbe8bc7:g:F58AAeSw10tqObDx",
+    "itemLocation": {
+     "postalCode": "405**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/-NsAAeSwMPVqObDx/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ln8AAeSwLpRqObDy/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "307018763207",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-06-22T22:35:29.000Z",
+    "itemCreationDate": "2026-06-22T22:35:29.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|178435675272|0",
+    "title": "Kyogre ex - 037 (EX Collector's Tins) 037 Nintendo Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/NcUAAeSwSHBqi-L3/s-l225.jpg"
+    },
+    "price": {
+     "value": "115.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C178435675272%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/NcUAAeSwSHBqi-L3/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "4.99",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-16T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-23T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1725"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/178435675272?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item298b985488:g:NcUAAeSwSHBqi-L3",
+    "itemLocation": {
+     "postalCode": "928**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/W4kAAeSw0jpqi-MO/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "178435675272",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-08-24T06:22:29.000Z",
+    "itemCreationDate": "2026-08-24T06:22:29.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|168078227507|0",
+    "title": "Kyogre ex - 037 (EX Collector's Tins) 037 Nintendo Holo, 2006 - Excellent ",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/8d4AAeSwi69pZbPg/s-l225.jpg"
+    },
+    "price": {
+     "value": "120.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C168078227507%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/8d4AAeSwi69pZbPg/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-16T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-22T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "370"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/168078227507?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item27223e3833:g:8d4AAeSwi69pZbPg",
+    "itemLocation": {
+     "postalCode": "370**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/Ry4AAeSw8-dpZbPi/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/TUUAAeSwOx5pZbPi/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/VAAAAeSwCBdpZbPl/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/fwEAAeSwX65pZbPn/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/LSUAAeSw9uhpZbPk/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/g28AAeSwafppZbPg/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/n94AAeSwR2xpZbPl/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/O2oAAeSwMixpZbPj/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/hnEAAeSwA89pZbPn/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "168078227507",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-01-13T02:56:11.000Z",
+    "itemCreationDate": "2026-01-13T02:56:11.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|407274576105|0",
+    "title": "Swirl Kyogre ex 037 EX Collector's Tins 037 Nintendo Holo Pokemon",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/4UYAAeSwt7tqxuAe/s-l225.jpg"
+    },
+    "price": {
+     "value": "119.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C407274576105%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/4UYAAeSwt7tqxuAe/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "7.99",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-15T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-19T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "990"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/407274576105?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item5ed374d8e9:g:4UYAAeSwt7tqxuAe",
+    "itemLocation": {
+     "postalCode": "328**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/f3QAAeSwWLdqxuEk/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/3dsAAeSw5opqxuAe/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/2ioAAeSwPGRqxuAe/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/JUcAAeSw3OdqxuAe/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/JmYAAeSwu1JqxuAf/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/4iAAAeSwmZdqxuAf/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/V-oAAeSwsgpqxuEk/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/vVcAAeSwTPNqxuEk/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "407274576105",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-08T00:18:27.000Z",
+    "itemCreationDate": "2026-10-08T00:18:27.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|128072614846|0",
+    "title": "Kyogre ex 037 EX Collector's Tins Promo Holo 100 HP Pokemon TCG 2006",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/U3sAAeSwQY5qouyo/s-l225.jpg"
+    },
+    "price": {
+     "value": "150.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C128072614846%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/U3sAAeSwQY5qouyo/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "8.80",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-14T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-17T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "505"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/128072614846?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item1dd1b903be:g:U3sAAeSwQY5qouyo",
+    "itemLocation": {
+     "postalCode": "144**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ePYAAeSwdqRqouyZ/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/sDQAAeSwjEBqouyZ/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "128072614846",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-09-10T17:46:02.000Z",
+    "itemCreationDate": "2026-09-10T17:46:02.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|137830966874|0",
+    "title": "Pokemon Kyogre ex (EX Collector's Tins) Holofoil [PR - 037 HP Promo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/NLwAAeSwRUdqyi4U/s-l225.jpg"
+    },
+    "price": {
+     "value": "191.08",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C137830966874%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/NLwAAeSwRUdqyi4U/s-l1200.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-15T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-20T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "100"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/137830966874?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item20175da65a:g:NLwAAeSwRUdqyi4U",
+    "itemLocation": {
+     "postalCode": "535**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/NW0AAeSwZ-Bqyi4U/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/VFQAAeSwH~Vqyi4U/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "137830966874",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-10T12:22:41.000Z",
+    "itemCreationDate": "2026-10-10T12:22:41.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|227294995440|0",
+    "title": "Kyogre ex - 037 (EX Collector's Tins) 037 Nintendo Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/zekAAeSwqUtp2Q24/s-l225.jpg"
+    },
+    "price": {
+     "value": "215.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C227294995440%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/zekAAeSwqUtp2Q24/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "14.12",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-19T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-24T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "655"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/227294995440?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item34ebd663f0:g:zekAAeSwqUtp2Q24",
+    "itemLocation": {
+     "postalCode": "194**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/F0AAAeSwrmRp2Q24/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ovkAAeSw8Zdp2Q24/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/znAAAeSwjCJp2Q24/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "227294995440",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-04-10T15:24:59.000Z",
+    "itemCreationDate": "2026-04-10T15:24:59.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|377489613757|0",
+    "title": "Kyogre ex (EX Collector's Tins) Holofoil 037 Nintendo Promos NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/at0AAeSwyIdqwPt~/s-l225.jpg"
+    },
+    "price": {
+     "value": "300.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C377489613757%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/at0AAeSwyIdqwPt~/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-22T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "165"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/377489613757?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item57e42263bd:g:at0AAeSwyIdqwPt~",
+    "itemLocation": {
+     "postalCode": "460**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/~BYAAeSw7Z5qwPt~/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/tc0AAeSwp1NqwPt~/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/6rAAAeSwZPtqwPt~/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/5CQAAeSw-CpqwPt~/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/EUEAAeSwRbVqwPt~/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "377489613757",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-09-12T01:21:42.000Z",
+    "itemCreationDate": "2026-09-12T01:21:42.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|398417024544|0",
+    "title": "Kyogre ex - 037 (EX Collector's Tins) 037 Nintendo Holo NM-LP+",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/XFMAAeSwRrRqsTSz/s-l225.jpg"
+    },
+    "price": {
+     "value": "350.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C398417024544%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/XFMAAeSwRrRqsTSz/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.50",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-22T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "395"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/398417024544?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item5cc3815620:g:XFMAAeSwRrRqsTSz",
+    "itemLocation": {
+     "postalCode": "417**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/JuoAAeSwDaxqsTSz/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "398417024544",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-09-21T13:44:41.000Z",
+    "itemCreationDate": "2026-09-21T13:44:41.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|206555250619|0",
+    "title": "Kyogre ex - 037 Promo (EX Collector's Tins) 037 Nintendo Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/F7kAAeSwSmdqp0Ft/s-l225.jpg"
+    },
+    "price": {
+     "value": "450.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C206555250619%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/F7kAAeSwSmdqp0Ft/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.58",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-21T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-27T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "565"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/206555250619?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item3017a6ffbb:g:F7kAAeSwSmdqp0Ft",
+    "itemLocation": {
+     "postalCode": "300**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/BiEAAeSwfEZqp0Fw/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/R7UAAeSweP9qp0Fy/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/T94AAeSwwTVqp0F2/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/k3cAAeSwEu1qp0F4/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "206555250619",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-09-14T00:39:18.000Z",
+    "itemCreationDate": "2026-09-14T00:39:18.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|407237674018|0",
+    "title": "Kyogre ex - 037 (EX Collector's Tins) 037 Nintendo Holo NEAR MINT",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/9EwAAeSwVrlqswsx/s-l225.jpg"
+    },
+    "price": {
+     "value": "500.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C407237674018%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/9EwAAeSwVrlqswsx/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-22T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "620"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/407237674018?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=item5ed141c422:g:9EwAAeSwVrlqswsx",
+    "itemLocation": {
+     "postalCode": "185**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/PSMAAeSwnY9qswtC/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/veYAAeSwTDFqswtP/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/J8YAAeSw4yFqswtV/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "407237674018",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-09-22T23:13:43.000Z",
+    "itemCreationDate": "2026-09-22T23:13:43.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|860019889469|0",
+    "title": "Kyogre ex EX Collector's Tins Pokemon Nintendo Promos 037 Holo LP",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/t80AAeSwc~RqxncY/s-l225.jpg"
+    },
+    "price": {
+     "value": "499.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C860019889469%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/t80AAeSwc~RqxncY/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.07",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-20T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-26T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1755"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "15043377327",
+    "itemWebUrl": "https://www.ebay.com/itm/860019889469?_skw=Kyogre+ex+EX+Collector%27s+Tins+%2837%2C037%29&hash=itemc83d2e153d:g:t80AAeSwc~RqxncY",
+    "itemLocation": {
+     "postalCode": "972**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/XVAAAeSwbd5qxncZ/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "860019889469",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-07T16:44:09.000Z",
+    "itemCreationDate": "2026-10-07T16:44:09.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   }
+  ],
+  "_query": "Kyogre ex EX Collector's Tins (37,037)"
+ },
+ "item": {
+  "itemId": "v1|178435675272|0",
+  "title": "Kyogre ex - 037 (EX Collector's Tins) 037 Nintendo Holo",
+  "price": {
+   "value": "115.00",
+   "currency": "USD"
+  },
+  "condition": "Ungraded",
+  "conditionId": "4000",
+  "conditionDescriptors": [
+   {
+    "name": "Card Condition",
+    "values": [
+     {
+      "content": "Lightly played (Excellent)",
+      "additionalInfo": [
+       "Moderate surface scuffing",
+       "Fuzzy corners",
+       "Moderate edge chipping"
+      ]
+     }
+    ]
+   }
+  ],
+  "localizedAspects": [
+   {
+    "type": "STRING",
+    "name": "Set",
+    "value": "Nintendo"
+   },
+   {
+    "type": "STRING",
+    "name": "Speciality",
+    "value": "EX"
+   },
+   {
+    "type": "STRING",
+    "name": "HP",
+    "value": "100"
+   },
+   {
+    "type": "STRING",
+    "name": "Rarity",
+    "value": "Promo"
+   },
+   {
+    "type": "STRING",
+    "name": "Game",
+    "value": "Pok\u00e9mon TCG"
+   },
+   {
+    "type": "STRING",
+    "name": "Language",
+    "value": "English"
+   },
+   {
+    "type": "STRING",
+    "name": "Illustrator",
+    "value": "Ryo Ueda"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Name",
+    "value": "Kyogre Ex"
+   },
+   {
+    "type": "STRING",
+    "name": "Manufacturer",
+    "value": "The Pok\u00e9mon Company"
+   },
+   {
+    "type": "STRING",
+    "name": "Stage",
+    "value": "Basic"
+   },
+   {
+    "type": "STRING",
+    "name": "Features",
+    "value": "Promo"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Type",
+    "value": "Pok\u00e9mon"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Number",
+    "value": "037"
+   },
+   {
+    "type": "STRING",
+    "name": "Finish",
+    "value": "Holo"
+   }
+  ],
+  "shippingOptions": [
+   {
+    "shippingServiceCode": "USPS Ground Advantage",
+    "trademarkSymbol": "\u00ae",
+    "shippingCarrierCode": "USPS",
+    "type": "Standard Shipping",
+    "shippingCost": {
+     "value": "4.99",
+     "currency": "USD"
+    },
+    "quantityUsedForEstimate": 1,
+    "minEstimatedDeliveryDate": "2026-10-16T10:00:00.000Z",
+    "maxEstimatedDeliveryDate": "2026-10-23T10:00:00.000Z",
+    "shipToLocationUsedForEstimate": {
+     "postalCode": "60601",
+     "country": "US"
+    },
+    "additionalShippingCostPerUnit": {
+     "value": "4.99",
+     "currency": "USD"
+    },
+    "shippingCostType": "FIXED"
+   }
+  ],
+  "itemWebUrl": "https://www.ebay.com/itm/178435675272",
+  "categoryPath": "Toys & Hobbies|Collectible Card Games|CCG Individual Cards",
+  "estimatedAvailabilities": [
+   {
+    "deliveryOptions": [
+     "SHIP_TO_HOME"
+    ],
+    "estimatedAvailabilityStatus": "IN_STOCK",
+    "estimatedAvailableQuantity": 1,
+    "estimatedSoldQuantity": 0,
+    "estimatedRemainingQuantity": 1
+   }
+  ]
+ }
+}
