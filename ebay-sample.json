@@ -1,0 +1,529 @@
+{
+ "search": {
+  "href": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Groudon+ex+EX+Collector%27s+Tins+%2838%2C038%29&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B123.39..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=0",
+  "total": 4,
+  "limit": 50,
+  "offset": 0,
+  "itemSummaries": [
+   {
+    "itemId": "v1|800723800636|0",
+    "title": "\ud83d\udd25Groudon ex\ud83d\udd25 - 038 (EX Collector's Tins) 038 Nintendo Holo NM\ud83d\udc8e",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/cdIAAeSw8sxquTN2/s-l225.jpg"
+    },
+    "price": {
+     "value": "285.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C800723800636%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/cdIAAeSw8sxquTN2/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.38",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "830"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "24043367407",
+    "itemWebUrl": "https://www.ebay.com/itm/800723800636?_skw=Groudon+ex+EX+Collector%27s+Tins+%2838%2C038%29&hash=itemba6edb923c:g:cdIAAeSw8sxquTN2",
+    "itemLocation": {
+     "postalCode": "029**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/dKwAAeSwQMZquTN3/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/YL4AAeSwsilquTN4/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/pJAAAeSwcAFquTN3/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/o5wAAeSwqCtquTN3/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/JKYAAeSw~i1quTN4/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/NEEAAeSw6fBqxswf/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/bOcAAeSwjQZqxswf/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/GUQAAeSwI7Zqxswg/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "800723800636",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-09-27T15:19:38.000Z",
+    "itemCreationDate": "2026-09-27T15:19:38.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|198715866122|0",
+    "title": "Groudon ex - 038 (EX Collector's Tins) 038 Nintendo Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/pW4AAeSw1rFqz~RN/s-l225.jpg"
+    },
+    "price": {
+     "value": "360.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C198715866122%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/pW4AAeSw1rFqz~RN/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-27T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-02T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "850"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "23097347405",
+    "itemWebUrl": "https://www.ebay.com/itm/198715866122?_skw=Groudon+ex+EX+Collector%27s+Tins+%2838%2C038%29&hash=item2e44637c0a:g:pW4AAeSw1rFqz~RN",
+    "itemLocation": {
+     "postalCode": "027**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/in8AAeSwHf9qz~RO/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "198715866122",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-14T21:31:27.000Z",
+    "itemCreationDate": "2026-10-14T21:31:27.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|377573586971|0",
+    "title": "Groudon ex (EX Collector's Tins) [PR - 038]",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/zkcAAeSw7plqwMFK/s-l225.jpg"
+    },
+    "price": {
+     "value": "384.12",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C377573586971%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/zkcAAeSw7plqwMFK/s-l1200.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "5.99",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-26T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-31T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1045"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "24043367407",
+    "itemWebUrl": "https://www.ebay.com/itm/377573586971?_skw=Groudon+ex+EX+Collector%27s+Tins+%2838%2C038%29&hash=item57e923b81b:g:zkcAAeSw7plqwMFK",
+    "itemLocation": {
+     "postalCode": "780**",
+     "country": "US"
+    },
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "377573586971",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-09-24T18:15:04.000Z",
+    "itemCreationDate": "2026-10-15T22:49:22.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|820228178848|0",
+    "title": "Groudon ex - 038 (EX Collector's Tins) 038 Nintendo Holo NM/LP",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/ZnUAAeSw3vtqid4B/s-l225.jpg"
+    },
+    "price": {
+     "value": "500.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C820228178848%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ZnUAAeSw3vtqid4B/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.50",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-27T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-02T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "415"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "AUCTION"
+    ],
+    "bidCount": 0,
+    "currentBidPrice": {
+     "value": "250.00",
+     "currency": "USD"
+    },
+    "epid": "24043367407",
+    "itemWebUrl": "https://www.ebay.com/itm/820228178848?_skw=Groudon+ex+EX+Collector%27s+Tins+%2838%2C038%29&hash=itembef968c3a0:g:ZnUAAeSw3vtqid4B",
+    "itemLocation": {
+     "postalCode": "150**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/bMcAAeSwRjVqid4H/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/kXIAAeSwSytqid4b/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "820228178848",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-08-22T17:37:39.000Z",
+    "itemCreationDate": "2026-10-11T17:38:20.000Z",
+    "itemEndDate": "2026-10-21T17:38:20.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   }
+  ],
+  "_query": "Groudon ex EX Collector's Tins (38,038)"
+ },
+ "item": {
+  "itemId": "v1|800723800636|0",
+  "title": "\ud83d\udd25Groudon ex\ud83d\udd25 - 038 (EX Collector's Tins) 038 Nintendo Holo NM\ud83d\udc8e",
+  "price": {
+   "value": "285.00",
+   "currency": "USD"
+  },
+  "condition": "Ungraded",
+  "conditionId": "4000",
+  "conditionDescriptors": [
+   {
+    "name": "Card Condition",
+    "values": [
+     {
+      "content": "Near mint or better",
+      "additionalInfo": [
+       "Minor corner and edge wear"
+      ]
+     }
+    ]
+   }
+  ],
+  "localizedAspects": [
+   {
+    "type": "STRING",
+    "name": "Convention/Event",
+    "value": "Pok\u00e9mon League"
+   },
+   {
+    "type": "STRING",
+    "name": "Attribute/MTG:Color",
+    "value": "Fighting"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Size",
+    "value": "Standard"
+   },
+   {
+    "type": "STRING",
+    "name": "Autographed",
+    "value": "No"
+   },
+   {
+    "type": "STRING",
+    "name": "Set",
+    "value": "Nintendo"
+   },
+   {
+    "type": "STRING",
+    "name": "Autograph Format",
+    "value": "Hard Signed"
+   },
+   {
+    "type": "STRING",
+    "name": "Creature/Monster Type",
+    "value": "Beast"
+   },
+   {
+    "type": "STRING",
+    "name": "HP",
+    "value": "100"
+   },
+   {
+    "type": "STRING",
+    "name": "Year Manufactured",
+    "value": "2006"
+   },
+   {
+    "type": "STRING",
+    "name": "Language",
+    "value": "English"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Name",
+    "value": "Groudon Ex"
+   },
+   {
+    "type": "STRING",
+    "name": "Manufacturer",
+    "value": "The Pok\u00e9mon Company"
+   },
+   {
+    "type": "STRING",
+    "name": "Stage",
+    "value": "Basic"
+   },
+   {
+    "type": "STRING",
+    "name": "Features",
+    "value": "Promo"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Type",
+    "value": "Pok\u00e9mon"
+   },
+   {
+    "type": "STRING",
+    "name": "Finish",
+    "value": "Holo"
+   },
+   {
+    "type": "STRING",
+    "name": "Speciality",
+    "value": "EX"
+   },
+   {
+    "type": "STRING",
+    "name": "Character",
+    "value": "Groudon"
+   },
+   {
+    "type": "STRING",
+    "name": "Material",
+    "value": "Card Stock"
+   },
+   {
+    "type": "STRING",
+    "name": "Rarity",
+    "value": "Promo"
+   },
+   {
+    "type": "STRING",
+    "name": "Game",
+    "value": "Pok\u00e9mon TCG"
+   },
+   {
+    "type": "STRING",
+    "name": "Customized",
+    "value": "No"
+   },
+   {
+    "type": "STRING",
+    "name": "Illustrator",
+    "value": "Ryo Ueda"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Number",
+    "value": "038"
+   },
+   {
+    "type": "STRING",
+    "name": "Country of Origin",
+    "value": "United States"
+   }
+  ],
+  "shippingOptions": [
+   {
+    "shippingServiceCode": "Shipping to authenticator, then to you",
+    "shippingCarrierCode": "PSA",
+    "type": "Standard Shipping",
+    "shippingCost": {
+     "value": "5.38",
+     "currency": "USD"
+    },
+    "quantityUsedForEstimate": 1,
+    "minEstimatedDeliveryDate": "2026-10-28T10:00:00.000Z",
+    "maxEstimatedDeliveryDate": "2026-11-04T10:00:00.000Z",
+    "shipToLocationUsedForEstimate": {
+     "postalCode": "60601",
+     "country": "US"
+    },
+    "additionalShippingCostPerUnit": {
+     "value": "0.00",
+     "currency": "USD"
+    },
+    "shippingCostType": "CALCULATED"
+   }
+  ],
+  "itemWebUrl": "https://www.ebay.com/itm/800723800636",
+  "categoryPath": "Toys & Hobbies|Collectible Card Games|CCG Individual Cards",
+  "estimatedAvailabilities": [
+   {
+    "deliveryOptions": [
+     "SHIP_TO_HOME"
+    ],
+    "estimatedAvailabilityStatus": "IN_STOCK",
+    "estimatedAvailableQuantity": 1,
+    "estimatedSoldQuantity": 0,
+    "estimatedRemainingQuantity": 1
+   }
+  ]
+ }
+}

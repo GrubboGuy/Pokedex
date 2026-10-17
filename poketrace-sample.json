@@ -1,0 +1,183 @@
+{
+ "id": "019bff77-befc-77ae-b883-31c7d78ec6b4",
+ "name": "Slowking",
+ "cardNumber": "14/18",
+ "set": {
+  "slug": "southern-islands",
+  "name": "Southern Islands"
+ },
+ "variant": "Reverse_Holofoil",
+ "rarity": "Promo",
+ "productType": "single",
+ "productFamily": "card",
+ "image": "https://cdn.poketrace.com/cards/2cb9b349d144d467.webp",
+ "game": "pokemon",
+ "market": "US",
+ "currency": "USD",
+ "refs": {
+  "tcgplayerId": "46471",
+  "cardmarketId": null
+ },
+ "marketplaceUrls": {
+  "tcgplayer": "https://www.tcgplayer.com/product/46471",
+  "cardmarket": null,
+  "ebay": "https://www.ebay.com/sch/i.html?_nkw=Slowking+Southern+Islands+14%2F18+Reverse_Holofoil&_sacat=0&_from=R40"
+ },
+ "prices": {
+  "ebay": {
+   "DAMAGED": {
+    "avg": 124.99,
+    "low": 124.99,
+    "high": 124.99,
+    "lastUpdated": "2026-08-31T00:00:00.000Z",
+    "avg1d": 75,
+    "avg7d": 99.995,
+    "avg30d": 99.995,
+    "median3d": 124.99,
+    "median7d": 124.99,
+    "median30d": 124.99,
+    "saleCount": 4,
+    "approxSaleCount": true
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 120,
+    "low": 120,
+    "high": 120,
+    "lastUpdated": "2026-08-28T00:00:00.000Z",
+    "avg1d": null,
+    "avg7d": null,
+    "avg30d": null,
+    "median3d": 120,
+    "median7d": 120,
+    "median30d": 120,
+    "saleCount": 1,
+    "approxSaleCount": true
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 335,
+    "low": 320,
+    "high": 350,
+    "lastUpdated": "2026-10-15T00:00:00.000Z",
+    "avg1d": 250,
+    "avg7d": 255.59357,
+    "avg30d": 249.26292,
+    "median3d": 285,
+    "median7d": 262.475,
+    "median30d": 243.75,
+    "saleCount": 54,
+    "approxSaleCount": true
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 209.99,
+    "low": 209.99,
+    "high": 209.99,
+    "lastUpdated": "2026-10-12T00:00:00.000Z",
+    "avg1d": 166.945,
+    "avg7d": 165.645,
+    "avg30d": 165.645,
+    "median3d": 209.99,
+    "median7d": 209.99,
+    "median30d": 160,
+    "saleCount": 11,
+    "approxSaleCount": true
+   },
+   "NEAR_MINT": {
+    "avg": 528.32,
+    "low": 528.32,
+    "high": 528.32,
+    "lastUpdated": "2026-10-12T00:00:00.000Z",
+    "avg1d": 525.345,
+    "avg7d": 445.72876,
+    "avg30d": 445.72876,
+    "median3d": 528.32,
+    "median7d": 402.125,
+    "median30d": 402.125,
+    "saleCount": 34,
+    "approxSaleCount": true
+   }
+  },
+  "tcgplayer": {
+   "DAMAGED": {
+    "avg": 74.87,
+    "low": null,
+    "high": null,
+    "lastUpdated": "2026-10-17T00:00:00.000Z",
+    "avg1d": 74.87,
+    "avg7d": 74.87,
+    "avg30d": 70.699036,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "dataUpdatedAt": "2026-10-17T13:03:47.248Z",
+    "lastRecordedSaleDate": "2026-10-07",
+    "saleCount": 88,
+    "approxSaleCount": false
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 103.16,
+    "low": null,
+    "high": null,
+    "lastUpdated": "2026-10-17T00:00:00.000Z",
+    "avg1d": 103.16,
+    "avg7d": 103.16,
+    "avg30d": 99.245804,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "dataUpdatedAt": "2026-10-17T13:03:47.248Z",
+    "lastRecordedSaleDate": "2026-10-14",
+    "saleCount": 117,
+    "approxSaleCount": false
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 204.63,
+    "low": null,
+    "high": null,
+    "lastUpdated": "2026-10-17T00:00:00.000Z",
+    "avg1d": 204.63,
+    "avg7d": 202.36285,
+    "avg30d": 184.9529,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "dataUpdatedAt": "2026-10-17T13:03:47.248Z",
+    "lastRecordedSaleDate": "2026-10-09",
+    "saleCount": 139,
+    "approxSaleCount": false
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 141.83,
+    "low": null,
+    "high": null,
+    "lastUpdated": "2026-10-17T00:00:00.000Z",
+    "avg1d": 141.83,
+    "avg7d": 139.31714,
+    "avg30d": 131.33322,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "dataUpdatedAt": "2026-10-17T13:03:47.248Z",
+    "lastRecordedSaleDate": "2026-10-16",
+    "saleCount": 155,
+    "approxSaleCount": false
+   },
+   "NEAR_MINT": {
+    "avg": 407.56,
+    "low": null,
+    "high": null,
+    "lastUpdated": "2026-10-17T00:00:00.000Z",
+    "avg1d": 407.56,
+    "avg7d": 407.56,
+    "avg30d": 357.18484,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "dataUpdatedAt": "2026-10-17T13:03:47.248Z",
+    "lastRecordedSaleDate": "2026-10-11",
+    "saleCount": 107,
+    "approxSaleCount": false
+   }
+  }
+ },
+ "lastUpdated": "2026-10-17T21:25:15.973Z"
+}
