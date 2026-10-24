@@ -1,0 +1,1056 @@
+{
+ "search": {
+  "href": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Charizard+4+30th+Celebration+Classic+Collection&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B56.49..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=0",
+  "total": 86,
+  "next": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Charizard+4+30th+Celebration+Classic+Collection&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B56.49..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=50",
+  "limit": 50,
+  "offset": 0,
+  "itemSummaries": [
+   {
+    "itemId": "v1|117475626822|0",
+    "title": "Charizard 4/102 Me: 30th Celebration EX-01 Booster: Classic Collection Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/8JgAAeSwd~pq1qJb/s-l225.jpg"
+    },
+    "price": {
+     "value": "170.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C117475626822%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/8JgAAeSwd~pq1qJb/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.79",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-31T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "600"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/117475626822?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=item1b5a17cf46:g:8JgAAeSwd~pq1qJb",
+    "itemLocation": {
+     "postalCode": "207**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mFgAAeSwFK5q1qKL/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/9i4AAeSwj8pq1qKL/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/l-QAAeSwvH1q1qKL/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "117475626822",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-19T23:09:12.000Z",
+    "itemCreationDate": "2026-10-19T23:09:12.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|407312169135|0",
+    "title": "Charizard 4/102 30th Celebrations Classic Collection Pokemon TCG Card",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/kpcAAeSwMFJq289g/s-l225.jpg"
+    },
+    "price": {
+     "value": "170.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C407312169135%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/kpcAAeSwMFJq289g/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "7.99",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-03T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1745"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/407312169135?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=item5ed5b278af:g:kpcAAeSwMFJq289g",
+    "itemLocation": {
+     "postalCode": "916**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mS0AAeSwX9Jq289O/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/E5YAAeSw2Ndq289O/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/dUoAAeSwondq289O/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/lBMAAeSwlZtq289O/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/j5EAAeSw6bdq289O/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/bbgAAeSwWKVq289P/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/Z4IAAeSwSMRq289O/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ZZkAAeSwiEJq289P/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ntIAAeSwQi1q289P/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "407312169135",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-23T21:56:57.000Z",
+    "itemCreationDate": "2026-10-23T21:56:57.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|327421880896|0",
+    "title": "Charizard 4/102  30th Celebration Booster Classic Collection Base Set Holo NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/~a4AAeSwD2Fq3RE1/s-l225.jpg"
+    },
+    "price": {
+     "value": "179.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C327421880896%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/~a4AAeSwD2Fq3RE1/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-02T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1745"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/327421880896?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=item4c3bdd6a40:g:~a4AAeSwD2Fq3RE1",
+    "itemLocation": {
+     "postalCode": "926**",
+     "country": "US"
+    },
+    "adultOnly": false,
+    "legacyItemId": "327421880896",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-24T20:16:56.000Z",
+    "itemCreationDate": "2026-10-24T20:16:56.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|900036344066|0",
+    "title": "Pokemon TCG Charizard 30th Celebration Classic Collection 4/102 ENG",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/wOYAAeSwi2Vq3Bfm/s-l225.jpg"
+    },
+    "price": {
+     "value": "175.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C900036344066%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/wOYAAeSwi2Vq3Bfm/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "5.47",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-02T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "840"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/900036344066?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=itemd18e58b902:g:wOYAAeSwi2Vq3Bfm",
+    "itemLocation": {
+     "postalCode": "760**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/o0sAAeSwElZq3BfZ/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "900036344066",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-24T02:31:23.000Z",
+    "itemCreationDate": "2026-10-24T02:31:23.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|880047542468|0",
+    "title": "Charizard 30th Celebration: Classic Collection 4/102 Base Set",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/DusAAeSwXolq3Q1n/s-l225.jpg"
+    },
+    "price": {
+     "value": "174.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C880047542468%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/DusAAeSwXolq3Q1n/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.68",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-03T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "550"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/880047542468?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=itemcce6ebd0c4:g:DusAAeSwXolq3Q1n",
+    "itemLocation": {
+     "postalCode": "241**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/CJUAAeSwUNhq3Q1n/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "880047542468",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-24T19:57:15.000Z",
+    "itemCreationDate": "2026-10-24T19:57:15.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|407312295125|0",
+    "title": "2026 Pokemon 30th Celebration #4/102 Charizard Classic Collection",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/dCAAAeSwyhxq2~Gk/s-l225.jpg"
+    },
+    "price": {
+     "value": "175.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C407312295125%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/dCAAAeSwyhxq2~Gk/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.76",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-02T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "890"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/407312295125?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=item5ed5b464d5:g:dCAAAeSwyhxq2~Gk",
+    "itemLocation": {
+     "postalCode": "041**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/fq0AAeSw1nVq2~Gk/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "407312295125",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-23T23:44:34.000Z",
+    "itemCreationDate": "2026-10-23T23:44:34.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|900028874030|0",
+    "title": "Charizard 30th Celebration Classic Collection (30C) 4/102 Extremely Clean",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/TfgAAeSwK3xq2DBZ/s-l225.jpg"
+    },
+    "price": {
+     "value": "174.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C900028874030%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/TfgAAeSwK3xq2DBZ/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.90",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-29T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1025"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/900028874030?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=itemd18de6bd2e:g:TfgAAeSwK3xq2DBZ",
+    "itemLocation": {
+     "postalCode": "781**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/QqUAAeSwIYVq2DBb/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "900028874030",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-21T03:26:40.000Z",
+    "itemCreationDate": "2026-10-21T03:26:40.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|128114728803|0",
+    "title": "CHARIZARD 4/102 HOLO ME: 30TH CELEBRATION CLASSIC COLLECTION POKEMON NEAR MINT",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/iasAAeSwATBqwptl/s-l225.jpg"
+    },
+    "price": {
+     "value": "178.97",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C128114728803%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/iasAAeSwATBqwptl/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.76",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-10-31T07:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "610"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/128114728803?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=item1dd43b9f63:g:iasAAeSwATBqwptl",
+    "itemLocation": {
+     "postalCode": "210**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/CgIAAeSw78Vqwptl/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/qKwAAeSwgeNqwptl/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "128114728803",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-04T18:29:56.000Z",
+    "itemCreationDate": "2026-10-04T18:29:56.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|800758770113|0",
+    "title": "Charizard 4/102 Me: 30th Celebration EX-01 Booster: Classic Collection Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/~roAAeSwYgpqwxdS/s-l225.jpg"
+    },
+    "price": {
+     "value": "179.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C800758770113%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/~roAAeSwYgpqwxdS/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "5.47",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-02T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "665"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/800758770113?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=itemba70f129c1:g:~roAAeSwYgpqwxdS",
+    "itemLocation": {
+     "postalCode": "191**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/iEYAAeSwWsdqwxdS/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/GNEAAeSwUMVqwxdS/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/RT4AAeSwTMVqwxdS/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/f4QAAeSwCbFqwxdS/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/tLcAAeSwutRqwxdS/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "800758770113",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-05T03:20:04.000Z",
+    "itemCreationDate": "2026-10-05T03:20:04.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|137855915112|0",
+    "title": "Pok\u00e9mon 30th Anniversary Celebration - Charizard - Classic Collection 4/102 MINT",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/sRQAAeSwlHtq1Y5H/s-l225.jpg"
+    },
+    "price": {
+     "value": "180.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C137855915112%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/sRQAAeSwlHtq1Y5H/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.68",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-02T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "415"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/137855915112?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=item2018da5468:g:sRQAAeSwlHtq1Y5H",
+    "itemLocation": {
+     "postalCode": "515**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/2oAAAeSwdpdq1Y50/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "137855915112",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-19T03:29:51.000Z",
+    "itemCreationDate": "2026-10-19T03:29:51.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|880047324887|0",
+    "title": "2026 Pokemon TCG 30th Celebration 30C Charizard 4/102 Holo Classic Collection NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/P7oAAeSw3ftq3PEb/s-l225.jpg"
+    },
+    "price": {
+     "value": "180.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C880047324887%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/P7oAAeSw3ftq3PEb/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-29T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1725"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/880047324887?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=itemcce6e87ed7:g:P7oAAeSw3ftq3PEb",
+    "itemLocation": {
+     "postalCode": "980**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/zuwAAeSwQi1q3PEb/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "880047324887",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-24T17:56:28.000Z",
+    "itemCreationDate": "2026-10-24T17:56:28.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|206639578123|0",
+    "title": "ME: 30th Celebration Classic Collection #4/102 Charizard",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/JZgAAeSwJqxq1q3c/s-l225.jpg"
+    },
+    "price": {
+     "value": "180.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C206639578123%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/JZgAAeSwJqxq1q3c/s-l1200.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "7.90",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-10-28T07:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-03T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1265"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "3100041194",
+    "itemWebUrl": "https://www.ebay.com/itm/206639578123?_skw=Charizard+4+30th+Celebration+Classic+Collection&hash=item301cadbc0b:g:JZgAAeSwJqxq1q3c",
+    "itemLocation": {
+     "postalCode": "597**",
+     "country": "US"
+    },
+    "adultOnly": false,
+    "legacyItemId": "206639578123",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-19T23:54:05.000Z",
+    "itemCreationDate": "2026-10-19T23:54:05.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   }
+  ],
+  "_query": "Charizard 4 30th Celebration Classic Collection"
+ },
+ "item": {
+  "itemId": "v1|117475626822|0",
+  "title": "Charizard 4/102 Me: 30th Celebration EX-01 Booster: Classic Collection Holo",
+  "price": {
+   "value": "170.00",
+   "currency": "USD"
+  },
+  "condition": "Ungraded",
+  "conditionId": "4000",
+  "conditionDescriptors": [
+   {
+    "name": "Card Condition",
+    "values": [
+     {
+      "content": "Near mint or better",
+      "additionalInfo": [
+       "Minor corner and edge wear"
+      ]
+     }
+    ]
+   }
+  ],
+  "localizedAspects": [
+   {
+    "type": "STRING",
+    "name": "Speciality",
+    "value": "EX"
+   },
+   {
+    "type": "STRING",
+    "name": "Rarity",
+    "value": "Classic Collection"
+   },
+   {
+    "type": "STRING",
+    "name": "Game",
+    "value": "Pok\u00e9mon TCG"
+   },
+   {
+    "type": "STRING",
+    "name": "Set",
+    "value": "Me: 30th Celebration EX-01 Booster: Classic Collection"
+   },
+   {
+    "type": "STRING",
+    "name": "Language",
+    "value": "English"
+   },
+   {
+    "type": "STRING",
+    "name": "Illustrator",
+    "value": "Mitsuhiro Arita"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Name",
+    "value": "Charizard"
+   },
+   {
+    "type": "STRING",
+    "name": "HP",
+    "value": "120"
+   },
+   {
+    "type": "STRING",
+    "name": "Manufacturer",
+    "value": "The Pok\u00e9mon Company"
+   },
+   {
+    "type": "STRING",
+    "name": "Stage",
+    "value": "Stage 2"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Type",
+    "value": "Pok\u00e9mon"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Number",
+    "value": "4/102"
+   },
+   {
+    "type": "STRING",
+    "name": "Finish",
+    "value": "Holo"
+   }
+  ],
+  "shippingOptions": [
+   {
+    "shippingServiceCode": "FedEx Ground Economy",
+    "trademarkSymbol": "\u00ae",
+    "shippingCarrierCode": "FedEx",
+    "type": "Economy Shipping",
+    "shippingCost": {
+     "value": "6.79",
+     "currency": "USD"
+    },
+    "quantityUsedForEstimate": 1,
+    "minEstimatedDeliveryDate": "2026-10-28T10:00:00.000Z",
+    "maxEstimatedDeliveryDate": "2026-10-31T10:00:00.000Z",
+    "shipToLocationUsedForEstimate": {
+     "postalCode": "60601",
+     "country": "US"
+    },
+    "shippingCostType": "CALCULATED"
+   }
+  ],
+  "itemWebUrl": "https://www.ebay.com/itm/117475626822",
+  "categoryPath": "Toys & Hobbies|Collectible Card Games|CCG Individual Cards",
+  "estimatedAvailabilities": [
+   {
+    "deliveryOptions": [
+     "SHIP_TO_HOME"
+    ],
+    "estimatedAvailabilityStatus": "IN_STOCK",
+    "estimatedAvailableQuantity": 1,
+    "estimatedSoldQuantity": 0,
+    "estimatedRemainingQuantity": 1
+   }
+  ]
+ }
+}

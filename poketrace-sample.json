@@ -1,0 +1,173 @@
+{
+ "id": "019bff77-befb-757f-890a-e422847b6af2",
+ "name": "Blastoise",
+ "cardNumber": "002/130",
+ "set": {
+  "slug": "base-set-2",
+  "name": "Base Set 2"
+ },
+ "variant": "Holofoil",
+ "rarity": "Holo Rare",
+ "productType": "single",
+ "productFamily": "card",
+ "image": "https://cdn.poketrace.com/cards/d634ccf1376f2621.webp",
+ "game": "pokemon",
+ "market": "US",
+ "currency": "USD",
+ "refs": {
+  "tcgplayerId": "42464",
+  "cardmarketId": null
+ },
+ "marketplaceUrls": {
+  "tcgplayer": "https://www.tcgplayer.com/product/42464",
+  "cardmarket": null,
+  "ebay": "https://www.ebay.com/sch/i.html?_nkw=Blastoise+Base+Set+2+002%2F130+Holofoil&_sacat=0&_from=R40"
+ },
+ "prices": {
+  "ebay": {
+   "DAMAGED": {
+    "avg": 57.62,
+    "low": 57.62,
+    "high": 57.62,
+    "lastUpdated": "2026-10-17T00:00:00.000Z",
+    "avg1d": 27.12,
+    "avg7d": 43.846664,
+    "avg30d": 43.846664,
+    "median3d": 57.62,
+    "median7d": 57.62,
+    "median30d": 46.8,
+    "saleCount": 28,
+    "approxSaleCount": true
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 45,
+    "low": 45,
+    "high": 45,
+    "lastUpdated": "2026-10-09T00:00:00.000Z",
+    "avg1d": 69.85,
+    "avg7d": 54.97,
+    "avg30d": 54.97,
+    "median3d": 57.425,
+    "median7d": 57.425,
+    "median30d": 55,
+    "saleCount": 13,
+    "approxSaleCount": true
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 89.99,
+    "low": 89.99,
+    "high": 89.99,
+    "lastUpdated": "2026-10-23T00:00:00.000Z",
+    "avg1d": 110,
+    "avg7d": 94.25,
+    "avg30d": 94.25,
+    "median3d": 89.99,
+    "median7d": 99.995,
+    "median30d": 89.99,
+    "saleCount": 66,
+    "approxSaleCount": true
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 80.33,
+    "low": 80.33,
+    "high": 80.33,
+    "lastUpdated": "2026-10-16T00:00:00.000Z",
+    "avg1d": 69.99,
+    "avg7d": 70.51,
+    "avg30d": 70.51,
+    "median3d": 80.33,
+    "median7d": 75.16,
+    "median30d": 69.99,
+    "saleCount": 15,
+    "approxSaleCount": true
+   },
+   "NEAR_MINT": {
+    "avg": 65,
+    "low": 65,
+    "high": 65,
+    "lastUpdated": "2026-10-15T00:00:00.000Z",
+    "avg1d": 160.89,
+    "avg7d": 110.2225,
+    "avg30d": 110.2225,
+    "median3d": 65,
+    "median7d": 65,
+    "median30d": 107.5,
+    "saleCount": 42,
+    "approxSaleCount": true
+   }
+  },
+  "tcgplayer": {
+   "DAMAGED": {
+    "avg": 36.51,
+    "low": 36.51,
+    "high": 36.51,
+    "lastUpdated": "2026-10-24T00:00:00.000Z",
+    "avg1d": 36.51,
+    "avg7d": 36.47,
+    "avg30d": 36.17484,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 234,
+    "approxSaleCount": false
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 56.71,
+    "low": 56.71,
+    "high": 56.71,
+    "lastUpdated": "2026-10-24T00:00:00.000Z",
+    "avg1d": 56.71,
+    "avg7d": 56.86714,
+    "avg30d": 56.245808,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 227,
+    "approxSaleCount": false
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 95.42,
+    "low": 95.42,
+    "high": 95.42,
+    "lastUpdated": "2026-10-24T00:00:00.000Z",
+    "avg1d": 95.42,
+    "avg7d": 94.02,
+    "avg30d": 94.37548,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 293,
+    "approxSaleCount": false
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 72.74,
+    "low": 72.74,
+    "high": 72.74,
+    "lastUpdated": "2026-10-24T00:00:00.000Z",
+    "avg1d": 72.74,
+    "avg7d": 72.73286,
+    "avg30d": 73.55032,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 271,
+    "approxSaleCount": false
+   },
+   "NEAR_MINT": {
+    "avg": 155,
+    "low": 155,
+    "high": 155,
+    "lastUpdated": "2026-10-24T00:00:00.000Z",
+    "avg1d": 155,
+    "avg7d": 157.1,
+    "avg30d": 158.22903,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 83,
+    "approxSaleCount": false
+   }
+  }
+ },
+ "lastUpdated": "2026-10-24T19:30:33.861Z"
+}
