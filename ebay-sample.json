@@ -1,0 +1,1219 @@
+{
+ "search": {
+  "href": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Rayquaza+%283%2C003%29+POP+Series+1&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B102.46..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=0",
+  "total": 51,
+  "next": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Rayquaza+%283%2C003%29+POP+Series+1&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B102.46..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=50",
+  "limit": 50,
+  "offset": 0,
+  "itemSummaries": [
+   {
+    "itemId": "v1|800849979177|0",
+    "title": "Pokemon Rayquaza POP Series 1 Holo Promo 3/17 HP (Front Crease / Display)\u2060",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/xqoAAeSw~0pq4pz4/s-l225.jpg"
+    },
+    "price": {
+     "value": "109.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C800849979177%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/xqoAAeSw~0pq4pz4/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-09T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "690"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "2314420714",
+    "itemWebUrl": "https://www.ebay.com/itm/800849979177?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=itemba7660e729:g:xqoAAeSw~0pq4pz4",
+    "itemLocation": {
+     "postalCode": "079**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/TOoAAeSwcJxq4pz4/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/SD8AAeSwSwpq4pz4/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "800849979177",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-29T01:10:43.000Z",
+    "itemCreationDate": "2026-10-29T01:10:43.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|307241289859|0",
+    "title": "Rayquaza 3/17 POP Series 1 Holo Rare 80 HP Pokemon TCG 2006 English",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/BXEAAeSwUDFq19kz/s-l225.jpg"
+    },
+    "price": {
+     "value": "110.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C307241289859%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/BXEAAeSwUDFq19kz/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.33",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-09T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "845"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "2314420714",
+    "itemWebUrl": "https://www.ebay.com/itm/307241289859?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=item4789020883:g:BXEAAeSwUDFq19kz",
+    "itemLocation": {
+     "postalCode": "021**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/GM8AAeSwiJ9q19kl/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "307241289859",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-20T21:12:59.000Z",
+    "itemCreationDate": "2026-10-20T21:12:59.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|206600947820|0",
+    "title": "2006 Rayquaza POP Series 1 Holo 3/17 (MP)",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/bkgAAeSwIG5qwdP-/s-l225.jpg"
+    },
+    "price": {
+     "value": "110.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C206600947820%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/bkgAAeSwIG5qwdP-/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.42",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-10T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "520"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "26043384157",
+    "itemWebUrl": "https://www.ebay.com/itm/206600947820?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=item301a60486c:g:bkgAAeSwIG5qwdP-",
+    "itemLocation": {
+     "postalCode": "664**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/MSUAAeSwDhRqwdP-/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/-fUAAeSwzF9qwdP-/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "206600947820",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-04T04:20:53.000Z",
+    "itemCreationDate": "2026-10-04T04:20:53.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|318895377196|0",
+    "title": "Pokemon TCG Rayquaza 003/017 POP Series 1 Holo Rare English",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/RGYAAeSw1Xpqr~iS/s-l225.jpg"
+    },
+    "price": {
+     "value": "120.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C318895377196%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/RGYAAeSw1Xpqr~iS/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.63",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-10T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1010"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "2314420714",
+    "itemWebUrl": "https://www.ebay.com/itm/318895377196?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=item4a3fa54b2c:g:RGYAAeSw1Xpqr~iS",
+    "itemLocation": {
+     "postalCode": "769**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/FZgAAeSwKjZqr~iS/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "318895377196",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-09-20T15:25:42.000Z",
+    "itemCreationDate": "2026-09-20T15:25:42.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|900033369360|0",
+    "title": "Nintendo Rayquaza 3/17 POP Series 1 (2006) English Holofoil Rare",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/sYkAAeSwYJhq2nMc/s-l225.jpg"
+    },
+    "price": {
+     "value": "119.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C900033369360%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/sYkAAeSwYJhq2nMc/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.76",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-09T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1435"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "2314420714",
+    "itemWebUrl": "https://www.ebay.com/itm/900033369360?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=itemd18e2b5510:g:sYkAAeSwYJhq2nMc",
+    "itemLocation": {
+     "postalCode": "852**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/gIcAAeSwS1dq2nMc/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/g-YAAeSw~g5q2nMd/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/tVIAAeSwOpdq2nMd/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/sGEAAeSw9e1q2nMe/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/v~wAAeSwzyBq2nMe/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ixEAAeSwBw1q2nMe/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/jXEAAeSwiGlq2nMf/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mh4AAeSwUNRq2nMg/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/nX4AAeSwc0tq2nMg/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ls8AAeSw-YZq2nMh/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/i5cAAeSwImRq2nMh/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/02kAAeSwwd1q2nMh/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/uVcAAeSwNZJq2nMi/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "900033369360",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-22T20:34:42.000Z",
+    "itemCreationDate": "2026-10-22T20:34:42.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|800841848229|0",
+    "title": "Rayquaza 3/17 POP Series 1 2006 Pokemon TCG English Regular 80 HP",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/lxsAAeSwkU5q37oS/s-l225.jpg"
+    },
+    "price": {
+     "value": "125.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C800841848229%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/lxsAAeSwkU5q37oS/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "5.47",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-05T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-12T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "620"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "16043369471",
+    "itemWebUrl": "https://www.ebay.com/itm/800841848229?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=itemba75e4d5a5:g:lxsAAeSwkU5q37oS",
+    "itemLocation": {
+     "postalCode": "232**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/8E8AAeSw73tq37mU/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mWQAAeSwQ~5q37mo/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/OZkAAeSwLHlq37m3/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/IzQAAeSwpgRq37m-/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/VsMAAeSwgmNq37nB/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/UIcAAeSwtgFq37nF/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/cwAAAeSwvlZq37nH/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "800841848229",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-26T20:45:55.000Z",
+    "itemCreationDate": "2026-10-26T20:45:55.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|137842548597|0",
+    "title": "Pok\u00e9mon Rayquaza Holo Card 003/017 Pop Series 1",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/aZ0AAeSwf01qzwxA/s-l225.jpg"
+    },
+    "price": {
+     "value": "128.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C137842548597%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/aZ0AAeSwf01qzwxA/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.76",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-10T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1735"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "2314420714",
+    "itemWebUrl": "https://www.ebay.com/itm/137842548597?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=item20180e5f75:g:aZ0AAeSwf01qzwxA",
+    "itemLocation": {
+     "postalCode": "926**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/JgEAAeSwyz5qzwxB/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ZHMAAeSwkBlqzwxB/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/TBMAAeSwEyhqzwxB/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/xZQAAeSwxg5qzwxB/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/peIAAeSwET5qzwxC/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/AIAAAeSw5TtqzwxC/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/fngAAeSwaGRqzwxC/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/iPIAAeSwbz9qzwxD/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/aAEAAeSwtcpqzwxD/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/pt8AAeSwlARqzwxD/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/HaMAAeSwrQBqzwxD/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/h9EAAeSwTEZqzwxD/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/tDYAAeSwu1pqzwxD/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/Rx8AAeSwUyJqzwxE/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "137842548597",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-14T05:02:49.000Z",
+    "itemCreationDate": "2026-10-14T05:02:49.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|407321406620|0",
+    "title": "2006 Rayquaza POP Series 1 Holo 3/17 (MP)",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/oMQAAeSwlYBq4YYF/s-l225.jpg"
+    },
+    "price": {
+     "value": "129.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C407321406620%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/oMQAAeSwlYBq4YYF/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.42",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-10T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "570"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "26043384157",
+    "itemWebUrl": "https://www.ebay.com/itm/407321406620?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=item5ed63f6c9c:g:oMQAAeSwlYBq4YYF",
+    "itemLocation": {
+     "postalCode": "740**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/l5gAAeSw1wBq4YYF/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/-mQAAeSwRt9q4YYG/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/FXUAAeSwWKVq4YYG/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/BVoAAeSwtgFq4YYH/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/pdUAAeSwiMFq4YYH/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/K3wAAeSwDHNq4YYI/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/fCoAAeSwwqpq4YYJ/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/6~YAAeSwQX1q4YYJ/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/qc0AAeSwK9Nq4YYK/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/IKwAAeSwZe5q4YYK/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/jZAAAeSwP1pq4YYL/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/6JYAAeSwyIJq4YYL/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/LDMAAeSwuRxq4YYM/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/GbgAAeSw-Khq4YYM/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/y90AAeSwlWdq4YYN/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/n6gAAeSwcUtq4YYN/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/xJoAAeSwGXxq4YYO/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/CggAAeSw26lq4YYO/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mBAAAeSw1wBq4YYP/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/800AAeSw7wxq4YYP/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "407321406620",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-28T05:20:52.000Z",
+    "itemCreationDate": "2026-10-28T05:20:52.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|800849844803|0",
+    "title": "Nintendo Pokemon TCG Rayquaza 3/17 POP Series 1 Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/W8EAAeSw7qVq4o~x/s-l225.jpg"
+    },
+    "price": {
+     "value": "139.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C800849844803%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/W8EAAeSw7qVq4o~x/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-09T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "690"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "2314420714",
+    "itemWebUrl": "https://www.ebay.com/itm/800849844803?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=itemba765eda43:g:W8EAAeSw7qVq4o~x",
+    "itemLocation": {
+     "postalCode": "079**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/uecAAeSwC0Jq4o~x/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/SHAAAeSwuhlq4o~x/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "800849844803",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-29T00:26:12.000Z",
+    "itemCreationDate": "2026-10-29T00:26:12.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|960134228726|0",
+    "title": "2006 Rayquaza POP Series 1 Holo 3/17 With Swirl\ud83c\udf00HP",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/JnkAAeSwj5dq5QSY/s-l225.jpg"
+    },
+    "price": {
+     "value": "139.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C960134228726%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/JnkAAeSwj5dq5QSY/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.33",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-09T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "645"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "26043384157",
+    "itemWebUrl": "https://www.ebay.com/itm/960134228726?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=itemdf8c75aaf6:g:JnkAAeSwj5dq5QSY",
+    "itemLocation": {
+     "postalCode": "276**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/r0kAAeSw7kVq5QSY/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/yVYAAeSwJjJq5QSY/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ZdAAAeSw37xq5QSY/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/TDcAAeSwc7hq5QSZ/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/NUEAAeSwMOlq5QSZ/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/cTsAAeSw5Wlq5QSZ/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "960134228726",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-30T20:58:08.000Z",
+    "itemCreationDate": "2026-10-30T20:58:08.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|407316045368|0",
+    "title": "Rayquaza 3/17 Rare POP Series 1 2004 RARE Pokemon Holo DMG",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/yOAAAeSwD2Fq3pQY/s-l225.jpg"
+    },
+    "price": {
+     "value": "150.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C407316045368%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/yOAAAeSwD2Fq3pQY/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-04T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-10T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "545"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "2314420714",
+    "itemWebUrl": "https://www.ebay.com/itm/407316045368?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=item5ed5ed9e38:g:yOAAAeSwD2Fq3pQY",
+    "itemLocation": {
+     "postalCode": "245**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/9PoAAeSwiv1q3pQX/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/9pcAAeSwiEJq3pQT/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/FzQAAeSw6gpq3pQT/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/044AAeSwlZtq3pQb/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/sHwAAeSwYSZq3pQb/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/HgoAAeSwcJxq3pQc/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "407316045368",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-25T23:43:56.000Z",
+    "itemCreationDate": "2026-10-25T23:43:56.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|960081289275|0",
+    "title": "Rayquaza 003/017 POP Series 1 Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/GaMAAeSw8ZZq1CW3/s-l225.jpg"
+    },
+    "price": {
+     "value": "150.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C960081289275%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/GaMAAeSw8ZZq1CW3/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "5.39",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-03T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-06T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "320"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "2314420714",
+    "itemWebUrl": "https://www.ebay.com/itm/960081289275?_skw=Rayquaza+%283%2C003%29+POP+Series+1&hash=itemdf894de03b:g:GaMAAeSw8ZZq1CW3",
+    "itemLocation": {
+     "postalCode": "441**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/MlQAAeSwxvlq1CW9/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/pO8AAeSwTHdq1CXD/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "960081289275",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-18T01:50:38.000Z",
+    "itemCreationDate": "2026-10-18T01:50:38.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   }
+  ],
+  "_query": "Rayquaza (3,003) POP Series 1"
+ },
+ "item": {
+  "itemId": "v1|318895377196|0",
+  "title": "Pokemon TCG Rayquaza 003/017 POP Series 1 Holo Rare English",
+  "price": {
+   "value": "120.00",
+   "currency": "USD"
+  },
+  "condition": "Ungraded",
+  "conditionId": "4000",
+  "conditionDescriptors": [
+   {
+    "name": "Card Condition",
+    "values": [
+     {
+      "content": "Moderately played (Very good)",
+      "additionalInfo": [
+       "Moderate creasing",
+       "Moderate to heavy edge chipping",
+       "Rounding and soft corner",
+       "Moderate discoloration"
+      ]
+     }
+    ]
+   }
+  ],
+  "localizedAspects": [
+   {
+    "type": "STRING",
+    "name": "Character",
+    "value": "Rayquaza"
+   },
+   {
+    "type": "STRING",
+    "name": "Features",
+    "value": "Holo"
+   },
+   {
+    "type": "STRING",
+    "name": "Rarity",
+    "value": "Rare"
+   },
+   {
+    "type": "STRING",
+    "name": "Game",
+    "value": "Pok\u00e9mon TCG"
+   },
+   {
+    "type": "STRING",
+    "name": "Set",
+    "value": "POP Series 1"
+   },
+   {
+    "type": "STRING",
+    "name": "Language",
+    "value": "English"
+   },
+   {
+    "type": "STRING",
+    "name": "Illustrator",
+    "value": "Katsura Tabata"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Name",
+    "value": "Rayquaza"
+   },
+   {
+    "type": "STRING",
+    "name": "HP",
+    "value": "80"
+   },
+   {
+    "type": "STRING",
+    "name": "Manufacturer",
+    "value": "The Pok\u00e9mon Company"
+   },
+   {
+    "type": "STRING",
+    "name": "Stage",
+    "value": "Basic"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Type",
+    "value": "Pok\u00e9mon"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Number",
+    "value": "003/017"
+   },
+   {
+    "type": "STRING",
+    "name": "Finish",
+    "value": "Holo"
+   }
+  ],
+  "shippingOptions": [
+   {
+    "shippingServiceCode": "USPS Ground Advantage",
+    "trademarkSymbol": "\u00ae",
+    "shippingCarrierCode": "USPS",
+    "type": "Standard Shipping",
+    "shippingCost": {
+     "value": "6.63",
+     "currency": "USD"
+    },
+    "quantityUsedForEstimate": 1,
+    "minEstimatedDeliveryDate": "2026-11-04T10:00:00.000Z",
+    "maxEstimatedDeliveryDate": "2026-11-10T10:00:00.000Z",
+    "shipToLocationUsedForEstimate": {
+     "postalCode": "60601",
+     "country": "US"
+    },
+    "shippingCostType": "CALCULATED"
+   }
+  ],
+  "itemWebUrl": "https://www.ebay.com/itm/318895377196",
+  "categoryPath": "Toys & Hobbies|Collectible Card Games|CCG Individual Cards",
+  "estimatedAvailabilities": [
+   {
+    "deliveryOptions": [
+     "SHIP_TO_HOME"
+    ],
+    "estimatedAvailabilityStatus": "IN_STOCK",
+    "estimatedAvailableQuantity": 1,
+    "estimatedSoldQuantity": 0,
+    "estimatedRemainingQuantity": 1
+   }
+  ]
+ }
+}

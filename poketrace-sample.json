@@ -1,0 +1,173 @@
+{
+ "id": "019bff77-bef9-75ac-b16a-fbd1be49e37c",
+ "name": "Venusaur",
+ "cardNumber": "015/102",
+ "set": {
+  "slug": "base-set",
+  "name": "Base Set"
+ },
+ "variant": "Holofoil",
+ "rarity": "Holo Rare",
+ "productType": "single",
+ "productFamily": "card",
+ "image": "https://cdn.poketrace.com/cards/39eaccca1bcf6d67.webp",
+ "game": "pokemon",
+ "market": "US",
+ "currency": "USD",
+ "refs": {
+  "tcgplayerId": "42355",
+  "cardmarketId": null
+ },
+ "marketplaceUrls": {
+  "tcgplayer": "https://www.tcgplayer.com/product/42355",
+  "cardmarket": null,
+  "ebay": "https://www.ebay.com/sch/i.html?_nkw=Venusaur+Base+Set+015%2F102+Holofoil&_sacat=0&_from=R40"
+ },
+ "prices": {
+  "ebay": {
+   "DAMAGED": {
+    "avg": 40,
+    "low": 40,
+    "high": 40,
+    "lastUpdated": "2026-10-29T00:00:00.000Z",
+    "avg1d": 39.99,
+    "avg7d": 38.552856,
+    "avg30d": 38.485,
+    "median3d": 40,
+    "median7d": 39.99,
+    "median30d": 38.995,
+    "saleCount": 46,
+    "approxSaleCount": true
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 43.34,
+    "low": 42.29,
+    "high": 44.39,
+    "lastUpdated": "2026-10-16T00:00:00.000Z",
+    "avg1d": 50,
+    "avg7d": 42.8325,
+    "avg30d": 42.8325,
+    "median3d": 44.39,
+    "median7d": 44.39,
+    "median30d": 43.34,
+    "saleCount": 17,
+    "approxSaleCount": true
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 93.33,
+    "low": 75,
+    "high": 104.99,
+    "lastUpdated": "2026-10-30T00:00:00.000Z",
+    "avg1d": 100,
+    "avg7d": 94.66929,
+    "avg30d": 91.67954,
+    "median3d": 100,
+    "median7d": 100,
+    "median30d": 89.99,
+    "saleCount": 139,
+    "approxSaleCount": true
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 72.9,
+    "low": 72.9,
+    "high": 72.9,
+    "lastUpdated": "2026-10-30T00:00:00.000Z",
+    "avg1d": 61,
+    "avg7d": 63.184284,
+    "avg30d": 65.52193,
+    "median3d": 72.9,
+    "median7d": 72.9,
+    "median30d": 68,
+    "saleCount": 36,
+    "approxSaleCount": true
+   },
+   "NEAR_MINT": {
+    "avg": 140,
+    "low": 140,
+    "high": 140,
+    "lastUpdated": "2026-10-28T00:00:00.000Z",
+    "avg1d": 140,
+    "avg7d": 111.57143,
+    "avg30d": 111.57143,
+    "median3d": 140,
+    "median7d": 140,
+    "median30d": 99,
+    "saleCount": 65,
+    "approxSaleCount": true
+   }
+  },
+  "tcgplayer": {
+   "DAMAGED": {
+    "avg": 30.98,
+    "low": 30.98,
+    "high": 30.98,
+    "lastUpdated": "2026-10-30T00:00:00.000Z",
+    "avg1d": 30.98,
+    "avg7d": 30.98,
+    "avg30d": 31.721935,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 751,
+    "approxSaleCount": false
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 44.11,
+    "low": 44.11,
+    "high": 44.11,
+    "lastUpdated": "2026-10-30T00:00:00.000Z",
+    "avg1d": 44.11,
+    "avg7d": 44.12,
+    "avg30d": 44.376774,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 711,
+    "approxSaleCount": false
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 105.28,
+    "low": 105.28,
+    "high": 105.28,
+    "lastUpdated": "2026-10-30T00:00:00.000Z",
+    "avg1d": 105.22,
+    "avg7d": 105.307144,
+    "avg30d": 103.81387,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 672,
+    "approxSaleCount": false
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 73.28,
+    "low": 73.28,
+    "high": 73.28,
+    "lastUpdated": "2026-10-30T00:00:00.000Z",
+    "avg1d": 73.28,
+    "avg7d": 73.26143,
+    "avg30d": 71.99839,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 839,
+    "approxSaleCount": false
+   },
+   "NEAR_MINT": {
+    "avg": 143.42,
+    "low": 126.99,
+    "high": 129.99,
+    "lastUpdated": "2026-10-30T00:00:00.000Z",
+    "avg1d": 146.26,
+    "avg7d": 148.89143,
+    "avg30d": 164.25484,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 261,
+    "approxSaleCount": false
+   }
+  }
+ },
+ "lastUpdated": "2026-10-30T23:50:57.635Z"
+}
