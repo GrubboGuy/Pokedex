@@ -1,0 +1,1222 @@
+{
+ "search": {
+  "href": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Lugia+149+30th+Celebration+Classic+Collection&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B46.41..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=0",
+  "total": 215,
+  "next": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Lugia+149+30th+Celebration+Classic+Collection&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B46.41..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=50",
+  "limit": 50,
+  "offset": 0,
+  "itemSummaries": [
+   {
+    "itemId": "v1|307271574607|0",
+    "title": "Lugia 149/147 30th Anniversary Celebrations Classic Collection Pokemon Card",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/TCcAAeSw3rBq3sFQ/s-l225.jpg"
+    },
+    "price": {
+     "value": "129.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C307271574607%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/TCcAAeSw3rBq3sFQ/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.33",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-12T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-17T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "915"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "itemWebUrl": "https://www.ebay.com/itm/307271574607?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=item478ad0244f:g:TCcAAeSw3rBq3sFQ",
+    "itemLocation": {
+     "postalCode": "805**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/2RwAAeSw-Khq3sFP/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/er8AAeSwfTBq3sFP/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/-ocAAeSwYsZq3sFQ/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/4SoAAeSwvQ1q3sFR/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/HqgAAeSwsEpq3sFR/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/li0AAeSwK9Nq3sFS/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ljMAAeSwK9Nq3sFT/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/7s8AAeSw9WZq3sFT/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/uowAAeSw8oNq3sFU/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/jxMAAeSwOJJq3sFU/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/rmgAAeSwlWdq3sFV/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/HsEAAeSwsEpq3sFV/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/1lIAAeSwNBBq3sFW/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/AkoAAeSwpgRq3sFW/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/CbwAAeSwSMRq3sFX/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/f0gAAeSwPahq3sFX/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "307271574607",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-24T16:33:45.000Z",
+    "itemCreationDate": "2026-11-07T16:14:21.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|147669664224|0",
+    "title": "Pok\u00e9mon Card Lugia - 149/147 - ME: 30th Celebration Classic Collection (30C)",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/7OsAAeSw-rZq7luf/s-l225.jpg"
+    },
+    "price": {
+     "value": "140.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C147669664224%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "185.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "24",
+     "discountAmount": {
+      "value": "45.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/7OsAAeSw-rZq7luf/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.24",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-13T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-19T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "145"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "9100724204",
+    "itemWebUrl": "https://www.ebay.com/itm/147669664224?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=item2261cc41e0:g:7OsAAeSw-rZq7luf",
+    "itemLocation": {
+     "postalCode": "488**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/NFUAAeSwKnFq7lui/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/FaYAAeSwok1q7luj/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/DVgAAeSw~epq7lui/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/3ogAAeSwbgpq7lui/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/G9IAAeSw3EBq7luj/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/Ji0AAeSwzytq7luj/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "147669664224",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-06T22:59:21.000Z",
+    "itemCreationDate": "2026-11-06T22:59:21.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|920077590288|0",
+    "title": "Lugia 149/147 Me: 30th Celebration EX-01 Booster: Classic Collection Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/rMMAAeSwqpJq3-z4/s-l225.jpg"
+    },
+    "price": {
+     "value": "150.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C920077590288%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "185.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "19",
+     "discountAmount": {
+      "value": "35.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/rMMAAeSwqpJq3-z4/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.16",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-10T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-13T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "35"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9100724204",
+    "itemWebUrl": "https://www.ebay.com/itm/920077590288?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=itemd638e5df10:g:rMMAAeSwqpJq3-z4",
+    "itemLocation": {
+     "postalCode": "463**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mtwAAeSwCHlq3-z4/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "920077590288",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-27T00:15:11.000Z",
+    "itemCreationDate": "2026-10-27T00:15:11.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|800885960552|0",
+    "title": "Pokemon 30th Celebration Lugia 149/147 \"Classic Collection\" 2026. Crystal Lugia",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/Xk8AAeSwxXlq7iiR/s-l225.jpg"
+    },
+    "price": {
+     "value": "150.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C800885960552%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "185.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "19",
+     "discountAmount": {
+      "value": "35.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/Xk8AAeSwxXlq7iiR/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.42",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-12T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-18T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "520"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9100724204",
+    "itemWebUrl": "https://www.ebay.com/itm/800885960552?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=itemba7885ef68:g:Xk8AAeSwxXlq7iiR",
+    "itemLocation": {
+     "postalCode": "244**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/tzoAAeSwOIxq7iiR/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "800885960552",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-06T19:23:00.000Z",
+    "itemCreationDate": "2026-11-06T19:23:00.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|287710041680|0",
+    "title": "Lugia 149/147 Me: 30th Celebration EX-01 Booster: Classic Collection Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/hYMAAeSwYKZq7i-R/s-l225.jpg"
+    },
+    "price": {
+     "value": "150.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C287710041680%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "185.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "19",
+     "discountAmount": {
+      "value": "35.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/hYMAAeSwYKZq7i-R/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.42",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-12T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-17T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "575"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9100724204",
+    "itemWebUrl": "https://www.ebay.com/itm/287710041680?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=item42fcdad650:g:hYMAAeSwYKZq7i-R",
+    "itemLocation": {
+     "postalCode": "296**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/7foAAeSwx89q7i-R/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "287710041680",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-06T19:52:21.000Z",
+    "itemCreationDate": "2026-11-06T19:52:21.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|407343228133|0",
+    "title": "Lugia 149/147 Me: 30th Celebration Classic Collection Gold border Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/P5MAAeSwbnpq7RWt/s-l225.jpg"
+    },
+    "price": {
+     "value": "150.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C407343228133%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "185.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "19",
+     "discountAmount": {
+      "value": "35.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/P5MAAeSwbnpq7RWt/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.62",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-12T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-18T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "765"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9100724204",
+    "itemWebUrl": "https://www.ebay.com/itm/407343228133?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=item5ed78c64e5:g:P5MAAeSwbnpq7RWt",
+    "itemLocation": {
+     "postalCode": "064**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/V-EAAeSw5KRq7RW9/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "407343228133",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-05T23:49:49.000Z",
+    "itemCreationDate": "2026-11-05T23:49:49.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|307259053033|0",
+    "title": "Pok\u00e9mon 30th Celebration Classic Collection Lugia 149/147",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/IhkAAeSw6dVq5iVj/s-l225.jpg"
+    },
+    "price": {
+     "value": "150.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C307259053033%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "185.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "19",
+     "discountAmount": {
+      "value": "35.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/IhkAAeSw6dVq5iVj/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.76",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-13T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-19T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1725"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9100724204",
+    "itemWebUrl": "https://www.ebay.com/itm/307259053033?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=item478a1113e9:g:IhkAAeSw6dVq5iVj",
+    "itemLocation": {
+     "postalCode": "917**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/xZwAAeSw~kxq5iVj/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "307259053033",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-31T17:30:38.000Z",
+    "itemCreationDate": "2026-10-31T17:30:38.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|800886344415|0",
+    "title": "Lugia 149/147 Me: 30th Celebration EX-01 Booster: Classic Collection Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/~lQAAeSwplRq7kfQ/s-l225.jpg"
+    },
+    "price": {
+     "value": "150.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C800886344415%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "185.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "19",
+     "discountAmount": {
+      "value": "35.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/~lQAAeSwplRq7kfQ/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "8.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-12T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-17T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "775"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "9100724204",
+    "itemWebUrl": "https://www.ebay.com/itm/800886344415?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=itemba788bcadf:g:~lQAAeSwplRq7kfQ",
+    "itemLocation": {
+     "postalCode": "011**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/PfgAAeSwvAdq7kee/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "800886344415",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-06T21:37:01.000Z",
+    "itemCreationDate": "2026-11-06T21:37:01.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|227600258813|0",
+    "title": "Lugia 149/147 Me: 30th Celebration EX-01 Booster: Classic Collection Holo CLEAN",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/JKsAAeSwvIxq7RlU/s-l225.jpg"
+    },
+    "price": {
+     "value": "155.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C227600258813%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "185.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "16",
+     "discountAmount": {
+      "value": "30.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/JKsAAeSwvIxq7RlU/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.16",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-12T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-17T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "75"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "9100724204",
+    "itemWebUrl": "https://www.ebay.com/itm/227600258813?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=item34fe0856fd:g:JKsAAeSwvIxq7RlU",
+    "itemLocation": {
+     "postalCode": "531**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/7-UAAeSwgSpq7Rl0/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "227600258813",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-06T00:07:45.000Z",
+    "itemCreationDate": "2026-11-06T00:07:45.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|377627488310|0",
+    "title": "Lugia 30th Celebration Classic Collection 149/147 Holo Pokemon NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/PLYAAeSwtIRq7nrW/s-l225.jpg"
+    },
+    "price": {
+     "value": "154.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C377627488310%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "185.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "16",
+     "discountAmount": {
+      "value": "30.01",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/PLYAAeSwtIRq7nrW/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.42",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-12T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-18T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "505"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9100724204",
+    "itemWebUrl": "https://www.ebay.com/itm/377627488310?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=item57ec5a3036:g:PLYAAeSwtIRq7nrW",
+    "itemLocation": {
+     "postalCode": "287**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/QesAAeSwRHlq7nrW/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "377627488310",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-07T01:11:48.000Z",
+    "itemCreationDate": "2026-11-07T01:11:48.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|227598027373|0",
+    "title": "Pokemon 30th Celebration Crystal Lugia 149/147 Classic Collection NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/GuIAAeSwmwRq62qf/s-l225.jpg"
+    },
+    "price": {
+     "value": "159.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C227598027373%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/GuIAAeSwmwRq62qf/s-l640.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.33",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-12T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-17T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "800"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "itemWebUrl": "https://www.ebay.com/itm/227598027373?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=item34fde64a6d:g:GuIAAeSwmwRq62qf",
+    "itemLocation": {
+     "postalCode": "750**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mxgAAeSwsNlq62qs/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "227598027373",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-04T17:26:47.000Z",
+    "itemCreationDate": "2026-11-04T17:26:47.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|128161860864|0",
+    "title": "Lugia 149/147 Crystal Type 30th Celebration Classic Collection Holo Pokemon NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/tVIAAeSwtgFq4qE7/s-l225.jpg"
+    },
+    "price": {
+     "value": "159.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C128161860864%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "185.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "14",
+     "discountAmount": {
+      "value": "25.01",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/tVIAAeSwtgFq4qE7/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.42",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-12T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-16T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "300"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "9100724204",
+    "itemWebUrl": "https://www.ebay.com/itm/128161860864?_skw=Lugia+149+30th+Celebration+Classic+Collection&hash=item1dd70acd00:g:tVIAAeSwtgFq4qE7",
+    "itemLocation": {
+     "postalCode": "441**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/xlEAAeSwc~Vq4qE7/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "128161860864",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-29T02:19:08.000Z",
+    "itemCreationDate": "2026-10-29T02:19:08.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   }
+  ],
+  "_query": "Lugia 149 30th Celebration Classic Collection"
+ },
+ "item": {
+  "itemId": "v1|307271574607|0",
+  "title": "Lugia 149/147 30th Anniversary Celebrations Classic Collection Pokemon Card",
+  "price": {
+   "value": "129.99",
+   "currency": "USD"
+  },
+  "condition": "Ungraded",
+  "conditionId": "4000",
+  "conditionDescriptors": [
+   {
+    "name": "Card Condition",
+    "values": [
+     {
+      "content": "Near mint or better",
+      "additionalInfo": [
+       "Minor corner and edge wear"
+      ]
+     }
+    ]
+   }
+  ],
+  "localizedAspects": [
+   {
+    "type": "STRING",
+    "name": "Card Size",
+    "value": "Standard"
+   },
+   {
+    "type": "STRING",
+    "name": "Set",
+    "value": "Celebrations"
+   },
+   {
+    "type": "STRING",
+    "name": "Character",
+    "value": "Lugia"
+   },
+   {
+    "type": "STRING",
+    "name": "Creature/Monster Type",
+    "value": "Colorless"
+   },
+   {
+    "type": "STRING",
+    "name": "HP",
+    "value": "80"
+   },
+   {
+    "type": "STRING",
+    "name": "Year Manufactured",
+    "value": "2026"
+   },
+   {
+    "type": "STRING",
+    "name": "Material",
+    "value": "Card Stock"
+   },
+   {
+    "type": "STRING",
+    "name": "Franchise",
+    "value": "Pokemon"
+   },
+   {
+    "type": "STRING",
+    "name": "Vintage",
+    "value": "Yes"
+   },
+   {
+    "type": "STRING",
+    "name": "Rarity",
+    "value": "Secret Rare"
+   },
+   {
+    "type": "STRING",
+    "name": "Game",
+    "value": "Pok\u00e9mon TCG"
+   },
+   {
+    "type": "STRING",
+    "name": "Language",
+    "value": "English"
+   },
+   {
+    "type": "STRING",
+    "name": "Illustrator",
+    "value": "Naoyo Kimura"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Name",
+    "value": "Lugia"
+   },
+   {
+    "type": "STRING",
+    "name": "Manufacturer",
+    "value": "The Pok\u00e9mon Company"
+   },
+   {
+    "type": "STRING",
+    "name": "Stage",
+    "value": "Basic"
+   },
+   {
+    "type": "STRING",
+    "name": "Features",
+    "value": "Holo"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Number",
+    "value": "149/147"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Type",
+    "value": "Pok\u00e9mon"
+   },
+   {
+    "type": "STRING",
+    "name": "Finish",
+    "value": "Holo"
+   }
+  ],
+  "shippingOptions": [
+   {
+    "shippingServiceCode": "USPS Ground Advantage",
+    "trademarkSymbol": "\u00ae",
+    "shippingCarrierCode": "USPS",
+    "type": "Standard Shipping",
+    "shippingCost": {
+     "value": "6.33",
+     "currency": "USD"
+    },
+    "quantityUsedForEstimate": 1,
+    "minEstimatedDeliveryDate": "2026-11-12T10:00:00.000Z",
+    "maxEstimatedDeliveryDate": "2026-11-17T10:00:00.000Z",
+    "shipToLocationUsedForEstimate": {
+     "postalCode": "60601",
+     "country": "US"
+    },
+    "shippingCostType": "CALCULATED"
+   }
+  ],
+  "itemWebUrl": "https://www.ebay.com/itm/307271574607",
+  "categoryPath": "Toys & Hobbies|Collectible Card Games|CCG Individual Cards",
+  "estimatedAvailabilities": [
+   {
+    "deliveryOptions": [
+     "SHIP_TO_HOME"
+    ],
+    "estimatedAvailabilityStatus": "IN_STOCK",
+    "estimatedAvailableQuantity": 1,
+    "estimatedSoldQuantity": 0,
+    "estimatedRemainingQuantity": 1
+   }
+  ]
+ }
+}
