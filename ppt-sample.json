@@ -1,0 +1,293 @@
+{
+ "data": {
+  "id": "696f658867063f37df81fd24",
+  "tcgPlayerId": "194920",
+  "setId": 2464,
+  "setName": "SM - Unified Minds",
+  "name": "Celebi",
+  "cardNumber": "4/236",
+  "totalSetNumber": null,
+  "rarity": "Holo Rare",
+  "cardType": "Pokemon",
+  "pokedexNumbers": [
+   251
+  ],
+  "hp": "80",
+  "stage": "Basic",
+  "attacks": [
+   "[G] Time Spiral\r\n<br>Devolve 1 of your opponent's evolved Pok\u00e9mon by shuffling the highest Stage Evolution card on it into your opponent's deck.",
+   "[G] Mind Bend (20)\r\n<br>Your opponent's Active Pok\u00e9mon is now Confused."
+  ],
+  "weakness": "Rx2",
+  "resistance": "None",
+  "retreatCost": "1",
+  "artist": null,
+  "pokemonType": "Grass",
+  "energyType": [
+   "Grass"
+  ],
+  "flavorText": null,
+  "tcgPlayerUrl": "https://www.tcgplayer.com/product/194920",
+  "prices": {
+   "market": 5.12,
+   "low": 3.55,
+   "sellers": 22,
+   "listings": 27,
+   "recentSales": 0,
+   "primaryPrinting": "Holofoil",
+   "lastUpdated": "2026-11-14T12:05:31.024Z",
+   "variants": {
+    "Holofoil": {
+     "Near Mint Holofoil": {
+      "price": 5.12,
+      "listings": null,
+      "priceString": "$5.12",
+      "lastUpdated": "2026-11-14T12:05:31.024Z"
+     }
+    },
+    "Reverse Holofoil": {
+     "Near Mint Reverse Holofoil": {
+      "price": 6.55,
+      "listings": null,
+      "priceString": "$6.55",
+      "lastUpdated": "2026-11-14T12:05:31.024Z"
+     }
+    }
+   }
+  },
+  "imageCdnUrl": "https://tcgplayer-cdn.tcgplayer.com/product/194920_in_800x800.jpg",
+  "imageCdnUrl200": "https://tcgplayer-cdn.tcgplayer.com/product/194920_in_200x200.jpg",
+  "imageCdnUrl400": "https://tcgplayer-cdn.tcgplayer.com/product/194920_in_400x400.jpg",
+  "imageCdnUrl800": "https://tcgplayer-cdn.tcgplayer.com/product/194920_in_800x800.jpg",
+  "imageUrl": "https://tcgplayer-cdn.tcgplayer.com/product/194920_in_200x200.jpg",
+  "needsDetailedScrape": false,
+  "dataCompleteness": "complete",
+  "lastScrapedAt": "2026-11-14T12:05:31.024Z",
+  "createdAt": "2026-01-20T11:22:48.931Z",
+  "updatedAt": "2026-11-14T12:05:39.944Z",
+  "variants": {
+   "Holofoil": {
+    "printing": "Holofoil",
+    "marketPrice": 5.12,
+    "lowPrice": 3.55,
+    "conditionUsed": "Near Mint Holofoil"
+   },
+   "Reverse Holofoil": {
+    "printing": "Reverse Holofoil",
+    "marketPrice": 6.55,
+    "lowPrice": 3.55,
+    "conditionUsed": "Near Mint Reverse Holofoil"
+   }
+  },
+  "printingsAvailable": [
+   "Holofoil",
+   "Reverse Holofoil"
+  ],
+  "externalCatalogId": "sm11-4",
+  "ebay": {
+   "updatedAt": "2026-11-03T17:45:55.347Z",
+   "lastScrapedDate": "2026-11-03T17:45:55.347Z",
+   "lastEbayCheck": "2026-11-03T17:45:55.347Z",
+   "salesByGrade": {
+    "psa10": {
+     "count": 4,
+     "totalValue": 272.09,
+     "averagePrice": 68.0225,
+     "medianPrice": 58.495,
+     "minPrice": 21.6,
+     "maxPrice": 133.5,
+     "marketPrice7Day": null,
+     "marketPriceMedian7Day": null,
+     "dailyVolume7Day": 0,
+     "marketTrend": "up",
+     "lastMarketUpdate": "2026-11-03T17:45:55.346Z",
+     "lastSaleDate": "2026-04-19T00:00:00.000Z",
+     "smartMarketPrice": {
+      "price": 107.25,
+      "confidence": "low",
+      "method": "all_filtered_weighted",
+      "daysUsed": 1618
+     },
+     "salesBySource": {
+      "ebay": 2,
+      "fanatics": 2
+     },
+     "labels": null
+    },
+    "psa9": {
+     "count": 2,
+     "totalValue": 53.19,
+     "averagePrice": 26.595,
+     "medianPrice": 26.595,
+     "minPrice": 13.2,
+     "maxPrice": 39.99,
+     "marketPrice7Day": null,
+     "marketPriceMedian7Day": null,
+     "dailyVolume7Day": 0,
+     "marketTrend": null,
+     "lastMarketUpdate": "2026-11-03T17:45:55.346Z",
+     "lastSaleDate": "2026-06-27T00:00:00.000Z",
+     "smartMarketPrice": {
+      "price": 23.6,
+      "confidence": "low",
+      "method": "all_filtered_weighted",
+      "daysUsed": 1548
+     },
+     "salesBySource": {
+      "ebay": 1,
+      "fanatics": 1
+     },
+     "labels": null
+    },
+    "cgc8": {
+     "count": 1,
+     "totalValue": 16,
+     "averagePrice": 16,
+     "medianPrice": 16,
+     "minPrice": 16,
+     "maxPrice": 16,
+     "marketPrice7Day": null,
+     "marketPriceMedian7Day": null,
+     "dailyVolume7Day": 0,
+     "marketTrend": null,
+     "lastMarketUpdate": "2026-11-03T17:45:55.346Z",
+     "lastSaleDate": "2026-09-13T05:31:51.000Z",
+     "smartMarketPrice": {
+      "price": 16,
+      "confidence": "low",
+      "method": "all_filtered_weighted",
+      "daysUsed": 51
+     },
+     "salesBySource": {
+      "fanatics": 1
+     },
+     "labels": null
+    },
+    "cgc8_5": {
+     "count": 1,
+     "totalValue": 19.2,
+     "averagePrice": 19.2,
+     "medianPrice": 19.2,
+     "minPrice": 19.2,
+     "maxPrice": 19.2,
+     "marketPrice7Day": null,
+     "marketPriceMedian7Day": null,
+     "dailyVolume7Day": 0,
+     "marketTrend": null,
+     "lastMarketUpdate": "2026-11-03T17:45:55.346Z",
+     "lastSaleDate": "2023-08-14T02:00:00.000Z",
+     "smartMarketPrice": {
+      "price": 19.2,
+      "confidence": "low",
+      "method": "all_filtered_weighted",
+      "daysUsed": 1177
+     },
+     "salesBySource": {
+      "fanatics": 1
+     },
+     "labels": null
+    }
+   },
+   "smartPriceOutlierByGrade": {
+    "psa10": false,
+    "psa9": false,
+    "cgc8": false,
+    "cgc8_5": false
+   },
+   "salesVelocity": {
+    "dailyAverage": 0,
+    "weeklyAverage": 0,
+    "monthlyTotal": 0
+   },
+   "priceHistory": {
+    "psa10": {},
+    "psa9": {},
+    "cgc8": {},
+    "cgc8_5": {}
+   },
+   "totalSales": 8,
+   "totalValue": 360.47999999999996,
+   "gradesTracked": [
+    "psa10",
+    "psa9",
+    "cgc8",
+    "cgc8_5"
+   ],
+   "dateRangeStart": "2022-05-30T00:00:00.000Z",
+   "dateRangeEnd": "2026-09-13T00:00:00.000Z",
+   "salesByPrinting": {
+    "Reverse Holofoil": {
+     "salesByGrade": {
+      "psa9": {
+       "count": 1,
+       "totalValue": 61,
+       "averagePrice": 61,
+       "medianPrice": 61,
+       "minPrice": 61,
+       "maxPrice": 61,
+       "marketPrice7Day": null,
+       "marketPriceMedian7Day": null,
+       "dailyVolume7Day": 0,
+       "marketTrend": null,
+       "lastMarketUpdate": "2026-11-03T17:45:55.347Z",
+       "lastSaleDate": "2026-08-17T00:00:00.000Z",
+       "smartMarketPrice": {
+        "price": 51.85,
+        "confidence": "low",
+        "method": "all_filtered_weighted",
+        "daysUsed": 78
+       },
+       "salesBySource": {
+        "ebay": 1
+       },
+       "labels": null
+      }
+     },
+     "smartPriceOutlierByGrade": {
+      "psa9": false
+     },
+     "priceHistory": {
+      "psa9": {}
+     },
+     "totalSales": 1,
+     "totalValue": 61
+    }
+   }
+  }
+ },
+ "metadata": {
+  "total": 1,
+  "count": 1,
+  "limit": 1,
+  "offset": 0,
+  "hasMore": false,
+  "language": "english",
+  "includes": {
+   "priceHistory": false,
+   "ebayData": true,
+   "cardmarketData": false
+  },
+  "historyWindow": {
+   "days": 3,
+   "from": "2026-11-11",
+   "to": "2026-11-14",
+   "maxDataPoints": 30,
+   "granularityNote": "Data points limited to 30. Use ?maxDataPoints=N for higher granularity (plan limits apply)."
+  },
+  "apiCallsConsumed": {
+   "total": 2,
+   "breakdown": {
+    "cards": 1,
+    "history": 0,
+    "ebay": 1,
+    "cardmarket": 0
+   },
+   "costPerCard": 2
+  },
+  "planRestrictions": {
+   "message": "Free plan limited to 3 days of historical data. Upgrade to API plan for full history access.",
+   "limitedTo": "3 days",
+   "maxDataPoints": 30
+  }
+ }
+}

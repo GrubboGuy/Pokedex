@@ -1,0 +1,173 @@
+{
+ "id": "019bff7f-e2b8-7168-a040-4a31308fddb8",
+ "name": "Pikachu - 012 (EX Series Collector's Tin)",
+ "cardNumber": "012",
+ "set": {
+  "slug": "nintendo-promos",
+  "name": "Nintendo Promos"
+ },
+ "variant": "Holofoil",
+ "rarity": "Promo",
+ "productType": "single",
+ "productFamily": "card",
+ "image": "https://cdn.poketrace.com/cards/9d1fa2f444efe5f4.webp",
+ "game": "pokemon",
+ "market": "US",
+ "currency": "USD",
+ "refs": {
+  "tcgplayerId": "88067",
+  "cardmarketId": null
+ },
+ "marketplaceUrls": {
+  "tcgplayer": "https://www.tcgplayer.com/product/88067",
+  "cardmarket": null,
+  "ebay": "https://www.ebay.com/sch/i.html?_nkw=Pikachu+-+012+%28EX+Series+Collector%27s+Tin%29+Nintendo+Promos+012+Holofoil&_sacat=0&_from=R40"
+ },
+ "prices": {
+  "ebay": {
+   "DAMAGED": {
+    "avg": 30,
+    "low": 30,
+    "high": 30,
+    "lastUpdated": "2026-08-04T00:00:00.000Z",
+    "avg1d": 50,
+    "avg7d": 40,
+    "avg30d": 40,
+    "median3d": 40,
+    "median7d": 40,
+    "median30d": 50,
+    "saleCount": 22,
+    "approxSaleCount": true
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 55,
+    "low": 55,
+    "high": 55,
+    "lastUpdated": "2026-10-29T00:00:00.000Z",
+    "avg1d": 60,
+    "avg7d": 59.358334,
+    "avg30d": 59.358334,
+    "median3d": 55,
+    "median7d": 57.5,
+    "median30d": 60,
+    "saleCount": 9,
+    "approxSaleCount": true
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 170,
+    "low": 170,
+    "high": 170,
+    "lastUpdated": "2026-10-29T00:00:00.000Z",
+    "avg1d": 118.5,
+    "avg7d": 119.625,
+    "avg30d": 119.625,
+    "median3d": 170,
+    "median7d": 144.25,
+    "median30d": 116.75,
+    "saleCount": 56,
+    "approxSaleCount": true
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 114.5,
+    "low": 114.5,
+    "high": 114.5,
+    "lastUpdated": "2026-10-19T00:00:00.000Z",
+    "avg1d": 110,
+    "avg7d": 112.25,
+    "avg30d": 112.25,
+    "median3d": 112.25,
+    "median7d": 112.25,
+    "median30d": 91,
+    "saleCount": 15,
+    "approxSaleCount": true
+   },
+   "NEAR_MINT": {
+    "avg": 214.68,
+    "low": 214.68,
+    "high": 214.68,
+    "lastUpdated": "2026-10-31T00:00:00.000Z",
+    "avg1d": 220,
+    "avg7d": 188.22667,
+    "avg30d": 188.22667,
+    "median3d": 214.68,
+    "median7d": 217.34,
+    "median30d": 214.68,
+    "saleCount": 37,
+    "approxSaleCount": true
+   }
+  },
+  "tcgplayer": {
+   "DAMAGED": {
+    "avg": 33.16,
+    "low": 33.16,
+    "high": 33.16,
+    "lastUpdated": "2026-11-13T00:00:00.000Z",
+    "avg1d": null,
+    "avg7d": null,
+    "avg30d": null,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 103,
+    "approxSaleCount": false
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 43.91,
+    "low": 43.91,
+    "high": 43.91,
+    "lastUpdated": "2026-11-13T00:00:00.000Z",
+    "avg1d": null,
+    "avg7d": null,
+    "avg30d": null,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 72,
+    "approxSaleCount": false
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 133.16,
+    "low": 133.16,
+    "high": 133.16,
+    "lastUpdated": "2026-11-13T00:00:00.000Z",
+    "avg1d": null,
+    "avg7d": null,
+    "avg30d": null,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 158,
+    "approxSaleCount": false
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 75.86,
+    "low": 75.86,
+    "high": 75.86,
+    "lastUpdated": "2026-11-13T00:00:00.000Z",
+    "avg1d": null,
+    "avg7d": null,
+    "avg30d": null,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 98,
+    "approxSaleCount": false
+   },
+   "NEAR_MINT": {
+    "avg": 183.48,
+    "low": 195.6,
+    "high": 195.6,
+    "lastUpdated": "2026-11-13T00:00:00.000Z",
+    "avg1d": null,
+    "avg7d": null,
+    "avg30d": null,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 103,
+    "approxSaleCount": false
+   }
+  }
+ },
+ "lastUpdated": "2026-11-12T22:51:47.036Z"
+}

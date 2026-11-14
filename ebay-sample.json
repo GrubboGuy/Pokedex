@@ -1,0 +1,1221 @@
+{
+ "search": {
+  "href": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Mega+Rayquaza+ex+141+Delta+Reign&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B78.61..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=0",
+  "total": 122,
+  "next": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Mega+Rayquaza+ex+141+Delta+Reign&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B78.61..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=50",
+  "limit": 50,
+  "offset": 0,
+  "itemSummaries": [
+   {
+    "itemId": "v1|227613627933|0",
+    "title": "Mega Rayquaza EX 141/108 Delta Reign Secret Rare Full Art Holo English & 2 Star ",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/arQAAeSwy59q9~Nm/s-l225.jpg"
+    },
+    "price": {
+     "value": "230.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C227613627933%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/arQAAeSwy59q9~Nm/s-l1200.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "7.50",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-27T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-04T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "15"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "itemWebUrl": "https://www.ebay.com/itm/227613627933?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=item34fed4561d:g:arQAAeSwy59q9~Nm",
+    "itemLocation": {
+     "postalCode": "604**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/iHcAAeSwHOtq9~N1/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/UD8AAeSwpF9q9~My/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/oK8AAeSwRexq9~My/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/NqwAAeSw7t5q9~M3/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/4qIAAeSwilBq9~M3/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/Xq4AAeSwLhtq9~M7/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/Zi4AAeSw7SRq9~OP/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/SF8AAeSwy81q9~Os/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/U34AAeSwizRq9~O3/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "227613627933",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-14T05:40:43.000Z",
+    "itemCreationDate": "2026-11-14T05:40:43.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|287727491289|0",
+    "title": "Holofoil - Mega Rayquaza ex - 141/103 - Delta Reign - NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/U-EAAeSwEVRq9z-I/s-l225.jpg"
+    },
+    "price": {
+     "value": "249.72",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C287727491289%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "299.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "16",
+     "discountAmount": {
+      "value": "49.28",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/U-EAAeSwEVRq9z-I/s-l1200.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-28T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-05T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "70"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/287727491289?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=item42fde518d9:g:U-EAAeSwEVRq9z-I",
+    "itemLocation": {
+     "postalCode": "531**",
+     "country": "US"
+    },
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "287727491289",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-13T16:49:09.000Z",
+    "itemCreationDate": "2026-11-13T16:49:09.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|237179937450|0",
+    "title": "Mega Rayquaza EX 141/103 Mega Hyper Rare Full Art Foil Delta Reign ENG 2016",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/r48AAeSwOdBq9mlc/s-l225.jpg"
+    },
+    "price": {
+     "value": "250.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C237179937450%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/r48AAeSwOdBq9mlc/s-l1600.jpg"
+     }
+    ],
+    "pickupOptions": [
+     {
+      "pickupLocationType": "ARRANGED_LOCATION"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "790"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/237179937450?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=item373906a2aa:g:r48AAeSwOdBq9mlc",
+    "itemLocation": {
+     "postalCode": "750**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/pH8AAeSw9QJq9mkc/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/cawAAeSwgI9q9mks/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/uQcAAeSwYKNq9mk6/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/iB8AAeSwy59q9mlN/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "237179937450",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-13T01:39:26.000Z",
+    "itemCreationDate": "2026-11-13T01:39:26.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|960187715608|0",
+    "title": "Pokemon Delta Reign Gold Mega Rayquaza EX HP280 141/103",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/tMEAAeSwy81q9fqN/s-l225.jpg"
+    },
+    "price": {
+     "value": "250.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C960187715608%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "299.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "16",
+     "discountAmount": {
+      "value": "49.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/tMEAAeSwy81q9fqN/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "6.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-24T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-01T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "805"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/960187715608?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=itemdf8fa5d018:g:tMEAAeSwy81q9fqN",
+    "itemLocation": {
+     "postalCode": "062**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/zPkAAeSwhDlq9fqN/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "960187715608",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-13T20:00:00.000Z",
+    "itemCreationDate": "2026-11-13T20:00:00.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|840123098498|0",
+    "title": "GOLD Mega Hyper Rare Rayquaza EX 141/103 Delta Reign SIR Mega Evolution NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/3XsAAeSw69Rq9oSl/s-l225.jpg"
+    },
+    "price": {
+     "value": "260.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C840123098498%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "299.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "13",
+     "discountAmount": {
+      "value": "39.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/3XsAAeSw69Rq9oSl/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.48",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-24T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-01T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "520"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/840123098498?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=itemc39b3d2582:g:3XsAAeSw69Rq9oSl",
+    "itemLocation": {
+     "postalCode": "228**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/llcAAeSwI8Nq9oSl/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/2cEAAeSwm95q9oSl/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/0~wAAeSwjllq9oSk/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/2J4AAeSw6ENq9oSm/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/g0gAAeSwYeRq9oSm/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "840123098498",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-13T03:32:47.000Z",
+    "itemCreationDate": "2026-11-13T03:32:47.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|820347499348|0",
+    "title": "Mega Rayquaza EX Mega Full Art Secret Rare Holo 141/103 Delta Reign English",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/d8sAAeSw~TFq9fUI/s-l225.jpg"
+    },
+    "price": {
+     "value": "269.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C820347499348%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/d8sAAeSw~TFq9fUI/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      }
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "765"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/820347499348?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=itembf00857354:g:d8sAAeSw~TFq9fUI",
+    "itemLocation": {
+     "postalCode": "065**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/eaoAAeSwHVtq9fTw/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "820347499348",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-12T18:26:54.000Z",
+    "itemCreationDate": "2026-11-12T18:26:54.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|257851135057|0",
+    "title": "Mega Rayquaza EX 141/103 Mega Hyper  Rare Delta Reign",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/Kb0AAeSwxrhq921T/s-l225.jpg"
+    },
+    "price": {
+     "value": "274.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C257851135057%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "299.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "8",
+     "discountAmount": {
+      "value": "24.01",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/Kb0AAeSwxrhq921T/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-23T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-11-30T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "720"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/257851135057?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=item3c09201451:g:Kb0AAeSwxrhq921T",
+    "itemLocation": {
+     "postalCode": "113**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/DkcAAeSwYeRq921T/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "257851135057",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-13T20:05:26.000Z",
+    "itemCreationDate": "2026-11-13T20:05:26.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|147672555371|0",
+    "title": "Mega Rayquaza ex 141/103 Me06: Delta Reign Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/AR8AAeSwCJJq8SiJ/s-l225.jpg"
+    },
+    "price": {
+     "value": "275.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C147672555371%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "299.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "8",
+     "discountAmount": {
+      "value": "24.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/AR8AAeSwCJJq8SiJ/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-24T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-01T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1515"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/147672555371?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=item2261f85f6b:g:AR8AAeSwCJJq8SiJ",
+    "itemLocation": {
+     "postalCode": "990**",
+     "country": "US"
+    },
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "147672555371",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-09T02:08:27.000Z",
+    "itemCreationDate": "2026-11-09T02:08:27.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|880110954703|0",
+    "title": "Mega Rayquaza ex 141/103 Me06: Delta Reign Holo GOLD",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/6dcAAeSwI0dq9oxr/s-l225.jpg"
+    },
+    "price": {
+     "value": "270.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C880110954703%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "299.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "10",
+     "discountAmount": {
+      "value": "29.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/6dcAAeSwI0dq9oxr/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.67",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-25T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-02T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1740"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/880110954703?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=itemcceab368cf:g:6dcAAeSwI0dq9oxr",
+    "itemLocation": {
+     "postalCode": "906**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/KXcAAeSwAbVq9ox1/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "880110954703",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-13T04:09:19.000Z",
+    "itemCreationDate": "2026-11-13T04:09:19.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|336896293087|0",
+    "title": "2026 Pokemon Delta Reign Mega Rayquaza ex 141/103 Gold Mega Hyper Rare NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/ozsAAeSwAbVq939C/s-l225.jpg"
+    },
+    "price": {
+     "value": "275.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C336896293087%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "299.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "8",
+     "discountAmount": {
+      "value": "24.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ozsAAeSwAbVq939C/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.49",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-24T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-01T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "620"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/336896293087?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=item4e709578df:g:ozsAAeSwAbVq939C",
+    "itemLocation": {
+     "postalCode": "185**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/3LMAAeSwq0Jq939C/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/e1YAAeSwPjFq939C/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "336896293087",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-13T21:23:42.000Z",
+    "itemCreationDate": "2026-11-13T21:23:42.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|800888968258|0",
+    "title": "Pokemon Mega Rayquaza EX 141/103 Secret Rare Full Art Holo English Delta Reign",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/uRIAAeSwJqVq7yu7/s-l225.jpg"
+    },
+    "price": {
+     "value": "275.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C800888968258%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "299.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "8",
+     "discountAmount": {
+      "value": "24.00",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/uRIAAeSwJqVq7yu7/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.65",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-24T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-01T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "450"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/800888968258?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=itemba78b3d442:g:uRIAAeSwJqVq7yu7",
+    "itemLocation": {
+     "postalCode": "379**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/i9AAAeSwBXNq7yu0/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/dAEAAeSwF9Fq7yuz/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/tYkAAeSwcJNq7yu1/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/i1QAAeSwukRq7yu2/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mMwAAeSwvv5q7yu3/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/iZ4AAeSwZwBq7yu3/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "800888968258",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-07T13:50:24.000Z",
+    "itemCreationDate": "2026-11-07T13:50:24.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|137922970035|0",
+    "title": "Mega Rayquaza EX 141/103 Delta Reign Gold Hyper Rare Full Art Pack Fresh",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/DwkAAeSwKNxq9O-e/s-l225.jpg"
+    },
+    "price": {
+     "value": "274.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C137922970035%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "299.00",
+      "currency": "USD"
+     },
+     "discountPercentage": "8",
+     "discountAmount": {
+      "value": "24.01",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/DwkAAeSwKNxq9O-e/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "5.79",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-11-24T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-01T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1165"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "9106493479",
+    "itemWebUrl": "https://www.ebay.com/itm/137922970035?_skw=Mega+Rayquaza+ex+141+Delta+Reign&hash=item201cd981b3:g:DwkAAeSwKNxq9O-e",
+    "itemLocation": {
+     "postalCode": "333**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/Bc0AAeSwAGFq9O-r/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/EX0AAeSwW~pq9O~A/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/C08AAeSwtOtq9O~P/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "qualifiedPrograms": [
+     "AUTHENTICITY_GUARANTEE"
+    ],
+    "legacyItemId": "137922970035",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-11T22:45:36.000Z",
+    "itemCreationDate": "2026-11-11T22:45:36.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   }
+  ],
+  "_query": "Mega Rayquaza ex 141 Delta Reign"
+ },
+ "item": {
+  "itemId": "v1|287727491289|0",
+  "title": "Holofoil - Mega Rayquaza ex - 141/103 - Delta Reign - NM",
+  "price": {
+   "value": "249.72",
+   "currency": "USD"
+  },
+  "condition": "Ungraded",
+  "conditionId": "4000",
+  "conditionDescriptors": [
+   {
+    "name": "Card Condition",
+    "values": [
+     {
+      "content": "Near mint or better",
+      "additionalInfo": [
+       "Minor corner and edge wear"
+      ]
+     }
+    ]
+   }
+  ],
+  "localizedAspects": [
+   {
+    "type": "STRING",
+    "name": "Game",
+    "value": "Pok\u00e9mon TCG"
+   },
+   {
+    "type": "STRING",
+    "name": "Franchise",
+    "value": "Pokemon"
+   },
+   {
+    "type": "STRING",
+    "name": "Set",
+    "value": "Delta Reign"
+   },
+   {
+    "type": "STRING",
+    "name": "Language",
+    "value": "English"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Number",
+    "value": "141/103"
+   },
+   {
+    "type": "STRING",
+    "name": "Original/Licensed Reprint",
+    "value": "Original"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Name",
+    "value": "Mega Rayquaza ex - 141/103"
+   },
+   {
+    "type": "STRING",
+    "name": "Manufacturer",
+    "value": "The Pok\u00e9mon Company"
+   },
+   {
+    "type": "STRING",
+    "name": "Brand",
+    "value": "The Pok\u00e9mon Company"
+   },
+   {
+    "type": "STRING",
+    "name": "Rarity",
+    "value": "Mega Hyper Rare"
+   },
+   {
+    "type": "STRING",
+    "name": "Type",
+    "value": "Colorless"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Type",
+    "value": "Pok\u00e9mon"
+   },
+   {
+    "type": "STRING",
+    "name": "Speciality",
+    "value": "MEGA"
+   },
+   {
+    "type": "STRING",
+    "name": "Stage",
+    "value": "Basic"
+   },
+   {
+    "type": "STRING",
+    "name": "Character",
+    "value": "Mega Rayquaza"
+   },
+   {
+    "type": "STRING",
+    "name": "Finish",
+    "value": "Holofoil"
+   }
+  ],
+  "shippingOptions": [
+   {
+    "shippingServiceCode": "Shipping to authenticator, then to you",
+    "shippingCarrierCode": "PSA",
+    "type": "Standard Shipping",
+    "shippingCost": {
+     "value": "0.00",
+     "currency": "USD"
+    },
+    "quantityUsedForEstimate": 1,
+    "minEstimatedDeliveryDate": "2026-11-28T10:00:00.000Z",
+    "maxEstimatedDeliveryDate": "2026-12-05T10:00:00.000Z",
+    "shipToLocationUsedForEstimate": {
+     "postalCode": "60601",
+     "country": "US"
+    },
+    "additionalShippingCostPerUnit": {
+     "value": "0.00",
+     "currency": "USD"
+    },
+    "shippingCostType": "CALCULATED"
+   }
+  ],
+  "itemWebUrl": "https://www.ebay.com/itm/287727491289",
+  "categoryPath": "Toys & Hobbies|Collectible Card Games|CCG Individual Cards",
+  "estimatedAvailabilities": [
+   {
+    "deliveryOptions": [
+     "SHIP_TO_HOME"
+    ],
+    "estimatedAvailabilityStatus": "IN_STOCK",
+    "estimatedAvailableQuantity": 1,
+    "estimatedSoldQuantity": 0,
+    "estimatedRemainingQuantity": 1
+   }
+  ]
+ }
+}
