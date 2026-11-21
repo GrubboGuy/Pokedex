@@ -1,0 +1,173 @@
+{
+ "id": "019bff8a-a5c1-7149-81dc-935545b59575",
+ "name": "Lugia",
+ "cardNumber": "078/124",
+ "set": {
+  "slug": "deck-exclusives",
+  "name": "Deck Exclusives"
+ },
+ "variant": "Holofoil",
+ "rarity": "Holo Rare",
+ "productType": "single",
+ "productFamily": "card",
+ "image": "https://cdn.poketrace.com/cards/8f5ef1bb605b0170.webp",
+ "game": "pokemon",
+ "market": "US",
+ "currency": "USD",
+ "refs": {
+  "tcgplayerId": "123466",
+  "cardmarketId": null
+ },
+ "marketplaceUrls": {
+  "tcgplayer": "https://www.tcgplayer.com/product/123466",
+  "cardmarket": null,
+  "ebay": "https://www.ebay.com/sch/i.html?_nkw=Lugia+Deck+Exclusives+078%2F124+Holofoil&_sacat=0&_from=R40"
+ },
+ "prices": {
+  "ebay": {
+   "DAMAGED": {
+    "avg": 15.5,
+    "low": 15.5,
+    "high": 15.5,
+    "lastUpdated": "2026-10-19T00:00:00.000Z",
+    "avg1d": 4.675,
+    "avg7d": 10.087501,
+    "avg30d": 10.087501,
+    "median3d": 15.5,
+    "median7d": 4.74,
+    "median30d": 4.74,
+    "saleCount": 1,
+    "approxSaleCount": true
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 63,
+    "low": 63,
+    "high": 63,
+    "lastUpdated": "2026-11-10T00:00:00.000Z",
+    "avg1d": 9.99,
+    "avg7d": 36.495,
+    "avg30d": 36.495,
+    "median3d": 63,
+    "median7d": 36.495,
+    "median30d": 36.495,
+    "saleCount": 5,
+    "approxSaleCount": true
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 150,
+    "low": 150,
+    "high": 150,
+    "lastUpdated": "2026-11-19T00:00:00.000Z",
+    "avg1d": 99.75,
+    "avg7d": 166.58,
+    "avg30d": 166.58,
+    "median3d": 124.875,
+    "median7d": 124.875,
+    "median30d": 150,
+    "saleCount": 7,
+    "approxSaleCount": true
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 50.97,
+    "low": 50.97,
+    "high": 50.97,
+    "lastUpdated": "2026-11-16T00:00:00.000Z",
+    "avg1d": 75.44,
+    "avg7d": 63.205,
+    "avg30d": 63.205,
+    "median3d": 63.205,
+    "median7d": 63.205,
+    "median30d": 63.205,
+    "saleCount": 1,
+    "approxSaleCount": true
+   },
+   "NEAR_MINT": {
+    "avg": 64.99,
+    "low": 64.99,
+    "high": 64.99,
+    "lastUpdated": "2026-11-18T00:00:00.000Z",
+    "avg1d": 134.72,
+    "avg7d": 99.855,
+    "avg30d": 99.855,
+    "median3d": 99.855,
+    "median7d": 99.855,
+    "median30d": 99.855,
+    "saleCount": 6,
+    "approxSaleCount": true
+   }
+  },
+  "tcgplayer": {
+   "DAMAGED": {
+    "avg": 8.3,
+    "low": 8.3,
+    "high": 8.3,
+    "lastUpdated": "2026-11-20T00:00:00.000Z",
+    "avg1d": 8.3,
+    "avg7d": 8.3,
+    "avg30d": 6.3980646,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 52,
+    "approxSaleCount": false
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 6.88,
+    "low": 6.88,
+    "high": 6.88,
+    "lastUpdated": "2026-11-20T00:00:00.000Z",
+    "avg1d": 6.88,
+    "avg7d": 6.72,
+    "avg30d": 4.7116127,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 72,
+    "approxSaleCount": false
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 33.75,
+    "low": 33.75,
+    "high": 33.75,
+    "lastUpdated": "2026-11-20T00:00:00.000Z",
+    "avg1d": 33.75,
+    "avg7d": 32.841427,
+    "avg30d": 28.135485,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 319,
+    "approxSaleCount": false
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 22.27,
+    "low": 22.27,
+    "high": 22.27,
+    "lastUpdated": "2026-11-20T00:00:00.000Z",
+    "avg1d": 22.27,
+    "avg7d": 21.597143,
+    "avg30d": 16.614193,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 207,
+    "approxSaleCount": false
+   },
+   "NEAR_MINT": {
+    "avg": 92.38,
+    "low": 92.38,
+    "high": 92.38,
+    "lastUpdated": "2026-11-20T00:00:00.000Z",
+    "avg1d": 92.38,
+    "avg7d": 89.564285,
+    "avg30d": 60.04742,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 248,
+    "approxSaleCount": false
+   }
+  }
+ },
+ "lastUpdated": "2026-11-20T22:56:36.300Z"
+}
