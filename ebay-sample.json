@@ -1,0 +1,1180 @@
+{
+ "search": {
+  "href": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Mega+Darkrai+ex+120+Pitch+Black&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B40.43..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=0",
+  "total": 182,
+  "next": "https://api.ebay.com/buy/browse/v1/item_summary/search?q=Mega+Darkrai+ex+120+Pitch+Black&limit=50&category_ids=183454&filter=buyingOptions%3A%7BFIXED_PRICE%7D%2CitemLocationCountry%3AUS%2Cprice%3A%5B40.43..%5D%2CpriceCurrency%3AUSD%2CconditionIds%3A%7B4000%7D&sort=price&offset=50",
+  "limit": 50,
+  "offset": 0,
+  "itemSummaries": [
+   {
+    "itemId": "v1|820404476977|0",
+    "title": "Mega Darkrai EX 120/084 Special Illustration Rare Pitch Black EN 280HP",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/6~IAAeSwrZxrCT3O/s-l225.jpg"
+    },
+    "price": {
+     "value": "110.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C820404476977%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "117.07",
+      "currency": "USD"
+     },
+     "discountPercentage": "6",
+     "discountAmount": {
+      "value": "7.07",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/6~IAAeSwrZxrCT3O/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.81",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-02T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-08T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1750"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/820404476977?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=itembf03eadc31:g:6~IAAeSwrZxrCT3O",
+    "itemLocation": {
+     "postalCode": "983**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/S1AAAeSwT4RrCT2U/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/P08AAeSw71prCT2W/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/jUwAAeSwlUBrCT2Z/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mbUAAeSwFAFrCT2b/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/apoAAeSw2DhrCT2j/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/uy0AAeSwZ~drCT2o/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/nLEAAeSwhdprCT2r/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/iOgAAeSwctlrCT2u/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ryMAAeSw5ahrCT2w/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "820404476977",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-27T08:26:25.000Z",
+    "itemCreationDate": "2026-11-27T08:26:25.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|820399442151|0",
+    "title": "Mega Darkrai ex 120/084 Gold Mega Hyper Rare Pitch Black Pok\u00e9mon TCG English",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/fkEAAeSw9mZrB5lc/s-l225.jpg"
+    },
+    "price": {
+     "value": "115.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C820399442151%7C0",
+    "marketingPrice": {
+     "originalPrice": {
+      "value": "117.07",
+      "currency": "USD"
+     },
+     "discountPercentage": "2",
+     "discountAmount": {
+      "value": "2.07",
+      "currency": "USD"
+     }
+    },
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/fkEAAeSw9mZrB5lc/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.29",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-01T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-03T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "125"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/820399442151?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=itembf039e08e7:g:fkEAAeSw9mZrB5lc",
+    "itemLocation": {
+     "postalCode": "495**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/muUAAeSwsF5rB5ln/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/jeMAAeSwH2prB5lp/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/BnwAAeSwRhtrB5lr/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/IHAAAeSwtDNrB5lt/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mpYAAeSwln9rB5lu/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "820399442151",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-26T02:29:24.000Z",
+    "itemCreationDate": "2026-11-26T02:29:24.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|198828987622|0",
+    "title": "Pokemon ME05: Pitch Black Mega Darkrai ex 120/084",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/bdAAAeSwXS9rAgyf/s-l225.jpg"
+    },
+    "price": {
+     "value": "119.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C198828987622%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/bdAAAeSwXS9rAgyf/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "5.99",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-01T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-04T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "35"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/198828987622?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=item2e4b2194e6:g:bdAAAeSwXS9rAgyf",
+    "itemLocation": {
+     "postalCode": "463**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ekIAAeSwICtrAgyf/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "198828987622",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-21T21:26:49.000Z",
+    "itemCreationDate": "2026-11-27T14:42:38.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|920166007240|0",
+    "title": "Pokemon TCG Mega Darkrai EX 120/084 Pitch Black Full Art Holo Rare 2016",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/U0sAAeSwfuNrAOOs/s-l225.jpg"
+    },
+    "price": {
+     "value": "123.50",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C920166007240%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/U0sAAeSwfuNrAOOs/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.30",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-02T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-07T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "955"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/920166007240?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=itemd63e2b01c8:g:U0sAAeSwfuNrAOOs",
+    "itemLocation": {
+     "postalCode": "770**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/kxYAAeSwtWdrAOOe/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "920166007240",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-21T00:21:11.000Z",
+    "itemCreationDate": "2026-11-21T00:21:11.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|336920450360|0",
+    "title": "Pok\u00e9mon Mega Darkrai EX GOLD 120/84 Secret Rare Full Art Holo NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/Fb4AAeSwHl1rClgs/s-l225.jpg"
+    },
+    "price": {
+     "value": "125.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C336920450360%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/Fb4AAeSwHl1rClgs/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "5.99",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-02T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-08T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "925"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/336920450360?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=item4e72061538:g:Fb4AAeSwHl1rClgs",
+    "itemLocation": {
+     "postalCode": "809**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/-FIAAeSwjA1rClgt/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/QqsAAeSwsHJrClgt/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/~VMAAeSwca1rClgt/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/kpIAAeSwgmdrClgt/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ExAAAeSwpHhrClgu/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/FxoAAeSwm4FrClgu/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/HgAAAeSw3JprClgu/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/LnUAAeSwnPBrClgu/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/KfoAAeSw8RJrClgw/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/-AcAAeSwJYxrClgw/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "336920450360",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-28T04:29:04.000Z",
+    "itemCreationDate": "2026-11-28T04:29:04.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|366834157052|0",
+    "title": "Pokemon TCG Mega Darkrai EX 120/084 Me05 Pitch Black Full Art Holo EX GOLD CARD",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/ZzcAAeSwhCZrBS3O/s-l225.jpg"
+    },
+    "price": {
+     "value": "125.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C366834157052%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/ZzcAAeSwhCZrBS3O/s-l225.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "6.19",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-02T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-07T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "780"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/366834157052?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=item55690505fc:g:ZzcAAeSwhCZrBS3O",
+    "itemLocation": {
+     "postalCode": "366**",
+     "country": "US"
+    },
+    "adultOnly": false,
+    "legacyItemId": "366834157052",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-24T06:27:31.000Z",
+    "itemCreationDate": "2026-11-24T06:27:31.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|920128257311|0",
+    "title": "Mega Darkrai EX 120/084 Pitch Black mega hyper rare NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/AjMAAeSweiRq86~H/s-l225.jpg"
+    },
+    "price": {
+     "value": "128.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C920128257311%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/AjMAAeSweiRq86~H/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "5.36",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-02T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-07T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "1785"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/920128257311?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=itemd63beafd1f:g:AjMAAeSweiRq86~H",
+    "itemLocation": {
+     "postalCode": "930**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/s2QAAeSwETZq86-6/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "920128257311",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-11T00:09:01.000Z",
+    "itemCreationDate": "2026-11-11T00:09:01.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|820204273428|0",
+    "title": "Mega Darkrai ex Holo 120/084 Mega Hyper Rare Pitch Black Pokemon NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/UmsAAeSw8qtqwvo~/s-l225.jpg"
+    },
+    "price": {
+     "value": "133.49",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C820204273428%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/UmsAAeSw8qtqwvo~/s-l1200.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "0.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-02T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-05T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "685"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/820204273428?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=itembef7fbff14:g:UmsAAeSw8qtqwvo~",
+    "itemLocation": {
+     "postalCode": "074**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/amkAAeSw1~Fqwvo~/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/M4IAAeSw9Kxqwvo~/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/f7kAAeSwwRFqwvo~/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/7BUAAeSwVVRqwvo~/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "820204273428",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-10-05T01:14:41.000Z",
+    "itemCreationDate": "2026-10-05T01:14:41.000Z",
+    "topRatedBuyingExperience": true,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|960242517895|0",
+    "title": "Mega Darkrai EX 120/084 Secret Rare Gold Full Art Holo Evolutions English",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/PAQAAeSwcKdrB4xl/s-l225.jpg"
+    },
+    "price": {
+     "value": "128.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C960242517895%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/PAQAAeSwcKdrB4xl/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "6.19",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-02T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-07T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "765"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/960242517895?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=itemdf92ea0787:g:PAQAAeSwcKdrB4xl",
+    "itemLocation": {
+     "postalCode": "117**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/mfkAAeSwFyNrB4xg/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/JDcAAeSwjA1rB4xj/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/O54AAeSwnbBrB4xg/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/uqoAAeSwHsRrB4xi/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/obUAAeSw2A5rB4xi/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/xOQAAeSwB9NrB4xi/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "960242517895",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-26T01:38:16.000Z",
+    "itemCreationDate": "2026-11-26T01:38:16.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|336910971760|0",
+    "title": "Mega Darkrai ex 120/084 Gold Mega Hyper Rare Pitch Black Pokemon TCG NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/MBoAAeSwSOJrAyXD/s-l225.jpg"
+    },
+    "price": {
+     "value": "129.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C336910971760%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/MBoAAeSwSOJrAyXD/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "FIXED",
+      "shippingCost": {
+       "value": "5.00",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-02T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-08T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "590"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/336910971760?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=item4e71757370:g:MBoAAeSwSOJrAyXD",
+    "itemLocation": {
+     "postalCode": "130**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/usMAAeSwxiprAyXP/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "336910971760",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-22T17:30:21.000Z",
+    "itemCreationDate": "2026-11-22T17:30:21.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|377643891576|0",
+    "title": "2026 Pok\u00e9mon Mega Darkrai ex Gold Hyper Rare 120/084 Pitch Black English NM",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/2PsAAeSwrptq96jV/s-l225.jpg"
+    },
+    "price": {
+     "value": "129.00",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C377643891576%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/2PsAAeSwrptq96jV/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.29",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-03T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-09T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "155"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/377643891576?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=item57ed547b78:g:2PsAAeSwrptq96jV",
+    "itemLocation": {
+     "postalCode": "549**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/pSsAAeSwSs1q96jV/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "377643891576",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-14T00:19:38.000Z",
+    "itemCreationDate": "2026-11-14T00:19:38.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   },
+   {
+    "itemId": "v1|137913942393|0",
+    "title": "Mega Darkrai ex 120/084 Me05: Pitch Black Holo",
+    "leafCategoryIds": [
+     "183454"
+    ],
+    "categories": [
+     {
+      "categoryId": "183454",
+      "categoryName": "CCG Individual Cards"
+     },
+     {
+      "categoryId": "220",
+      "categoryName": "Toys & Hobbies"
+     },
+     {
+      "categoryId": "2536",
+      "categoryName": "Collectible Card Games"
+     }
+    ],
+    "image": {
+     "imageUrl": "https://i.ebayimg.com/images/g/PvsAAeSwQAJq646z/s-l225.jpg"
+    },
+    "price": {
+     "value": "129.99",
+     "currency": "USD"
+    },
+    "itemHref": "https://api.ebay.com/buy/browse/v1/item/v1%7C137913942393%7C0",
+    "condition": "Ungraded",
+    "conditionId": "4000",
+    "thumbnailImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/PvsAAeSwQAJq646z/s-l1600.jpg"
+     }
+    ],
+    "shippingOptions": [
+     {
+      "shippingCostType": "CALCULATED",
+      "shippingCost": {
+       "value": "6.29",
+       "currency": "USD"
+      },
+      "minEstimatedDeliveryDate": "2026-12-02T08:00:00.000Z",
+      "maxEstimatedDeliveryDate": "2026-12-05T08:00:00.000Z"
+     }
+    ],
+    "distanceFromPickupLocation": {
+     "unitOfMeasure": "mi",
+     "value": "425"
+    },
+    "buyingOptions": [
+     "FIXED_PRICE",
+     "BEST_OFFER"
+    ],
+    "epid": "14096339293",
+    "itemWebUrl": "https://www.ebay.com/itm/137913942393?_skw=Mega+Darkrai+ex+120+Pitch+Black&hash=item201c4fc179:g:PvsAAeSwQAJq646z",
+    "itemLocation": {
+     "postalCode": "662**",
+     "country": "US"
+    },
+    "additionalImages": [
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/QAEAAeSw3EBq6460/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/PwMAAeSws~hq646z/s-l225.jpg"
+     },
+     {
+      "imageUrl": "https://i.ebayimg.com/images/g/OKcAAeSwZJxq6460/s-l225.jpg"
+     }
+    ],
+    "adultOnly": false,
+    "legacyItemId": "137913942393",
+    "availableCoupons": false,
+    "itemOriginDate": "2026-11-04T20:02:28.000Z",
+    "itemCreationDate": "2026-11-08T19:19:58.000Z",
+    "topRatedBuyingExperience": false,
+    "priorityListing": false,
+    "listingMarketplaceId": "EBAY_US"
+   }
+  ],
+  "_query": "Mega Darkrai ex 120 Pitch Black"
+ },
+ "item": {
+  "itemId": "v1|820404476977|0",
+  "title": "Mega Darkrai EX 120/084 Special Illustration Rare Pitch Black EN 280HP",
+  "price": {
+   "value": "110.00",
+   "currency": "USD"
+  },
+  "condition": "Ungraded",
+  "conditionId": "4000",
+  "conditionDescriptors": [
+   {
+    "name": "Card Condition",
+    "values": [
+     {
+      "content": "Near mint or better",
+      "additionalInfo": [
+       "Minor corner and edge wear"
+      ]
+     }
+    ]
+   }
+  ],
+  "localizedAspects": [
+   {
+    "type": "STRING",
+    "name": "Card Size",
+    "value": "Standard"
+   },
+   {
+    "type": "STRING",
+    "name": "Speciality",
+    "value": "EX"
+   },
+   {
+    "type": "STRING",
+    "name": "Set",
+    "value": "XY Phantom Forces"
+   },
+   {
+    "type": "STRING",
+    "name": "Character",
+    "value": "Darkrai"
+   },
+   {
+    "type": "STRING",
+    "name": "Creature/Monster Type",
+    "value": "Darkness"
+   },
+   {
+    "type": "STRING",
+    "name": "HP",
+    "value": "280"
+   },
+   {
+    "type": "STRING",
+    "name": "Year Manufactured",
+    "value": "2014"
+   },
+   {
+    "type": "STRING",
+    "name": "Material",
+    "value": "Card Stock"
+   },
+   {
+    "type": "STRING",
+    "name": "Age Level",
+    "value": "6+"
+   },
+   {
+    "type": "STRING",
+    "name": "Franchise",
+    "value": "Pokemon"
+   },
+   {
+    "type": "STRING",
+    "name": "Attack/Power",
+    "value": "110+"
+   },
+   {
+    "type": "STRING",
+    "name": "Rarity",
+    "value": "Ultra Rare"
+   },
+   {
+    "type": "STRING",
+    "name": "Game",
+    "value": "Pok\u00e9mon TCG"
+   },
+   {
+    "type": "STRING",
+    "name": "Language",
+    "value": "English"
+   },
+   {
+    "type": "STRING",
+    "name": "Illustrator",
+    "value": "5ban Graphics"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Name",
+    "value": "Mega Darkrai EX"
+   },
+   {
+    "type": "STRING",
+    "name": "Manufacturer",
+    "value": "Nintendo"
+   },
+   {
+    "type": "STRING",
+    "name": "Stage",
+    "value": "Mega"
+   },
+   {
+    "type": "STRING",
+    "name": "Features",
+    "value": "Full Art"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Number",
+    "value": "120/084"
+   },
+   {
+    "type": "STRING",
+    "name": "Card Type",
+    "value": "Pok\u00e9mon"
+   },
+   {
+    "type": "STRING",
+    "name": "Finish",
+    "value": "Holo"
+   },
+   {
+    "type": "STRING",
+    "name": "Country of Origin",
+    "value": "United States"
+   }
+  ],
+  "shippingOptions": [
+   {
+    "shippingServiceCode": "USPS Ground Advantage",
+    "trademarkSymbol": "\u00ae",
+    "shippingCarrierCode": "USPS",
+    "type": "Standard Shipping",
+    "shippingCost": {
+     "value": "6.81",
+     "currency": "USD"
+    },
+    "quantityUsedForEstimate": 1,
+    "minEstimatedDeliveryDate": "2026-12-02T10:00:00.000Z",
+    "maxEstimatedDeliveryDate": "2026-12-08T10:00:00.000Z",
+    "shipToLocationUsedForEstimate": {
+     "postalCode": "60601",
+     "country": "US"
+    },
+    "shippingCostType": "CALCULATED"
+   }
+  ],
+  "itemWebUrl": "https://www.ebay.com/itm/820404476977",
+  "categoryPath": "Toys & Hobbies|Collectible Card Games|CCG Individual Cards",
+  "estimatedAvailabilities": [
+   {
+    "deliveryOptions": [
+     "SHIP_TO_HOME"
+    ],
+    "estimatedAvailabilityStatus": "IN_STOCK",
+    "estimatedAvailableQuantity": 1,
+    "estimatedSoldQuantity": 0,
+    "estimatedRemainingQuantity": 1
+   }
+  ]
+ }
+}

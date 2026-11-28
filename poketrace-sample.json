@@ -1,0 +1,159 @@
+{
+ "id": "019bff8e-8808-757d-bbc7-af1a0c30c368",
+ "name": "Feraligatr",
+ "cardNumber": "020/123",
+ "set": {
+  "slug": "deck-exclusives",
+  "name": "Deck Exclusives"
+ },
+ "variant": "Holofoil",
+ "rarity": "Holo Rare",
+ "productType": "single",
+ "productFamily": "card",
+ "image": "https://cdn.poketrace.com/cards/4a63516be17eec7a.webp",
+ "game": "pokemon",
+ "market": "US",
+ "currency": "USD",
+ "refs": {
+  "tcgplayerId": "153258",
+  "cardmarketId": null
+ },
+ "marketplaceUrls": {
+  "tcgplayer": "https://www.tcgplayer.com/product/153258",
+  "cardmarket": null,
+  "ebay": "https://www.ebay.com/sch/i.html?_nkw=Feraligatr+Deck+Exclusives+020%2F123+Holofoil&_sacat=0&_from=R40"
+ },
+ "prices": {
+  "ebay": {
+   "HEAVILY_PLAYED": {
+    "avg": 4.89,
+    "low": 4.89,
+    "high": 4.89,
+    "lastUpdated": "2026-09-11T00:00:00.000Z",
+    "avg1d": null,
+    "avg7d": null,
+    "avg30d": null,
+    "median3d": 4.89,
+    "median7d": 4.89,
+    "median30d": 4.89,
+    "saleCount": 2,
+    "approxSaleCount": true
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 19.99,
+    "low": 19.99,
+    "high": 19.99,
+    "lastUpdated": "2026-11-26T00:00:00.000Z",
+    "avg1d": 24.5,
+    "avg7d": 22.244999,
+    "avg30d": 22.244999,
+    "median3d": 22.245,
+    "median7d": 22.245,
+    "median30d": 22.245,
+    "saleCount": 18,
+    "approxSaleCount": true
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 6.99,
+    "low": 6.99,
+    "high": 6.99,
+    "lastUpdated": "2026-11-02T00:00:00.000Z",
+    "avg1d": 5.27,
+    "avg7d": 6.2466664,
+    "avg30d": 6.2466664,
+    "median3d": 6.99,
+    "median7d": 6.13,
+    "median30d": 6.48,
+    "saleCount": 7,
+    "approxSaleCount": true
+   },
+   "NEAR_MINT": {
+    "avg": 30,
+    "low": 30,
+    "high": 30,
+    "lastUpdated": "2026-10-24T00:00:00.000Z",
+    "avg1d": 29.99,
+    "avg7d": 29.374,
+    "avg30d": 29.374,
+    "median3d": 29.995,
+    "median7d": 29.99,
+    "median30d": 29.99,
+    "saleCount": 7,
+    "approxSaleCount": true
+   }
+  },
+  "tcgplayer": {
+   "DAMAGED": {
+    "avg": 3.09,
+    "low": 3.09,
+    "high": 3.09,
+    "lastUpdated": "2026-11-28T00:00:00.000Z",
+    "avg1d": 3.09,
+    "avg7d": 3.0928571,
+    "avg30d": 3.0306451,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 37,
+    "approxSaleCount": false
+   },
+   "HEAVILY_PLAYED": {
+    "avg": 2.82,
+    "low": 2.82,
+    "high": 2.82,
+    "lastUpdated": "2026-11-28T00:00:00.000Z",
+    "avg1d": 2.82,
+    "avg7d": 2.8457143,
+    "avg30d": 2.6680646,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 60,
+    "approxSaleCount": false
+   },
+   "LIGHTLY_PLAYED": {
+    "avg": 20.96,
+    "low": 20.96,
+    "high": 20.96,
+    "lastUpdated": "2026-11-28T00:00:00.000Z",
+    "avg1d": 20.96,
+    "avg7d": 19.545713,
+    "avg30d": 17.250322,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 145,
+    "approxSaleCount": false
+   },
+   "MODERATELY_PLAYED": {
+    "avg": 8.84,
+    "low": 8.84,
+    "high": 8.84,
+    "lastUpdated": "2026-11-28T00:00:00.000Z",
+    "avg1d": 8.84,
+    "avg7d": 8.6757145,
+    "avg30d": 8.384839,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 106,
+    "approxSaleCount": false
+   },
+   "NEAR_MINT": {
+    "avg": 30.04,
+    "low": 30.04,
+    "high": 30.04,
+    "lastUpdated": "2026-11-28T00:00:00.000Z",
+    "avg1d": 30.04,
+    "avg7d": 27.998571,
+    "avg30d": 26.262903,
+    "median3d": null,
+    "median7d": null,
+    "median30d": null,
+    "saleCount": 88,
+    "approxSaleCount": false
+   }
+  }
+ },
+ "lastUpdated": "2026-11-28T13:00:58.527Z"
+}
